@@ -1,8 +1,11 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -11,9 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.Operations;
 
 /**
  * @author Filipe Bezerra
@@ -32,6 +36,8 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     @Override
@@ -88,7 +94,15 @@ public class MainActivity extends ActionBarActivity {
             webView.getSettings().setSupportZoom(true);
             webView.getSettings().setGeolocationEnabled(true);
 
-            webView.loadUrl(rootView.getResources().getString(R.string.rmtc_mob_site));
+            final Resources resources = getActivity().getResources();
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());;
+            final String siteBrowsingMode = preferences.getString(resources.getString(R.string.pref_key_site_browsing_mode),
+                    "");
+
+            Operations.log(siteBrowsingMode);
+
+            webView.loadUrl(siteBrowsingMode);
 
             return rootView;
         }
