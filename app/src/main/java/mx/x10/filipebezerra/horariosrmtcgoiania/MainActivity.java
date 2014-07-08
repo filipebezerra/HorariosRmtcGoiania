@@ -1,5 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,10 @@ import android.os.Build;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-
+/**
+ * @author Filipe Bezerra
+ * @since 1.0
+ */
 public class MainActivity extends ActionBarActivity {
 
     private static WebView webView;
@@ -39,7 +43,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

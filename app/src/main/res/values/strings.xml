@@ -2,6 +2,9 @@
 <resources>
 
     <string name="app_name">Horários RMTC Goiânia</string>
+
+    <string name="title_activity_settings">Suas Preferências</string>
+
     <string name="action_settings">Preferências</string>
     
     <string name="rmtc_wap_site">http://wap.rmtcgoiania.com.br/</string>

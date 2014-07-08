@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="@string/pref_key_site_browsing_mode"
+        android:title="@string/pref_title_site_browsing_mode"
+        android:summary="@string/pref_summary_site_browsing_mode"
+        android:dialogTitle="@string/pref_dialog_title_site_browsing_mode"
+        android:entries="@array/pref_entries_site_browsing_mode"
+        android:entryValues="@array/pref_entry_values_site_browsing_mode"
+        android:defaultValue="@string/pref_default_value_site_browsing_mode" />
+
+</PreferenceScreen>

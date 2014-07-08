@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_key_site_browsing_mode">site_browsing_mode</string>
+    <string name="pref_title_site_browsing_mode">Modo de Navegação</string>
+    <string name="pref_summary_site_browsing_mode">Modo de visualização e navegação dos serviços RMTC</string>
+    <string name="pref_dialog_title_site_browsing_mode">Escolha a melhor opção para realizar as buscas</string>
+    <string name="pref_default_value_site_browsing_mode">SiteRmtc</string>
+
+    <string-array name="pref_entries_site_browsing_mode">
+        <item>Serviço WAP</item>
+        <item>Site RMTC</item>
+    </string-array>
+
+    <string-array name="pref_entry_values_site_browsing_mode">
+        <item>ServicoWap</item>
+        <item>SiteRmtc</item>
+    </string-array>
+
+</resources>
