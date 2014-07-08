@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Horarios RMTC Goiania</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Horários RMTC Goiânia</string>
+    <string name="action_settings">Preferências</string>
+    
+    <string name="rmtc_wap_site">http://wap.rmtcgoiania.com.br/</string>
+    <string name="rmtc_mob_site">http://m.rmtcgoiania.com.br/horariodeviagem</string>
 
 </resources>
