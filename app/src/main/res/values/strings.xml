@@ -9,5 +9,6 @@
     
     <string name="rmtc_wap_site">http://wap.rmtcgoiania.com.br/</string>
     <string name="rmtc_mob_site">http://m.rmtcgoiania.com.br/horariodeviagem</string>
+    <string name="action_fullscreen">Fullscreen</string>
 
 </resources>

@@ -1,10 +1,13 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -26,6 +30,8 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.utils.Operations;
 public class MainActivity extends ActionBarActivity {
 
     private static WebView webView;
+
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
+
         return true;
     }
 
@@ -50,11 +58,38 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.action_fullscreen:
+                setUpActionBarVisibility(item);
+
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && ! getSupportActionBar().isShowing()) {
+            setUpActionBarVisibility(menu.findItem(R.id.action_fullscreen));
+            return true;
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
+
+    private void setUpActionBarVisibility(final MenuItem item) {
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar.isShowing()) {
+            actionBar.hide();
+            item.setIcon(R.drawable.ic_action_return_from_full_screen);
+        } else {
+            actionBar.show();
+            item.setIcon(R.drawable.ic_action_full_screen);
+        }
     }
 
     @Override

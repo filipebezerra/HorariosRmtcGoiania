@@ -3,9 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
+    <item android:id="@+id/action_fullscreen"
+        android:title="@string/action_fullscreen"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_action_full_screen"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="2"
         android:icon="@drawable/ic_action_settings"
         app:showAsAction="ifRoom" />
 </menu>
