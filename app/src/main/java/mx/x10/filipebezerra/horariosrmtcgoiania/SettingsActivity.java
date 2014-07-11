@@ -36,6 +36,8 @@ public class SettingsActivity extends PreferenceActivity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.HONEYCOMB) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 }
