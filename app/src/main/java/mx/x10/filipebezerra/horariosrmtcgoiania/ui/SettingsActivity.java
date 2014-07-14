@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -6,7 +6,13 @@ import android.support.v4.app.NavUtils;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 
+import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+
 /**
+ * Tela de configuração das preferências do usuário.<br />
+ * Por esta tela e possível configurar todas preferências aplicadas ao aplicativo e que
+ * coordenam as funcionalidades disponíveis.
+ *
  * @author Filipe Bezerra
  * @since 1.0
  */

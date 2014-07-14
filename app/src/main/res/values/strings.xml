@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Horários RMTC Goiânia</string>
+    <!-- Nome da aplicação na Google Play Store e na Home do dispositivo do usuário -->
+    <string name="app_name">Horários Rmtc Goiânia</string>
 
+    <!-- Título das telas do aplicativo -->
     <string name="title_activity_settings">Suas Preferências</string>
 
+    <!-- Ações da ActionBar -->
     <string name="action_settings">Preferências</string>
-    
-    <string name="rmtc_wap_site">http://wap.rmtcgoiania.com.br/</string>
-    <string name="rmtc_mob_site">http://m.rmtcgoiania.com.br/horariodeviagem</string>
     <string name="action_fullscreen">Fullscreen</string>
 
-    <integer name="version_code">2</integer>
-    <string name="version_name">1.1</string>
+    <!-- URL's carregadas pelo web browser -->
+    <string name="rmtc_wap_site">http://wap.rmtcgoiania.com.br/</string>
+    <string name="rmtc_mob_site">http://m.rmtcgoiania.com.br/horariodeviagem</string>
 
 </resources>

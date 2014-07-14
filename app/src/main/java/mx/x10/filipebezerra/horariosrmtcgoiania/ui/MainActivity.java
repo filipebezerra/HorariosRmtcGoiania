@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,9 +18,14 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.Operations;
+import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
 
 /**
+ * Tela principal do aplicativo.<br />
+ * Nesta tela são carregados o web browser que usuário pesquisa e interage com os horários e têm
+ * acesso às principais funcionalidades do aplicativo.
+ *
  * @author Filipe Bezerra
  * @since 1.0
  */
@@ -36,7 +41,7 @@ public class MainActivity extends SherlockFragmentActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new WebBrowserFragment())
                     .commit();
         }
 
@@ -99,17 +104,22 @@ public class MainActivity extends SherlockFragmentActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public static class PlaceholderFragment extends SherlockFragment {
+    public static class WebBrowserFragment extends SherlockFragment {
 
-        public PlaceholderFragment() {
+        public WebBrowserFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_web_browser, container, false);
 
+            setUpViews(rootView);
 
+            return rootView;
+        }
+
+        private void setUpViews(View rootView) {
             webView = (WebView) rootView.findViewById(R.id.webView);
             webView.getSettings().setAppCacheEnabled(true);
 
@@ -125,19 +135,30 @@ public class MainActivity extends SherlockFragmentActivity {
 
             webView.getSettings().setSupportZoom(true);
             webView.getSettings().setGeolocationEnabled(true);
-
-            final Resources resources = getActivity().getResources();
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            final String siteBrowsingMode = preferences.getString(resources.getString(R.string.pref_key_site_browsing_mode),
-                    "");
-
-            Operations.log(siteBrowsingMode);
-
-            webView.loadUrl(siteBrowsingMode);
-
-            return rootView;
         }
 
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+            final String siteBrowsingMode = getUrlFromPreferences();
+
+            webView.loadUrl(siteBrowsingMode);
+        }
+
+        private String getUrlFromPreferences() {
+            final Resources resources = getActivity().getResources();
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(
+                    getActivity());
+
+            final String siteBrowsingMode = preferences.getString(resources.getString(
+                    R.string.pref_key_site_browsing_mode), "");
+
+            OperationsUtils.log(OperationsUtils.LogType.DEBUG, "Url a ser carregada = ",
+                    siteBrowsingMode);
+
+            return siteBrowsingMode;
+        }
     }
 }
