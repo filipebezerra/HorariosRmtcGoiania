@@ -1,18 +1,16 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author Filipe Bezerra
  * @since 1.0
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends SherlockPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +32,7 @@ public class SettingsActivity extends PreferenceActivity {
         return false;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setupActionBar() {
-        if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

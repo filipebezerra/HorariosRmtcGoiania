@@ -1,5 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
@@ -7,11 +6,11 @@
         android:title="@string/action_fullscreen"
         android:orderInCategory="1"
         android:icon="@drawable/ic_action_full_screen"
-        app:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="2"
         android:icon="@drawable/ic_action_settings"
-        app:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 </menu>

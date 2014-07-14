@@ -1,25 +1,22 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania;
 
-import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.os.Build;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.Operations;
 
@@ -27,7 +24,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.utils.Operations;
  * @author Filipe Bezerra
  * @since 1.0
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends SherlockFragmentActivity {
 
     private static WebView webView;
 
@@ -48,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getSupportMenuInflater().inflate(R.menu.main, menu);
         this.menu = menu;
 
         return true;
@@ -102,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends SherlockFragment {
 
         public PlaceholderFragment() {
         }
@@ -131,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
 
             final Resources resources = getActivity().getResources();
 
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());;
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             final String siteBrowsingMode = preferences.getString(resources.getString(R.string.pref_key_site_browsing_mode),
                     "");
 
