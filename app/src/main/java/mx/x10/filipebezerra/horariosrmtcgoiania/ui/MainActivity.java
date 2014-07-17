@@ -74,7 +74,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && ! getSupportActionBar().isShowing()) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && !getSupportActionBar().isShowing()) {
             setUpActionBarVisibility(menu.findItem(R.id.action_fullscreen));
             return true;
         }
@@ -109,41 +109,57 @@ public class MainActivity extends SherlockFragmentActivity {
         public WebBrowserFragment() {
         }
 
+        private View rootView;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_web_browser, container, false);
+            this.rootView = rootView;
 
-            setUpViews(rootView);
+            setUpViews();
 
             return rootView;
         }
 
-        private void setUpViews(View rootView) {
+        private void setUpViews() {
             webView = (WebView) rootView.findViewById(R.id.webView);
-            webView.getSettings().setAppCacheEnabled(true);
 
             // Habilitando suporte JavaScript
             webView.getSettings().setJavaScriptEnabled(true);
 
             // Habilitando controles de zoom
+            webView.getSettings().setSupportZoom(true);
             webView.getSettings().setBuiltInZoomControls(true);
+
+            // Configurações da ScrollBar
+            webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+            webView.setScrollbarFadingEnabled(true);
+
+            webView.getSettings().setLoadsImagesAutomatically(true);
 
             // Habilitando o clique em links para serem abertos pela própria aplicação e não
             // pelo aplicativo browser padrão do dispositivo
             webView.setWebViewClient(new WebViewClient());
+        }
 
-            webView.getSettings().setSupportZoom(true);
-            webView.getSettings().setGeolocationEnabled(true);
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);
+            webView.saveState(outState);
         }
 
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            final String siteBrowsingMode = getUrlFromPreferences();
+            if (savedInstanceState != null) {
+                webView.restoreState(savedInstanceState);
+            } else {
+                final String siteBrowsingMode = getUrlFromPreferences();
 
-            webView.loadUrl(siteBrowsingMode);
+                webView.loadUrl(siteBrowsingMode);
+            }
         }
 
         private String getUrlFromPreferences() {
