@@ -96,7 +96,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && (webView.canGoBack())) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && (webView.canGoBack()) && getSupportActionBar().isShowing()) {
             webView.goBack();
             return true;
         }
