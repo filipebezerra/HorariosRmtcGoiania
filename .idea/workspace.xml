@@ -22,8 +22,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: mx.x10.filipebezerra.horariosrmtcgoiania" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a55f3c00-2dd7-412c-82a9-205f8ded651c" name="Default" comment="#12&#10;&#10;Troca do ícone do aplicativo na ActionBar e na tela Home.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/mx/x10/filipebezerra/horariosrmtcgoiania/ui/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/mx/x10/filipebezerra/horariosrmtcgoiania/ui/MainActivity.java" />
+    <list default="true" id="a55f3c00-2dd7-412c-82a9-205f8ded651c" name="Default" comment="#1&#10;&#10;A página do browser é recarregado após pressionar o botão para voltar (Back Button) fazendo com que a pesquisa corrente seja perdida.&#10;&#10;Esta alteração corrige o caso da alternãncia da visibilidade da ActionBar que é colocada em Fullscreen pela função na ActionBar e retornada ao normal quando o Back Button é pressionado.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/actionbarsherlock_4_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/actionbarsherlock_4_4_0.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_19_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_19_1_0.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -1688,7 +1687,11 @@
       <created>1406305377979</created>
       <updated>1406305377979</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="#1&#10;&#10;A página do browser é recarregado após pressionar o botão para voltar (Back Button) fazendo com que a pesquisa corrente seja perdida.&#10;&#10;Esta alteração corrige o caso da alternãncia da visibilidade da ActionBar que é colocada em Fullscreen pela função na ActionBar e retornada ao normal quando o Back Button é pressionado.">
+      <created>1406308323622</created>
+      <updated>1406308323622</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1715,7 +1718,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28086254" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28086254" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32674298" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1747,7 +1750,8 @@
     <MESSAGE value="#8&#10;&#10;A página é recarregada ao trocar a orientação da tela perdendo os dados da pesquisa realizada." />
     <MESSAGE value="#1&#10;&#10;A página é recarregada ao trocar a orientação da tela perdendo os dados da pesquisa realizada.&#10;&#10;Esta alteração somente corrige em caso de troca de orientação da tela." />
     <MESSAGE value="#12&#10;&#10;Troca do ícone do aplicativo na ActionBar e na tela Home." />
-    <option name="LAST_COMMIT_MESSAGE" value="#12&#10;&#10;Troca do ícone do aplicativo na ActionBar e na tela Home." />
+    <MESSAGE value="#1&#10;&#10;A página do browser é recarregado após pressionar o botão para voltar (Back Button) fazendo com que a pesquisa corrente seja perdida.&#10;&#10;Esta alteração corrige o caso da alternãncia da visibilidade da ActionBar que é colocada em Fullscreen pela função na ActionBar e retornada ao normal quando o Back Button é pressionado." />
+    <option name="LAST_COMMIT_MESSAGE" value="#1&#10;&#10;A página do browser é recarregado após pressionar o botão para voltar (Back Button) fazendo com que a pesquisa corrente seja perdida.&#10;&#10;Esta alteração corrige o caso da alternãncia da visibilidade da ActionBar que é colocada em Fullscreen pela função na ActionBar e retornada ao normal quando o Back Button é pressionado." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
