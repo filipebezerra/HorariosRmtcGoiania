@@ -17,6 +17,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
@@ -34,16 +35,35 @@ public class MainActivity extends SherlockFragmentActivity {
     private static WebView webView;
 
     private Menu menu;
+    private SlidingMenu slidingMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new WebBrowserFragment())
                     .commit();
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        slidingMenu = new SlidingMenu(this);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu.setShadowWidth(15);
+        slidingMenu.setShadowDrawable(R.drawable.shadow);
+        slidingMenu.setBehindOffset(60);
+        slidingMenu.setFadeEnabled(true);
+        slidingMenu.setFadeDegree(0.35f);
+        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        slidingMenu.setMenu(R.layout.menu_frame);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.menu_frame, new SampleListFragment())
+                .commit();
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
@@ -66,7 +86,8 @@ public class MainActivity extends SherlockFragmentActivity {
                 return true;
             case R.id.action_fullscreen:
                 setUpActionBarVisibility(item);
-
+                return true;
+            case android.R.id.home: slidingMenu.toggle(true);
                 return true;
         }
         return super.onOptionsItemSelected(item);
