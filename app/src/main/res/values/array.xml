@@ -23,4 +23,12 @@
         <item>Fluidez do trânsito e transporte</item>
         <item>Serviço de Atendimento ao Cliente</item>
     </string-array>
+
+    <string-array name="servicos_rmtc_urls">
+        <item>http://wap.rmtcgoiania.com.br/</item>
+        <item>http://m.rmtcgoiania.com.br/horariodeviagem</item>
+        <item>http://m.rmtcgoiania.com.br/planejesuaviagem</item>
+        <item>http://m.rmtcgoiania.com.br/pontoaponto</item>
+        <item>http://m.rmtcgoiania.com.br/sac</item>
+    </string-array>
 </resources>

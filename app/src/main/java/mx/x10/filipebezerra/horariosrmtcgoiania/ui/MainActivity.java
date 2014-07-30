@@ -30,7 +30,8 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
  * @author Filipe Bezerra
  * @since 1.0
  */
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends SherlockFragmentActivity
+    implements SlideMenuListFragment.OnSlideMenuItemSelectedListener {
 
     private static WebView webView;
 
@@ -62,7 +63,7 @@ public class MainActivity extends SherlockFragmentActivity {
         slidingMenu.setMenu(R.layout.menu_frame);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.menu_frame, new SampleListFragment())
+                .replace(R.id.menu_frame, new SlideMenuListFragment())
                 .commit();
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -123,6 +124,19 @@ public class MainActivity extends SherlockFragmentActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onItemSelected(int index) {
+        String [] urlsServicosRmtc = getResources().getStringArray(R.array.servicos_rmtc_urls);
+
+        if (index > (urlsServicosRmtc.length - 1))
+            OperationsUtils.log(OperationsUtils.LogType.ERROR, "O índice [%d] não é válido " +
+                    "ou não foi implementado!", index);
+        else {
+            slidingMenu.toggle(true);
+            webView.loadUrl(urlsServicosRmtc[index]);
+        }
     }
 
     public static class WebBrowserFragment extends SherlockFragment {

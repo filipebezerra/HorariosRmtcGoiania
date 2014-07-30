@@ -1,6 +1,7 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.util;
 
 import static android.util.Log.d;
+import static android.util.Log.e;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.BuildConfig;
 
@@ -17,7 +18,12 @@ public final class OperationsUtils implements ConstantsUtils {
         /**
          * Depuração, filtro exclusivo para o desenvolvedor.
          */
-        DEBUG;
+        DEBUG,
+
+        /**
+         * Erro, falhas e bugs
+         */
+        ERROR;
     }
 
     /**
@@ -46,6 +52,9 @@ public final class OperationsUtils implements ConstantsUtils {
             switch(logType) {
                 case DEBUG:
                     d(TAG, logMessage);
+                    break;
+                case ERROR:
+                    e(TAG, logMessage);
                     break;
             }
         }
