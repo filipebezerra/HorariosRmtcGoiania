@@ -1,10 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +32,8 @@ public class MainActivity extends SherlockFragmentActivity
     private static WebView webView;
 
     private Menu menu;
-    private SlidingMenu slidingMenu;
+
+    private SlidingMenu slideMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +46,37 @@ public class MainActivity extends SherlockFragmentActivity
                     .commit();
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        slideMenu = new SlidingMenu(this);
+        slideMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slideMenu.setShadowWidth(15);
+        slideMenu.setShadowDrawable(R.drawable.shadow);
+        slideMenu.setBehindOffset(60);
+        slideMenu.setFadeEnabled(true);
+        slideMenu.setFadeDegree(0.35f);
+        slideMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+            @Override
+            public void onOpen() {
+                invalidateOptionsMenu();
+                getSupportActionBar().setTitle(R.string.slide_menu_title_opened);
+            }
+        });
+        slideMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+            @Override
+            public void onClose() {
+                invalidateOptionsMenu();
+                getSupportActionBar().setTitle(R.string.slide_menu_title_closed);
+            }
+        });
+        slideMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        slideMenu.setMenu(R.layout.menu_frame);
 
-        slidingMenu = new SlidingMenu(this);
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        slidingMenu.setShadowWidth(15);
-        slidingMenu.setShadowDrawable(R.drawable.shadow);
-        slidingMenu.setBehindOffset(60);
-        slidingMenu.setFadeEnabled(true);
-        slidingMenu.setFadeDegree(0.35f);
-        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        slidingMenu.setMenu(R.layout.menu_frame);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.menu_frame, new SlideMenuListFragment())
                 .commit();
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
@@ -82,16 +92,19 @@ public class MainActivity extends SherlockFragmentActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
             case R.id.action_fullscreen:
                 setUpActionBarVisibility(item);
                 return true;
-            case android.R.id.home: slidingMenu.toggle(true);
+            case android.R.id.home: slideMenu.toggle(true);
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_fullscreen).setVisible(! slideMenu.isMenuShowing());
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -101,7 +114,7 @@ public class MainActivity extends SherlockFragmentActivity
             return true;
         }
 
-        return super.onKeyUp(keyCode, event);
+        return false;
     }
 
     private void setUpActionBarVisibility(final MenuItem item) {
@@ -118,12 +131,23 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && (webView.canGoBack()) && getSupportActionBar().isShowing()) {
-            webView.goBack();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            boolean actionBarShowing = getSupportActionBar().isShowing();
+
+            if ((webView.canGoBack()) && actionBarShowing) {
+                webView.goBack();
+            } else if (slideMenu.isMenuShowing()) {
+                slideMenu.toggle(true);
+            } else if (! actionBarShowing) {
+                setUpActionBarVisibility(menu.findItem(R.id.action_fullscreen));
+            } else {
+                super.onBackPressed();
+            }
+
             return true;
         }
 
-        return super.onKeyDown(keyCode, event);
+        return false;
     }
 
     @Override
@@ -134,7 +158,7 @@ public class MainActivity extends SherlockFragmentActivity
             OperationsUtils.log(OperationsUtils.LogType.ERROR, "O índice [%d] não é válido " +
                     "ou não foi implementado!", index);
         else {
-            slidingMenu.toggle(true);
+            slideMenu.toggle(true);
             webView.loadUrl(urlsServicosRmtc[index]);
         }
     }
@@ -191,25 +215,9 @@ public class MainActivity extends SherlockFragmentActivity
             if (savedInstanceState != null) {
                 webView.restoreState(savedInstanceState);
             } else {
-                final String siteBrowsingMode = getUrlFromPreferences();
-
-                webView.loadUrl(siteBrowsingMode);
+                ((SlideMenuListFragment.OnSlideMenuItemSelectedListener) getActivity())
+                        .onItemSelected(0);
             }
-        }
-
-        private String getUrlFromPreferences() {
-            final Resources resources = getActivity().getResources();
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(
-                    getActivity());
-
-            final String siteBrowsingMode = preferences.getString(resources.getString(
-                    R.string.pref_key_site_browsing_mode), "");
-
-            OperationsUtils.log(OperationsUtils.LogType.DEBUG, "Url a ser carregada = ",
-                    siteBrowsingMode);
-
-            return siteBrowsingMode;
         }
     }
 }

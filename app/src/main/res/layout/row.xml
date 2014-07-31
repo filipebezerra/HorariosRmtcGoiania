@@ -18,25 +18,23 @@
         android:padding="10dp"
         android:text="Title"
         android:textAppearance="@android:style/TextAppearance.Medium"
-        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/row_icon"
         android:layout_toEndOf="@+id/row_icon"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/row_icon" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/row_description"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:paddingLeft="10dp"
         android:text="Description"
-        android:gravity="center_vertical"
         android:textAppearance="@android:style/TextAppearance.Small"
-        android:layout_toEndOf="@+id/row_icon"
-        android:layout_alignParentBottom="true"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/row_icon"
         android:layout_toRightOf="@+id/row_icon"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toEndOf="@+id/row_icon"
+        android:layout_alignRight="@+id/row_title"
+        android:layout_alignEnd="@+id/row_title" />
 
 </RelativeLayout>
