@@ -1,5 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
 
@@ -168,6 +170,8 @@ public class MainActivity extends SherlockFragmentActivity
 
     public static class WebBrowserFragment extends SherlockFragment {
 
+        private SmoothProgressBar progressBar;
+
         public WebBrowserFragment() {
         }
 
@@ -202,7 +206,12 @@ public class MainActivity extends SherlockFragmentActivity
 
             // Habilitando o clique em links para serem abertos pela própria aplicação e não
             // pelo aplicativo browser padrão do dispositivo
-            webView.setWebViewClient(new WebViewClient());
+            webView.setWebViewClient(new CustomWebViewClient());
+
+            webView.setFocusableInTouchMode(true);
+            webView.setClickable(true);
+
+            progressBar = (SmoothProgressBar) rootView.findViewById(R.id.progressBar);
         }
 
         @Override
@@ -220,6 +229,26 @@ public class MainActivity extends SherlockFragmentActivity
             } else {
                 ((SlideMenuListFragment.OnSlideMenuItemSelectedListener) getActivity())
                         .onItemSelected(0);
+            }
+        }
+
+        private class CustomWebViewClient extends WebViewClient {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                progressBar.setVisibility(View.GONE);
             }
         }
     }

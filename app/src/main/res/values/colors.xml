@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <integer-array name="progress_bar_colors">
+        <item>@color/dark_blue</item>
+        <item>@color/light_blue</item>
+        <item>@color/green</item>
+    </integer-array>
+    
+    <color name="dark_blue">#20317f</color>
+    <color name="light_blue">#5c89c2</color>
+    <color name="green">#cdd500</color>
+
+</resources>
