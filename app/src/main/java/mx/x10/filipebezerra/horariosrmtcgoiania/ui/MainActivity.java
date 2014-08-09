@@ -68,7 +68,7 @@ public class MainActivity extends SherlockFragmentActivity
             }
         });
         slideMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        slideMenu.setMenu(R.layout.menu_frame);
+        slideMenu.setMenu(R.layout.slide_menu_frame);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -81,7 +81,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main, menu);
+        getSupportMenuInflater().inflate(R.menu.menu_global, menu);
         this.menu = menu;
 
         return true;
@@ -95,9 +95,12 @@ public class MainActivity extends SherlockFragmentActivity
             case R.id.action_fullscreen:
                 setUpActionBarVisibility(item);
                 return true;
-            case android.R.id.home: slideMenu.toggle(true);
+
+            case android.R.id.home:
+                slideMenu.toggle(true);
                 return true;
         }
+
         return false;
     }
 
