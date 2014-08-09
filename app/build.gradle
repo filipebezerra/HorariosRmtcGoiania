@@ -9,8 +9,8 @@ android {
         applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
         minSdkVersion 8
         targetSdkVersion 19
-        versionCode 4
-        versionName "1.3"
+        versionCode 5
+        versionName "1.4"
     }
     buildTypes {
         release {
