@@ -18,6 +18,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.ConnectionDetector;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
 
 /**
@@ -233,6 +234,16 @@ public class MainActivity extends SherlockFragmentActivity
         }
 
         private class CustomWebViewClient extends WebViewClient {
+
+            private boolean errorWhenLoading = false;
+            private boolean isInternetPresent = true;
+
+            private void showNoInternetAccessDialog() {
+                OperationsUtils.showAlertDialog(getActivity(), "Sem acesso à internet",
+                        "Desculpe, mas você não está conectado à internet.", false,
+                        R.drawable.ic_fail);
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -241,14 +252,28 @@ public class MainActivity extends SherlockFragmentActivity
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                errorWhenLoading = true;
+
+                ConnectionDetector connectionDetector = new ConnectionDetector(getActivity()
+                        .getApplicationContext());
+
+                isInternetPresent = connectionDetector.isConnectingToInternet();
+
+                if (!isInternetPresent) {
+                    showNoInternetAccessDialog();
+                }
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                progressBar.setVisibility(View.GONE);
+                if (progressBar.getVisibility() == View.VISIBLE) {
+                    progressBar.setVisibility(View.GONE);
+                }
             }
         }
     }

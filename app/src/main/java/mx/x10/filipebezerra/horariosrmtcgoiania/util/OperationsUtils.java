@@ -1,9 +1,15 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.util;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Message;
+
 import static android.util.Log.d;
 import static android.util.Log.e;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.BuildConfig;
+import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 
 /**
  * @author Filipe Bezerra
@@ -58,5 +64,17 @@ public final class OperationsUtils implements ConstantsUtils {
                     break;
             }
         }
+    }
+
+    public static void showAlertDialog(Context context, String title, String message,
+                                       Boolean status, int iconRes) {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setIcon(iconRes);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", new Message());
+
+        alertDialog.show();
     }
 }
