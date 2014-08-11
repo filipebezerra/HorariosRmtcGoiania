@@ -68,13 +68,14 @@ public final class OperationsUtils implements ConstantsUtils {
 
     public static void showAlertDialog(Context context, String title, String message,
                                        Boolean status, int iconRes) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setIcon(iconRes);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", new Message());
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        alertDialog.show();
+        builder.setMessage(message)
+                .setTitle(title)
+                .setIcon(iconRes)
+                .setPositiveButton("OK", null)
+                .create()
+                .show();
     }
 }
