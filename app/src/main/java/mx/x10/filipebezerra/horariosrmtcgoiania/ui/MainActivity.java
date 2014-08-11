@@ -113,16 +113,6 @@ public class MainActivity extends SherlockFragmentActivity
         return super.onPrepareOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && !getSupportActionBar().isShowing()) {
-            setUpActionBarVisibility(menu.findItem(R.id.action_fullscreen));
-            return true;
-        }
-
-        return false;
-    }
-
     private void setUpActionBarVisibility(final MenuItem item) {
         final ActionBar actionBar = getSupportActionBar();
 
@@ -136,24 +126,16 @@ public class MainActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            boolean actionBarShowing = getSupportActionBar().isShowing();
+    public void onBackPressed() {
+        boolean actionBarShowing = getSupportActionBar().isShowing();
 
-            if ((webView.canGoBack()) && actionBarShowing) {
-                webView.goBack();
-            } else if (slideMenu.isMenuShowing()) {
-                slideMenu.toggle(true);
-            } else if (! actionBarShowing) {
-                setUpActionBarVisibility(menu.findItem(R.id.action_fullscreen));
-            } else {
-                super.onBackPressed();
-            }
-
-            return true;
+        if (slideMenu.isMenuShowing()) {
+            slideMenu.toggle(true);
+        } else if (! actionBarShowing) {
+            setUpActionBarVisibility(menu.findItem(R.id.action_fullscreen));
+        } else {
+            super.onBackPressed();
         }
-
-        return false;
     }
 
     @Override
