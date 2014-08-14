@@ -2,7 +2,6 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
 public class MainActivity extends SherlockFragmentActivity
     implements SlideMenuListFragment.OnSlideMenuItemSelectedListener {
 
+    private static final String KEY_ACTION_BAR_IS_SHOWING_STATE = "key_action_bar_visibility_state";
     private static WebView webView;
 
     private Menu menu;
@@ -47,6 +47,14 @@ public class MainActivity extends SherlockFragmentActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new WebBrowserFragment())
                     .commit();
+        } else {
+            if (savedInstanceState.containsKey(KEY_ACTION_BAR_IS_SHOWING_STATE)) {
+                if (savedInstanceState.getBoolean(KEY_ACTION_BAR_IS_SHOWING_STATE)) {
+                    getSupportActionBar().show();
+                } else {
+                    getSupportActionBar().hide();
+                }
+            }
         }
 
         slideMenu = new SlidingMenu(this);
@@ -136,6 +144,12 @@ public class MainActivity extends SherlockFragmentActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_ACTION_BAR_IS_SHOWING_STATE, getSupportActionBar().isShowing());
     }
 
     @Override
