@@ -1,23 +1,15 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.support.v4.app.Fragment;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.ConnectionDetector;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
 
 /**
@@ -31,21 +23,24 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
 public class MainActivity extends SherlockFragmentActivity
     implements SlideMenuListFragment.OnSlideMenuItemSelectedListener {
 
-    private static final String KEY_ACTION_BAR_IS_SHOWING_STATE = "key_action_bar_visibility_state";
-    private static WebView webView;
+    private static final String TAG_WEB_BROWSER_FRAGMENT = "web_browser_fragment";
 
-    private Menu menu;
+    private static final String TAG_SLIDE_MENU_LIST_FRAGMENT = "slide_menu_list_fragment";
+
+    private static final String KEY_ACTION_BAR_IS_SHOWING_STATE = "key_action_bar_visibility_state";
+
+    private Menu actionBarMenu;
 
     private SlidingMenu slideMenu;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new WebBrowserFragment())
+                    .add(R.id.container, new WebBrowserFragment(), TAG_WEB_BROWSER_FRAGMENT)
                     .commit();
         } else {
             if (savedInstanceState.containsKey(KEY_ACTION_BAR_IS_SHOWING_STATE)) {
@@ -83,7 +78,7 @@ public class MainActivity extends SherlockFragmentActivity
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.menu_frame, new SlideMenuListFragment())
+                .replace(R.id.menu_frame, new SlideMenuListFragment(), TAG_SLIDE_MENU_LIST_FRAGMENT)
                 .commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -93,7 +88,7 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.menu_global, menu);
-        this.menu = menu;
+        this.actionBarMenu = menu;
 
         return true;
     }
@@ -140,14 +135,14 @@ public class MainActivity extends SherlockFragmentActivity
         if (slideMenu.isMenuShowing()) {
             slideMenu.toggle(true);
         } else if (! actionBarShowing) {
-            setUpActionBarVisibility(menu.findItem(R.id.action_fullscreen));
+            setUpActionBarVisibility(actionBarMenu.findItem(R.id.action_fullscreen));
         } else {
             super.onBackPressed();
         }
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_ACTION_BAR_IS_SHOWING_STATE, getSupportActionBar().isShowing());
     }
@@ -161,116 +156,11 @@ public class MainActivity extends SherlockFragmentActivity
                     "ou não foi implementado!", index);
         else {
             slideMenu.toggle(true);
-            webView.loadUrl(urlsServicosRmtc[index]);
+            Fragment webBrowserFragment = getSupportFragmentManager().findFragmentByTag(
+                    TAG_WEB_BROWSER_FRAGMENT);
+
+            ((WebBrowserFragment) webBrowserFragment).getWebView().loadUrl(urlsServicosRmtc[index]);
         }
     }
 
-    public static class WebBrowserFragment extends SherlockFragment {
-
-        private SmoothProgressBar progressBar;
-
-        public WebBrowserFragment() {
-        }
-
-        private View rootView;
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_web_browser, container, false);
-            this.rootView = rootView;
-
-            setUpViews();
-
-            return rootView;
-        }
-
-        private void setUpViews() {
-            webView = (WebView) rootView.findViewById(R.id.webView);
-
-            // Habilitando suporte JavaScript
-            webView.getSettings().setJavaScriptEnabled(true);
-
-            // Habilitando controles de zoom
-            webView.getSettings().setSupportZoom(true);
-            webView.getSettings().setBuiltInZoomControls(true);
-
-            // Configurações da ScrollBar
-            webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-            webView.setScrollbarFadingEnabled(true);
-
-            webView.getSettings().setLoadsImagesAutomatically(true);
-
-            // Habilitando o clique em links para serem abertos pela própria aplicação e não
-            // pelo aplicativo browser padrão do dispositivo
-            webView.setWebViewClient(new CustomWebViewClient());
-
-            webView.setFocusableInTouchMode(true);
-            webView.setClickable(true);
-
-            progressBar = (SmoothProgressBar) rootView.findViewById(R.id.progressBar);
-        }
-
-        @Override
-        public void onSaveInstanceState(Bundle outState) {
-            super.onSaveInstanceState(outState);
-            webView.saveState(outState);
-        }
-
-        @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-
-            if (savedInstanceState != null) {
-                webView.restoreState(savedInstanceState);
-            } else {
-                ((SlideMenuListFragment.OnSlideMenuItemSelectedListener) getActivity())
-                        .onItemSelected(0);
-            }
-        }
-
-        private class CustomWebViewClient extends WebViewClient {
-
-            private boolean errorWhenLoading = false;
-            private boolean isInternetPresent = true;
-
-            private void showNoInternetAccessDialog() {
-                OperationsUtils.showAlertDialog(getActivity(), "Sem acesso à internet",
-                        "Desculpe, mas você não está conectado à internet.", false,
-                        R.drawable.ic_fail);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                errorWhenLoading = true;
-
-                ConnectionDetector connectionDetector = new ConnectionDetector(getActivity()
-                        .getApplicationContext());
-
-                isInternetPresent = connectionDetector.isConnectingToInternet();
-
-                if (!isInternetPresent) {
-                    showNoInternetAccessDialog();
-                }
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                if (progressBar.getVisibility() == View.VISIBLE) {
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        }
-    }
 }
