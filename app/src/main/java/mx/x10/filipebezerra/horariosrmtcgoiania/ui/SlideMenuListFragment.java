@@ -23,20 +23,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.SlideMenuItem;
  */
 public class SlideMenuListFragment extends SherlockListFragment {
 
-    private OnSlideMenuItemSelectedListener mItemSelectedCallback;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mItemSelectedCallback = (OnSlideMenuItemSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " deve implementar OnSlideMenuItemSelectedListener");
-        }
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.slide_menu_list, null);
 	}
@@ -58,14 +44,5 @@ public class SlideMenuListFragment extends SherlockListFragment {
 
 		setListAdapter(adapter);
 	}
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-       mItemSelectedCallback.onItemSelected(position);
-    }
-
-    public interface OnSlideMenuItemSelectedListener {
-        public void onItemSelected(final int index);
-    }
 
 }

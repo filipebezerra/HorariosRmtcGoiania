@@ -10,4 +10,6 @@
     <string name="slide_menu_title_opened">Serviços Rmtc</string>
     <string name="slide_menu_title_closed">@string/app_name</string>
 
+    <string name="default_url">http://wap.rmtcgoiania.com.br/</string>
+
 </resources>

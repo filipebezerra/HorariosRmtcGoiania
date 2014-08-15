@@ -2,12 +2,17 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
@@ -21,7 +26,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
  * @since 1.0
  */
 public class MainActivity extends SherlockFragmentActivity
-    implements SlideMenuListFragment.OnSlideMenuItemSelectedListener {
+    implements AdapterView.OnItemClickListener {
 
     private static final String TAG_WEB_BROWSER_FRAGMENT = "web_browser_fragment";
 
@@ -29,9 +34,11 @@ public class MainActivity extends SherlockFragmentActivity
 
     private static final String KEY_ACTION_BAR_IS_SHOWING_STATE = "key_action_bar_visibility_state";
 
-    private Menu actionBarMenu;
+    private static final String STATE_MENUDRAWER = MainActivity.class.getName() + ".menuDrawer";
 
-    private SlidingMenu slideMenu;
+    private Menu mActionBarMenu;
+
+    private MenuDrawer mMenuDrawer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,43 +59,46 @@ public class MainActivity extends SherlockFragmentActivity
             }
         }
 
-        slideMenu = new SlidingMenu(this);
-        slideMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        slideMenu.setShadowWidth(15);
-        slideMenu.setShadowDrawable(R.drawable.shadow);
-        slideMenu.setBehindOffset(60);
-        slideMenu.setFadeEnabled(true);
-        slideMenu.setFadeDegree(0.35f);
-        slideMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
-            @Override
-            public void onOpen() {
-                invalidateOptionsMenu();
-                getSupportActionBar().setTitle(R.string.slide_menu_title_opened);
-            }
-        });
-        slideMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
-            @Override
-            public void onClose() {
-                invalidateOptionsMenu();
-                getSupportActionBar().setTitle(R.string.slide_menu_title_closed);
-            }
-        });
-        slideMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        slideMenu.setMenu(R.layout.slide_menu_frame);
+        setUpMenuDrawer();
+    }
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.menu_frame, new SlideMenuListFragment(), TAG_SLIDE_MENU_LIST_FRAGMENT)
-                .commit();
+    private void setUpMenuDrawer() {
+        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.LEFT,
+                MenuDrawer.MENU_DRAG_WINDOW);
+        mMenuDrawer.setContentView(R.layout.activity_main);
+        mMenuDrawer.setMenuView(R.layout.slide_menu_frame);
+        mMenuDrawer.setSlideDrawable(R.drawable.drawer);
+        mMenuDrawer.setDrawerIndicatorEnabled(true);
+        mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+        mMenuDrawer.getMenuView().setBackgroundColor(getResources().getColor(R.color.white));
+        mMenuDrawer.setMenuSize(getResources().getInteger(R.integer.menu_drawer_size));
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        SlideMenuListFragment menu = (SlideMenuListFragment)getSupportFragmentManager()
+                .findFragmentById(R.id.f_menu);
+
+        menu.getListView().setOnItemClickListener(this);
+
+        mMenuDrawer.setOnDrawerStateChangeListener(new MenuDrawer.OnDrawerStateChangeListener() {
+            @Override
+            public void onDrawerStateChange(int oldState, int newState) {
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerSlide(float openRatio, int offsetPixels) {}
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMenuDrawer.openMenu(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.menu_global, menu);
-        this.actionBarMenu = menu;
+        this.mActionBarMenu = menu;
 
         return true;
     }
@@ -103,7 +113,7 @@ public class MainActivity extends SherlockFragmentActivity
                 return true;
 
             case android.R.id.home:
-                slideMenu.toggle(true);
+                mMenuDrawer.toggleMenu();
                 return true;
         }
 
@@ -112,7 +122,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_fullscreen).setVisible(! slideMenu.isMenuShowing());
+        menu.findItem(R.id.action_fullscreen).setVisible(! mMenuDrawer.isMenuVisible());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -130,37 +140,46 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onBackPressed() {
-        boolean actionBarShowing = getSupportActionBar().isShowing();
+        final boolean actionBarShowing = getSupportActionBar().isShowing();
+        final int drawerState = mMenuDrawer.getDrawerState();
 
-        if (slideMenu.isMenuShowing()) {
-            slideMenu.toggle(true);
+        if (drawerState == MenuDrawer.STATE_OPEN || drawerState == MenuDrawer.STATE_OPENING) {
+            mMenuDrawer.closeMenu();
         } else if (! actionBarShowing) {
-            setUpActionBarVisibility(actionBarMenu.findItem(R.id.action_fullscreen));
+            setUpActionBarVisibility(mActionBarMenu.findItem(R.id.action_fullscreen));
         } else {
             super.onBackPressed();
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_ACTION_BAR_IS_SHOWING_STATE, getSupportActionBar().isShowing());
+    protected void onRestoreInstanceState(Bundle inState) {
+        super.onRestoreInstanceState(inState);
+        mMenuDrawer.restoreState(inState.getParcelable(STATE_MENUDRAWER));
     }
 
     @Override
-    public void onItemSelected(int index) {
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_ACTION_BAR_IS_SHOWING_STATE, getSupportActionBar().isShowing());
+        outState.putParcelable(STATE_MENUDRAWER, mMenuDrawer.saveState());
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         String [] urlsServicosRmtc = getResources().getStringArray(R.array.servicos_rmtc_urls);
 
-        if (index > (urlsServicosRmtc.length - 1))
+        if (i > (urlsServicosRmtc.length - 1))
             OperationsUtils.log(OperationsUtils.LogType.ERROR, "O índice [%d] não é válido " +
-                    "ou não foi implementado!", index);
+                    "ou não foi implementado!", i);
         else {
-            slideMenu.toggle(true);
             Fragment webBrowserFragment = getSupportFragmentManager().findFragmentByTag(
                     TAG_WEB_BROWSER_FRAGMENT);
 
-            ((WebBrowserFragment) webBrowserFragment).getWebView().loadUrl(urlsServicosRmtc[index]);
+            ((WebBrowserFragment) webBrowserFragment).getWebView().loadUrl(urlsServicosRmtc[i]);
+
+            mMenuDrawer.setActiveView(view);
+            mMenuDrawer.closeMenu();
         }
     }
-
 }

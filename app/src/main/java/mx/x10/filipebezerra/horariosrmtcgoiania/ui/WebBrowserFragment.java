@@ -33,10 +33,6 @@ public class WebBrowserFragment extends SherlockFragment {
         return webView;
     }
 
-    public void setWebView(WebView webView) {
-        this.webView = webView;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,7 +62,6 @@ public class WebBrowserFragment extends SherlockFragment {
         // Ativa ou desativa eventos de clique para este view.
         webView.setClickable(true);
 
-
         // Habilitando o clique em links para serem abertos pela própria aplicação e não
         // pelo aplicativo browser padrão do dispositivo
         webView.setWebViewClient(new CustomWebViewClient());
@@ -84,11 +79,10 @@ public class WebBrowserFragment extends SherlockFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
+            webView.loadUrl(getResources().getString(R.string.default_url));
+        } else if (savedInstanceState != null) {
             webView.restoreState(savedInstanceState);
-        } else {
-            ((SlideMenuListFragment.OnSlideMenuItemSelectedListener) getActivity())
-                    .onItemSelected(0);
         }
     }
 
