@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+    <notice>
+        <name>ActionBarSherlock</name>
+        <url>http://actionbarsherlock.com/</url>
+        <copyright>Copyright 2012 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>LicensesDialog</name>
+        <url>http://psdev.de/LicensesDialog</url>
+        <copyright>Copyright 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>android-menudrawer</name>
+        <url>http://simonvt.github.com/android-menudrawer/</url>
+        <copyright>Copyright 2012 Simon Vig Therkildsen</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>SmoothProgressBar</name>
+        <url>https://github.com/castorflex/SmoothProgressBar</url>
+        <copyright>Copyright 2014 Antoine Merle</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+</notices>

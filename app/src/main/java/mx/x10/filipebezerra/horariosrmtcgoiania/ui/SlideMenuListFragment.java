@@ -1,12 +1,10 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
-import android.app.Activity;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
@@ -31,9 +29,9 @@ public class SlideMenuListFragment extends SherlockListFragment {
 		super.onActivityCreated(savedInstanceState);
 		SlideMenuAdapter adapter = new SlideMenuAdapter(getActivity());
 
-        String[] itemsTitle = getResources().getStringArray(R.array.servicos_rmtc);
-        String[] itemsDescription = getResources().getStringArray(R.array.servicos_rmtc_descricao);
-        TypedArray itemsImage = getResources().obtainTypedArray(R.array.servicos_rmtc_imagens);
+        String[] itemsTitle = getResources().getStringArray(R.array.slide_menu_row_title);
+        String[] itemsDescription = getResources().getStringArray(R.array.slide_menu_row_description);
+        TypedArray itemsImage = getResources().obtainTypedArray(R.array.slide_menu_row_icon);
 
         itemsImage.recycle();
 

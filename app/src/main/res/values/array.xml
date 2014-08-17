@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <string-array name="servicos_rmtc">
+   <string-array name="slide_menu_row_title">
        <item>Serviço WAP</item>
        <item>Horário de Viagem</item>
        <item>Planeje sua Viagem</item>
@@ -8,7 +8,7 @@
        <item>SAC</item>
    </string-array>
 
-    <string-array name="servicos_rmtc_imagens">
+    <string-array name="slide_menu_row_icon">
         <item>@drawable/ic_servico_wap</item>
         <item>@drawable/ic_servico_tempocerto</item>
         <item>@drawable/ic_servico_guiarota</item>
@@ -16,7 +16,7 @@
         <item>@drawable/ic_servico_falemais</item>
     </string-array>
 
-    <string-array name="servicos_rmtc_descricao">
+    <string-array name="slide_menu_row_description">
         <item>Serviço simplificado de consulta</item>
         <item>Tempo real e pontos de parada</item>
         <item>Roteiros, linhas e mapas</item>
@@ -24,7 +24,7 @@
         <item>Serviço de Atendimento ao Cliente</item>
     </string-array>
 
-    <string-array name="servicos_rmtc_urls">
+    <string-array name="slide_menu_row_url">
         <item>@string/url_rmtc_wap</item>
         <item>@string/url_rmtc_horarios</item>
         <item>@string/url_rmtc_planeje</item>

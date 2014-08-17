@@ -6,6 +6,7 @@
 
     <!-- Ações da ActionBar -->
     <string name="action_fullscreen">Tela Cheia</string>
+    <string name="action_notices">Licenças de código aberto</string>
 
     <!-- Slide Menu -->
     <string name="slide_menu_title_opened">Serviços Rmtc</string>
@@ -18,5 +19,9 @@
     <string name="url_rmtc_ponto">http://m.rmtcgoiania.com.br/pontoaponto</string>
     <string name="url_rmtc_sac">http://m.rmtcgoiania.com.br/sac</string>
     <string name="default_url">@string/url_rmtc_wap</string>
+
+    <!-- Notices fragment -->
+    <string name="notices_title">Licenças de código aberto</string>
+    <string name="notices_close">Fechar</string>
 
 </resources>

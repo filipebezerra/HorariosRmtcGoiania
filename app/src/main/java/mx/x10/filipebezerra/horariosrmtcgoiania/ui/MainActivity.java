@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.MenuItem;
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
 
+import de.psdev.licensesdialog.LicensesDialogFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
 
@@ -112,13 +113,19 @@ public class MainActivity extends SherlockFragmentActivity
         int id = item.getItemId();
 
         switch (id) {
+            case android.R.id.home:
+                mSlideMenu.toggleMenu();
+                return true;
+
             case R.id.action_fullscreen:
                 setUpActionBarVisibility(item);
                 return true;
 
-            case android.R.id.home:
-                mSlideMenu.toggleMenu();
-                return true;
+            case R.id.action_notices:
+                LicensesDialogFragment licensesDialogFragment = LicensesDialogFragment
+                        .newInstance(R.raw.notices, false);
+                licensesDialogFragment.show(getSupportFragmentManager(), null);
+                break;
         }
 
         return false;
@@ -176,7 +183,7 @@ public class MainActivity extends SherlockFragmentActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        String [] urlsServicosRmtc = getResources().getStringArray(R.array.servicos_rmtc_urls);
+        String [] urlsServicosRmtc = getResources().getStringArray(R.array.slide_menu_row_url);
 
         if (i > (urlsServicosRmtc.length - 1))
             OperationsUtils.log(OperationsUtils.LogType.ERROR, "O índice [%d] não é válido " +
