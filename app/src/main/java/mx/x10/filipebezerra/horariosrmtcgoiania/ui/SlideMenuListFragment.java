@@ -31,15 +31,15 @@ public class SlideMenuListFragment extends SherlockListFragment {
 		super.onActivityCreated(savedInstanceState);
 		SlideMenuAdapter adapter = new SlideMenuAdapter(getActivity());
 
-        String[] titleServicosRmtc = getResources().getStringArray(R.array.servicos_rmtc);
-        String[] descriptionServicosRmtc = getResources().getStringArray(R.array.servicos_rmtc_descricao);
-        TypedArray imagesServicosRmtc = getResources().obtainTypedArray(R.array.servicos_rmtc_imagens);
+        String[] itemsTitle = getResources().getStringArray(R.array.servicos_rmtc);
+        String[] itemsDescription = getResources().getStringArray(R.array.servicos_rmtc_descricao);
+        TypedArray itemsImage = getResources().obtainTypedArray(R.array.servicos_rmtc_imagens);
 
-        imagesServicosRmtc.recycle();
+        itemsImage.recycle();
 
-        for (int i = 0; i < titleServicosRmtc.length; i++) {
-			adapter.add(new SlideMenuItem(titleServicosRmtc[i], descriptionServicosRmtc[i],
-                    imagesServicosRmtc.getResourceId(i, -1)));
+        for (int i = 0; i < itemsTitle.length; i++) {
+			adapter.add(new SlideMenuItem(itemsTitle[i], itemsDescription[i],
+                    itemsImage.getResourceId(i, -1)));
 		}
 
 		setListAdapter(adapter);

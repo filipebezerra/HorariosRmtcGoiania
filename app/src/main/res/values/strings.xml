@@ -5,11 +5,18 @@
     <string name="app_name">Horários Rmtc Goiânia</string>
 
     <!-- Ações da ActionBar -->
-    <string name="action_fullscreen">Fullscreen</string>
+    <string name="action_fullscreen">Tela Cheia</string>
 
+    <!-- Slide Menu -->
     <string name="slide_menu_title_opened">Serviços Rmtc</string>
     <string name="slide_menu_title_closed">@string/app_name</string>
 
-    <string name="default_url">http://wap.rmtcgoiania.com.br/</string>
+    <!-- URL's -->
+    <string name="url_rmtc_wap">http://wap.rmtcgoiania.com.br/</string>
+    <string name="url_rmtc_horarios">http://m.rmtcgoiania.com.br/horariodeviagem</string>
+    <string name="url_rmtc_planeje">http://m.rmtcgoiania.com.br/planejesuaviagem</string>
+    <string name="url_rmtc_ponto">http://m.rmtcgoiania.com.br/pontoaponto</string>
+    <string name="url_rmtc_sac">http://m.rmtcgoiania.com.br/sac</string>
+    <string name="default_url">@string/url_rmtc_wap</string>
 
 </resources>

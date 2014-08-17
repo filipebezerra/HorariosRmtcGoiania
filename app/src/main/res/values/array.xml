@@ -25,10 +25,10 @@
     </string-array>
 
     <string-array name="servicos_rmtc_urls">
-        <item>http://wap.rmtcgoiania.com.br/</item>
-        <item>http://m.rmtcgoiania.com.br/horariodeviagem</item>
-        <item>http://m.rmtcgoiania.com.br/planejesuaviagem</item>
-        <item>http://m.rmtcgoiania.com.br/pontoaponto</item>
-        <item>http://m.rmtcgoiania.com.br/sac</item>
+        <item>@string/url_rmtc_wap</item>
+        <item>@string/url_rmtc_horarios</item>
+        <item>@string/url_rmtc_planeje</item>
+        <item>@string/url_rmtc_ponto</item>
+        <item>@string/url_rmtc_sac</item>
     </string-array>
 </resources>
