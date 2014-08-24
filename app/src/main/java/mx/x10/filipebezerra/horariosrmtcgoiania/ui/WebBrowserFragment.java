@@ -12,11 +12,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.ConnectionDetector;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.NotificationUtils;
 
 /**
- *
+ * Classe UI (Fragment) responsável por renderizar as páginas no componente WebBrowser.
  *
  * @author Filipe Bezerra
  * @since 1.0
@@ -92,7 +92,7 @@ public class WebBrowserFragment extends SherlockFragment {
         private boolean isInternetPresent = true;
 
         private void showNoInternetAccessDialog() {
-            OperationsUtils.showAlertDialog(getActivity(), "Sem acesso à internet",
+            NotificationUtils.showAlertDialog(getActivity(), "Sem acesso à internet",
                     "Desculpe, mas você não está conectado à internet.", false,
                     R.drawable.ic_fail);
         }
@@ -111,10 +111,7 @@ public class WebBrowserFragment extends SherlockFragment {
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             errorWhenLoading = true;
 
-            ConnectionDetector connectionDetector = new ConnectionDetector(getActivity()
-                    .getApplicationContext());
-
-            isInternetPresent = connectionDetector.isConnectingToInternet();
+            isInternetPresent = NetworkUtils.isConnectingToInternet(getActivity());
 
             if (!isInternetPresent) {
                 showNoInternetAccessDialog();

@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.Sherlock.Light">
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar">
         <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
         <item name="homeAsUpIndicator">@drawable/drawer</item>
+
+        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
+    </style>
+
+    <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid">
+        <item name="android:background">@color/dark_blue</item>
+        <item name="background">@color/dark_blue</item>'1
+
+        <item name="android:titleTextStyle">@style/CustomTitleColorBar</item>
+        <item name="titleTextStyle">@style/CustomTitleColorBar</item>
+    </style>
+
+    <style name="CustomTitleColorBar" parent="@style/TextAppearance.Sherlock.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

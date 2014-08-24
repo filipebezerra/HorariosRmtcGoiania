@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <string-array name="slide_menu_row_title">
-       <item>Serviço WAP</item>
+       <item>WAP</item>
        <item>Horário de Viagem</item>
        <item>Planeje sua Viagem</item>
        <item>Ponto a Ponto</item>
@@ -17,11 +17,11 @@
     </string-array>
 
     <string-array name="slide_menu_row_description">
-        <item>Serviço simplificado de consulta</item>
+        <item>Tempo real por ponto de parada</item>
         <item>Tempo real e pontos de parada</item>
         <item>Roteiros, linhas e mapas</item>
         <item>Fluidez do trânsito e transporte</item>
-        <item>Serviço de Atendimento ao Cliente</item>
+        <item>Atendimento ao Cliente</item>
     </string-array>
 
     <string-array name="slide_menu_row_url">

@@ -1,21 +1,17 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.util;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Message;
+import mx.x10.filipebezerra.horariosrmtcgoiania.BuildConfig;
 
 import static android.util.Log.d;
 import static android.util.Log.e;
 
-import mx.x10.filipebezerra.horariosrmtcgoiania.BuildConfig;
-import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-
 /**
+ * Classe utilitária para captura de logs do aplicativo e suas operações.
+ *
  * @author Filipe Bezerra
  * @since 1.0
  */
-public final class OperationsUtils implements ConstantsUtils {
+public final class LogUtils implements ConstantsUtils {
 
     /**
      * Tipo do log a ser criado.
@@ -44,7 +40,7 @@ public final class OperationsUtils implements ConstantsUtils {
      */
     public static void log(final LogType logType, final String formattedLogMessage,
                            final Object... arguments) {
-        log(logType, String.format(DEF_LOCALE, formattedLogMessage, arguments));
+        log(logType, String.format(DEFAULT_LOCALE, formattedLogMessage, arguments));
     }
 
     /**
@@ -66,16 +62,4 @@ public final class OperationsUtils implements ConstantsUtils {
         }
     }
 
-    public static void showAlertDialog(Context context, String title, String message,
-                                       Boolean status, int iconRes) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setMessage(message)
-                .setTitle(title)
-                .setIcon(iconRes)
-                .setPositiveButton("OK", null)
-                .create()
-                .show();
-    }
 }

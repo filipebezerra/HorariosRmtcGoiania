@@ -15,7 +15,8 @@ import net.simonvt.menudrawer.Position;
 
 import de.psdev.licensesdialog.LicensesDialogFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.ConstantsUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils;
 
 /**
  * Tela principal do aplicativo.<br />
@@ -26,7 +27,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.OperationsUtils;
  * @since 1.0
  */
 public class MainActivity extends SherlockFragmentActivity
-    implements AdapterView.OnItemClickListener {
+    implements AdapterView.OnItemClickListener, ConstantsUtils {
 
     private static final String TAG_WEB_BROWSER_FRAGMENT = "web_browser_fragment";
 
@@ -71,7 +72,6 @@ public class MainActivity extends SherlockFragmentActivity
         mSlideMenu.setSlideDrawable(R.drawable.drawer);
         mSlideMenu.setDrawerIndicatorEnabled(true);
         mSlideMenu.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
-        mSlideMenu.getMenuView().setBackgroundColor(getResources().getColor(R.color.white));
         mSlideMenu.setMenuSize(getResources().getInteger(R.integer.menu_drawer_size));
 
         SlideMenuListFragment menu = (SlideMenuListFragment)getSupportFragmentManager()
@@ -186,7 +186,7 @@ public class MainActivity extends SherlockFragmentActivity
         String [] urlsServicosRmtc = getResources().getStringArray(R.array.slide_menu_row_url);
 
         if (i > (urlsServicosRmtc.length - 1))
-            OperationsUtils.log(OperationsUtils.LogType.ERROR, "O índice [%d] não é válido " +
+            LogUtils.log(LogUtils.LogType.ERROR, "O índice [%d] não é válido " +
                     "ou não foi implementado!", i);
         else {
             Fragment webBrowserFragment = getSupportFragmentManager().findFragmentByTag(
