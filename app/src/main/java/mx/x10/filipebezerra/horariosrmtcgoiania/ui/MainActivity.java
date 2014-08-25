@@ -1,5 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -17,6 +18,7 @@ import de.psdev.licensesdialog.LicensesDialogFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ConstantsUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Tela principal do aplicativo.<br />
@@ -197,5 +199,10 @@ public class MainActivity extends SherlockFragmentActivity
             mSlideMenu.setActiveView(view);
             mSlideMenu.closeMenu(true);
         }
+    }
+
+    @Override
+    public void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase));
     }
 }

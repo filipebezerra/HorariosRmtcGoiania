@@ -14,13 +14,12 @@
         android:src="@drawable/ic_launcher" />
 
     <TextView
+        style="@style/TextViewRobot20"
         android:id="@+id/row_title"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        android:text="Title"
-        android:textSize="20sp"
-        android:textColor="@color/dark_blue"
+        android:text="@string/string_mock_list_item_title"
         android:layout_toRightOf="@+id/row_icon"
         android:layout_toEndOf="@+id/row_icon"
         android:layout_alignParentTop="true"
@@ -28,12 +27,11 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
+        style="@style/TextViewRobot12"
         android:id="@+id/row_description"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:text="Description"
-        android:textSize="12sp"
-        android:textColor="@color/dark_blue"
+        android:text="@string/string_mock_list_item_description"
         android:layout_below="@+id/row_icon"
         android:layout_toRightOf="@+id/row_icon"
         android:layout_toEndOf="@+id/row_icon"

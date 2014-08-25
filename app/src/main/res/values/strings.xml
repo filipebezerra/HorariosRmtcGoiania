@@ -24,4 +24,8 @@
     <string name="notices_title">Licenças de código aberto</string>
     <string name="notices_close">Fechar</string>
 
+    <!-- Mock texts -->
+    <string name="string_mock_list_item_title">Title</string>
+    <string name="string_mock_list_item_description">Description</string>
+
 </resources>

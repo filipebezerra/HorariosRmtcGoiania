@@ -24,4 +24,10 @@
         <copyright>Copyright 2014 Antoine Merle</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
+    <notice>
+        <name>Calligraphy</name>
+        <url>https://github.com/chrisjenx/Calligraphy</url>
+        <copyright>Copyright 2013 Christopher Jenkins</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
 </notices>
