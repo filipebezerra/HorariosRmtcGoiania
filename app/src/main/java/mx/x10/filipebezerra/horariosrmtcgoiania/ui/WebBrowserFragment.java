@@ -10,6 +10,8 @@ import android.webkit.WebViewClient;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
@@ -23,21 +25,17 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.NotificationUtils;
  */
 public class WebBrowserFragment extends SherlockFragment {
 
-    private SmoothProgressBar progressBar;
+    @InjectView(R.id.progressBar)
+    SmoothProgressBar progressBar;
 
-    private WebView webView;
-
-    private View rootView;
-
-    public WebView getWebView() {
-        return webView;
-    }
+    @InjectView(R.id.webView)
+    WebView webView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_web_browser, container, false);
-        this.rootView = rootView;
+        ButterKnife.inject(this, rootView);
 
         setUpViews();
 
@@ -45,8 +43,6 @@ public class WebBrowserFragment extends SherlockFragment {
     }
 
     private void setUpViews() {
-        webView = (WebView) rootView.findViewById(R.id.webView);
-
         // Habilitando suporte JavaScript
         webView.getSettings().setJavaScriptEnabled(true);
 
@@ -65,8 +61,6 @@ public class WebBrowserFragment extends SherlockFragment {
         // Habilitando o clique em links para serem abertos pela própria aplicação e não
         // pelo aplicativo browser padrão do dispositivo
         webView.setWebViewClient(new CustomWebViewClient());
-
-        progressBar = (SmoothProgressBar) rootView.findViewById(R.id.progressBar);
     }
 
     @Override

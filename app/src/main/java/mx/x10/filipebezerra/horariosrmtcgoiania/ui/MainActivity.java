@@ -194,7 +194,7 @@ public class MainActivity extends SherlockFragmentActivity
             Fragment webBrowserFragment = getSupportFragmentManager().findFragmentByTag(
                     TAG_WEB_BROWSER_FRAGMENT);
 
-            ((WebBrowserFragment) webBrowserFragment).getWebView().loadUrl(urlsServicosRmtc[i]);
+            ((WebBrowserFragment) webBrowserFragment).webView.loadUrl(urlsServicosRmtc[i]);
 
             mSlideMenu.setActiveView(view);
             mSlideMenu.closeMenu(true);

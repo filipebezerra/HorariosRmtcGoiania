@@ -85,6 +85,7 @@
     <orderEntry type="library" exported="" name="licensesdialog-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="calligraphy-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
+    <orderEntry type="library" exported="" name="butterknife-5.1.2" level="project" />
   </component>
 </module>
 

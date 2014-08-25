@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.SlideMenuItem;
 
@@ -23,21 +25,39 @@ public class SlideMenuAdapter extends ArrayAdapter<SlideMenuItem> {
         super(context, 0);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.slide_menu_list_row, null);
+    public View getView(int position, View view, ViewGroup parent) {
+        ViewHolder viewHolder;
+
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.slide_menu_list_row, null);
+            viewHolder = new ViewHolder(view);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
 
-        ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);
-        icon.setImageResource(getItem(position).iconRes);
+        viewHolder.icon.setImageResource(getItem(position).iconRes);
+        viewHolder.title.setText(getItem(position).title);
+        viewHolder.description.setText(getItem(position).description);
 
-        TextView title = (TextView) convertView.findViewById(R.id.row_title);
-        title.setText(getItem(position).title);
-
-        TextView description = (TextView) convertView.findViewById(R.id.row_description);
-        description.setText(getItem(position).description);
-
-        return convertView;
+        return view;
     }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.row_icon)
+        ImageView icon;
+
+        @InjectView(R.id.row_title)
+        TextView title;
+
+        @InjectView(R.id.row_description)
+        TextView description;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+    }
+
 
 }
