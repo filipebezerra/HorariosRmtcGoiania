@@ -3,6 +3,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -61,6 +62,22 @@ public class WebBrowserFragment extends SherlockFragment {
         // Habilitando o clique em links para serem abertos pela própria aplicação e não
         // pelo aplicativo browser padrão do dispositivo
         webView.setWebViewClient(new CustomWebViewClient());
+
+        webView.requestFocus(View.FOCUS_DOWN);
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                        if (! view.hasFocus()) {
+                            view.requestFocus();
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
