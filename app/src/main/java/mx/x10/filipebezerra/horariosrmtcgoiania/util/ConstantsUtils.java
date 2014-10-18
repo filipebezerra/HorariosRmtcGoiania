@@ -25,5 +25,5 @@ public interface ConstantsUtils {
      * Tipo da fonte padrão do aplicativo. A fonte Roboto por padrao somente esta disponivel desde
      * a versao 16 (Jelly Bean).
      */
-    String DEFAULT_TYPEFACE = "fonts/Roboto-Thin.ttf";
+    String DEFAULT_TYPEFACE = "fonts/Ubuntu-B.ttf";
 }
