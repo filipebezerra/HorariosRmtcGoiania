@@ -11,7 +11,6 @@
     <item android:id="@+id/action_notices"
         android:title="@string/action_notices"
         android:orderInCategory="2"
-        android:icon="@drawable/ic_action_notices"
         android:showAsAction="never" />
 
 </menu>
