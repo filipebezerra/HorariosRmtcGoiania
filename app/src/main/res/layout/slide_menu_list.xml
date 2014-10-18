@@ -8,4 +8,4 @@
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp"
     android:listSelector="@drawable/slide_menu_item_selector"
-    android:background="@color/white"/>
+    android:background="@color/light_grayish_cyan"/>

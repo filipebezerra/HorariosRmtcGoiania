@@ -14,7 +14,7 @@
     </style>
 
     <style name="CustomTitleColorBar" parent="@style/TextAppearance.Sherlock.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/light_grayish_cyan</item>
     </style>
 
 </resources>

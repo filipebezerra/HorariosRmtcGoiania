@@ -3,13 +3,13 @@
     
     <integer-array name="progress_bar_colors">
         <item>@color/dark_blue</item>
-        <item>@color/light_blue</item>
-        <item>@color/green</item>
+        <item>@color/moderate_blue</item>
+        <item>@color/strong_yellow</item>
     </integer-array>
     
     <color name="dark_blue">#20317f</color>
-    <color name="light_blue">#5c89c2</color>
-    <color name="green">#cdd500</color>
-    <color name="white">#ffffff</color>
+    <color name="moderate_blue">#5c89c2</color>
+    <color name="strong_yellow">#cdd500</color>
+    <color name="light_grayish_cyan">#ecf0f1</color>
 
 </resources>

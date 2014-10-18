@@ -10,7 +10,7 @@
 
     <!-- Slide Menu -->
     <string name="slide_menu_title_opened">Serviços Rmtc</string>
-    <string name="slide_menu_title_closed">@string/app_name</string>
+    <string name="slide_menu_title_closed">Horários Rtmc Gyn</string>
 
     <!-- URL's -->
     <string name="url_rmtc_wap">http://wap.rmtcgoiania.com.br/</string>
