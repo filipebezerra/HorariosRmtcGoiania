@@ -1,6 +1,18 @@
 Horários Rmtc Goiânia
 ===================
 
-Facilmente procure pelos horários das linhas do transporte coletivo em um determinado ponto de parada. Este serviço é oferecido e mantido pela RMTC Goiânia.
+Cansado de ficar no ponto de ônibus esperando pela sua linha que nunca chega, desperdiçando seu precioso tempo.
 
-O usuário poderá optar por 2 formas de navegação pelo serviço de busca dos horários das linhas, uma pelo Site da Rmtc que é totalmente compatível e resposivo a dimensão do dispositivo do usuário e que dá mais opções de busca, ou poderá utilizar o serviço Wap, que fornece uma interface mais simples e direta podendo o usuário realizar a pesquisa somente pelo número do ponto de parada.
+Cansado de tentar usar aquele aplicativo que nunca apresenta as informações com precisão, ou pior que vira e mexe está fora do ar ou demora demais para apresentar as informações, quando você olha seu ônibus já passou.
+
+Este aplicativo eu fiz para os usuários de ônibus da grande Goiânia. Um aplicativo leve, rápido, bonito, preciso e eficaz. E o melhor é gratuito, e se as informações não te dizem a verdade, você pode usar o serviço de SAC, que o aplicativo já oferece uma opção fácil de acessá-lo e fazer sua justa reclamação.
+
+Então não perca tempo com outros aplicativos que só prometem melhorar, mas nunca o fazem e faça uso abusivo deste aplicativo que vêm melhorando e facilitando a vida dos usuários do transporte coletivo.
+
+Este aplicativo oferece as seguintes funcionalidades:
+1. Busca dos horários de um determinado ponto de parada;
+2. Pesquisa pelo seu ponto de parada pela rua ou bairro;
+3. Planejamento de sua viagem a partir do endereço de origem e do destino;
+4. Visualizar o itinerário da sua linha ou de outra qualquer;
+5. Saber da fluidez do trânsito nos corredores da grande Goiânia;
+6. Se comunicar com a central da RMTC por meio do envio de mensagem.
