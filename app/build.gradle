@@ -1,21 +1,59 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-    }
     compileSdkVersion 20
     buildToolsVersion '20.0.0'
+
+    if(project.hasProperty("HorariosRmtcGoiania.properties")
+            && new File(project.property("HorariosRmtcGoiania.properties")).exists()) {
+
+        Properties props = new Properties()
+        props.load(new FileInputStream(file(project.property("HorariosRmtcGoiania.properties"))))
+
+        signingConfigs {
+            release {
+                storeFile file(props['keystore'])
+                storePassword props['keystore.password']
+                keyAlias props['keystore.keyAlias']
+                keyPassword props['keystore.keyPassword']
+            }
+        }
+    }
+
     defaultConfig {
         applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
         minSdkVersion 8
         targetSdkVersion 20
         versionCode 7
         versionName "1.5"
+        signingConfig signingConfigs.release
     }
+
     buildTypes {
         release {
             runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+            //applicationIdSuffix '.release'
+            applicationVariants.all { variant ->
+                def file = variant.outputFile
+                variant.outputFile = new File(file.parent,
+                        file.name.replace("app-release.apk",
+                                "HorariosRmtcGoiania-" + defaultConfig.versionName + ".RELEASE.apk"))
+            }
+            zipAlign true
+        }
+        debug {
+            debuggable true
+            //applicationIdSuffix '.debug'
+            applicationVariants.all { variant ->
+                def file = variant.outputFile
+                variant.outputFile = new File(file.parent,
+                        file.name.replace("app-debug.apk",
+                                "HorariosRmtcGoiania-" + defaultConfig.versionName + ".DEBUG.apk"))
+            }
+            zipAlign true
         }
     }
 }
