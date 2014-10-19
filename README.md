@@ -10,9 +10,10 @@ Este aplicativo eu fiz para os usuários de ônibus da grande Goiânia. Um aplic
 Então não perca tempo com outros aplicativos que só prometem melhorar, mas nunca o fazem e faça uso abusivo deste aplicativo que vêm melhorando e facilitando a vida dos usuários do transporte coletivo.
 
 Este aplicativo oferece as seguintes funcionalidades:
-1. Busca dos horários de um determinado ponto de parada;
-2. Pesquisa pelo seu ponto de parada pela rua ou bairro;
-3. Planejamento de sua viagem a partir do endereço de origem e do destino;
-4. Visualizar o itinerário da sua linha ou de outra qualquer;
-5. Saber da fluidez do trânsito nos corredores da grande Goiânia;
-6. Se comunicar com a central da RMTC por meio do envio de mensagem.
+
+1.  Busca dos horários de um determinado ponto de parada;
+2.  Pesquisa pelo seu ponto de parada pela rua ou bairro;
+3.  Planejamento de sua viagem a partir do endereço de origem e do destino;
+4.  Visualizar o itinerário da sua linha ou de outra qualquer;
+5.  Saber da fluidez do trânsito nos corredores da grande Goiânia;
+6.  Se comunicar com a central da RMTC por meio do envio de mensagem.
