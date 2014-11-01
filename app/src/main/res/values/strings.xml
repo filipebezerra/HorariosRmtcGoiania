@@ -1,31 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- Nome da aplicação na Google Play Store e na Home do dispositivo do usuário -->
-    <string name="app_name">Horários Rmtc Goiânia</string>
-
-    <!-- Ações da ActionBar -->
-    <string name="action_fullscreen">Tela Cheia</string>
-    <string name="action_notices">Licenças de código aberto</string>
-
-    <!-- Slide Menu -->
-    <string name="slide_menu_title_opened">Serviços Rmtc</string>
-    <string name="slide_menu_title_closed">Horários Rtmc Gyn</string>
-
-    <!-- URL's -->
-    <string name="url_rmtc_wap">http://wap.rmtcgoiania.com.br/</string>
-    <string name="url_rmtc_horarios">http://m.rmtcgoiania.com.br/horariodeviagem</string>
-    <string name="url_rmtc_planeje">http://m.rmtcgoiania.com.br/planejesuaviagem</string>
-    <string name="url_rmtc_ponto">http://m.rmtcgoiania.com.br/pontoaponto</string>
-    <string name="url_rmtc_sac">http://m.rmtcgoiania.com.br/sac</string>
-    <string name="default_url">@string/url_rmtc_wap</string>
-
-    <!-- Notices fragment -->
-    <string name="notices_title">Licenças de código aberto</string>
-    <string name="notices_close">Fechar</string>
-
-    <!-- Mock texts -->
-    <string name="string_mock_list_item_title">Title</string>
-    <string name="string_mock_list_item_description">Description</string>
-
+    <string name="app_name">HorariosRmtcGoiania</string>
 </resources>
