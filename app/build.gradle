@@ -4,11 +4,6 @@ android {
     compileSdkVersion 21
     buildToolsVersion '21.0.0'
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_7;
-        targetCompatibility = JavaVersion.VERSION_1_7;
-    }
-
     defaultConfig {
         applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
         minSdkVersion 8
@@ -16,6 +11,12 @@ android {
         versionCode 8
         versionName "2.0"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     buildTypes {
         release {
             runProguard false
