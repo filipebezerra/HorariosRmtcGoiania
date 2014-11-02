@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/web_browser_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.BaseWebViewFragment" >
+
+    <include
+        android:id="@+id/progressBar"
+        layout="@layout/include_progress_bar"/>
+
+    <include
+        android:id="@+id/webView"
+        layout="@layout/include_web_view"/>
+
+</LinearLayout>

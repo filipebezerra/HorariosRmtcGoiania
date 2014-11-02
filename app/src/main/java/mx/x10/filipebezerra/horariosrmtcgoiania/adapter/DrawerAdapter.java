@@ -118,7 +118,7 @@ public class DrawerAdapter extends BaseAdapter {
             }
         }
 
-        view.setTag(R.id.mdActiveViewPosition, position);
+        //view.setTag(R.id.mdActiveViewPosition, position);
 
         if (position == mActivePosition) {
             mListener.onActiveViewChanged(view);

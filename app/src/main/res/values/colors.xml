@@ -4,11 +4,22 @@
     <color name="colorPrimary">#673ab7</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
 
-    <color name="list_item_title">#795548</color>
-    <color name="list_background">#ecf0f1</color>
-    <color name="list_background_pressed">#5677FC</color>
+    <color name="list_item_title">#ffffff</color>
+    <color name="list_background">@color/colorPrimary</color>
+    <color name="list_background_pressed">#FF4081</color>
     <color name="list_divider">@android:color/transparent</color>
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
+
+    <integer-array name="progress_bar_colors">
+        <item>@color/dark_blue</item>
+        <item>@color/moderate_blue</item>
+        <item>@color/strong_yellow</item>
+    </integer-array>
+
+    <color name="dark_blue">#20317f</color>
+    <color name="moderate_blue">#5c89c2</color>
+    <color name="strong_yellow">#cdd500</color>
+    <color name="light_grayish_cyan">#ecf0f1</color>
 
 </resources>

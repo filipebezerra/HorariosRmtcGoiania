@@ -8,6 +8,7 @@
     <string name="search_hint">Número do ponto</string>
     <string name="voicePromptText">Fale o número do ponto. Somente números!</string>
     <string name="non_digit_voice_search">Somente e possivel busca pelo numero do ponto!</string>
+    <string name="no_connectivity">Desculpe, mas você não está conectado à internet</string>
 
     <!-- URL's -->
     <string name="url_rmtc_horarios_viagem">http://m.rmtcgoiania.com.br/horariodeviagem</string>

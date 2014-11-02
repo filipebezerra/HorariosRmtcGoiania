@@ -3,21 +3,26 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.view.activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.github.johnpersano.supertoasts.SuperCardToast;
-import com.github.johnpersano.supertoasts.SuperToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,18 +31,26 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.DrawerAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.HorarioViagemFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PlanejeViagemFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PontoToPontoFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.SacFragment;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * @author Filipe Bezerra
  * @since 2.0
  */
-public class HomeActivity extends BaseActivity implements DrawerLayout.DrawerListener {
+public class HomeActivity extends BaseActivity {
 
     private SearchView searchView;
 
-    private DrawerLayout mDrawer;
+    private DrawerLayout mDrawerLayout;
 
-    private ListView mListDrawer;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private ListView mDrawerList;
 
     private DrawerAdapter mDrawerAdapter;
 
@@ -47,7 +60,6 @@ public class HomeActivity extends BaseActivity implements DrawerLayout.DrawerLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActionBarIcon(R.drawable.ic_menu_white_24dp);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
         SuperCardToast.onRestoreState(savedInstanceState, this);
@@ -55,13 +67,17 @@ public class HomeActivity extends BaseActivity implements DrawerLayout.DrawerLis
         handleIntent(getIntent());
 
         setupDrawer();
+        if (savedInstanceState == null) {
+            displayView(0);
+        }
     }
 
     private void setupDrawer() {
         String[] drawerMenuTitles = getResources().getStringArray(R.array.drawer_menu_row_title);
         TypedArray drawerMenuIcons = getResources().obtainTypedArray(R.array.drawer_menu_row_icon);
 
-        mListDrawer = (ListView) findViewById(R.id.listView);
+        mDrawerList = (ListView) findViewById(R.id.list_drawer);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
         for (int i = 0; i < drawerMenuTitles.length; i++) {
             mDrawerItems.add(new DrawerItem(drawerMenuTitles[i],
@@ -71,7 +87,73 @@ public class HomeActivity extends BaseActivity implements DrawerLayout.DrawerLis
         drawerMenuIcons.recycle();
 
         mDrawerAdapter = new DrawerAdapter(this, mDrawerItems);
-        mListDrawer.setAdapter(mDrawerAdapter);
+        mDrawerList.setAdapter(mDrawerAdapter);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name) {
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                super.onDrawerStateChanged(newState);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    private void displayView(int position) {
+        Fragment fragment = null;
+
+        final String[] urls = getResources().getStringArray(R.array.drawer_menu_row_url);
+
+        switch (position) {
+            case 0:
+                fragment = new HorarioViagemFragment(urls[position]);
+                break;
+            case 1:
+                fragment = new PlanejeViagemFragment(urls[position]);
+                break;
+            case 2:
+                fragment = new PontoToPontoFragment(urls[position]);
+                break;
+            case 3:
+                fragment = new SacFragment(urls[position]);
+                break;
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    fragment).commit();
+            mDrawerList.setItemChecked(position, true);
+            mDrawerList.setSelection(position);
+            mDrawerLayout.closeDrawer(mDrawerList);
+        } else {
+            // TODO samethins is wrong
+        }
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            displayView(position);
+        }
     }
 
     @Override
@@ -87,22 +169,14 @@ public class HomeActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
             if (TextUtils.isDigitsOnly(query)) {
                 searchView.setQuery(query, false);
-                searchView.clearFocus();
+                searchView.requestFocus();
 
                 SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                         SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
                 suggestions.saveRecentQuery(query, null);
             } else {
-                SuperCardToast toast = new SuperCardToast(this, SuperToast.Type.STANDARD);
-                toast.setAnimations(SuperToast.Animations.FLYIN);
-                toast.setDuration(SuperToast.Duration.LONG);
-                toast.setBackground(SuperToast.Background.BLUE);
-                toast.setTextSize(SuperToast.TextSize.MEDIUM);
-                toast.setSwipeToDismiss(true);
-                toast.setTouchToDismiss(true);
-                toast.setIcon(SuperToast.Icon.Dark.INFO, SuperToast.IconPosition.LEFT);
-                toast.setText(getResources().getString(R.string.non_digit_voice_search));
-                toast.show();
+                new ToastHelper(this).showGeneralMessage(getResources()
+                        .getString(R.string.non_digit_voice_search));
             }
         }
     }
@@ -125,13 +199,9 @@ public class HomeActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-
-        switch (itemId) {
-            case android.R.id.home:
-                mDrawer.openDrawer(Gravity.START);
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -142,22 +212,42 @@ public class HomeActivity extends BaseActivity implements DrawerLayout.DrawerLis
     }
 
     @Override
-    public void onDrawerSlide(View view, float v) {
-
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mConnectionReceiver, new IntentFilter(
+                ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Override
-    public void onDrawerOpened(View view) {
-
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mConnectionReceiver);
     }
 
     @Override
-    public void onDrawerClosed(View view) {
-
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase));
     }
 
     @Override
-    public void onDrawerStateChanged(int i) {
-
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(Gravity.START|Gravity.LEFT)){
+            mDrawerLayout.closeDrawers();
+            return;
+        }
+        super.onBackPressed();
+    }
+
 }
