@@ -9,4 +9,20 @@
     <string name="voicePromptText">Fale o número do ponto. Somente números!</string>
     <string name="non_digit_voice_search">Somente e possivel busca pelo numero do ponto!</string>
 
+    <!-- URL's -->
+    <string name="url_rmtc_horarios_viagem">http://m.rmtcgoiania.com.br/horariodeviagem</string>
+    <string name="url_rmtc_planeje_viagem">http://m.rmtcgoiania.com.br/planejesuaviagem</string>
+    <string name="url_rmtc_ponto_a_ponto">http://m.rmtcgoiania.com.br/pontoaponto</string>
+    <string name="url_rmtc_sac">http://m.rmtcgoiania.com.br/sac</string>
+
+    <!-- Drawer Items -->
+    <string name="rmtc_horarios_viagem_title">Horário de Viagem</string>
+    <string name="rmtc_planeje_viagem_title">Planeje sua Viagem</string>
+    <string name="rmtc_ponto_a_ponto_title">Ponto a Ponto</string>
+    <string name="rmtc_sac_title">SAC</string>
+    <string name="rmtc_horarios_viagem_description">Tempo real e pontos de parada</string>
+    <string name="rmtc_planeje_viagem_description">Roteiros, linhas e mapas</string>
+    <string name="rmtc_ponto_a_ponto_description">Fluidez do trânsito e transporte</string>
+    <string name="rmtc_sac_description">Atendimento ao Cliente</string>
+
 </resources>

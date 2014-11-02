@@ -4,4 +4,11 @@
     <color name="colorPrimary">#673ab7</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
 
+    <color name="list_item_title">#795548</color>
+    <color name="list_background">#ecf0f1</color>
+    <color name="list_background_pressed">#5677FC</color>
+    <color name="list_divider">@android:color/transparent</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+
 </resources>

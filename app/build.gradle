@@ -29,4 +29,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.github.johnpersano:supertoasts:1.3.4@aar'
+    compile 'net.simonvt.menudrawer:menudrawer:3.0.6'
 }

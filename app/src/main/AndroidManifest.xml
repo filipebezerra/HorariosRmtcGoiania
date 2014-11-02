@@ -14,7 +14,7 @@
             android:value="mx.x10.filipebezerra.horariosrmtcgoiania.view.activity.MainActivity" />
 
         <activity
-            android:name="mx.x10.filipebezerra.horariosrmtcgoiania.view.activity.MainActivity"
+            android:name=".view.activity.HomeActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop">
 
