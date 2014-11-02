@@ -15,16 +15,16 @@
         <item name="spb_generate_background_with_colors">false</item>
     </style>
 
-    <style name="TextViewUbuntuC20" parent="TextViewFontUbuntuC">
+    <style name="TextViewRoboto20" parent="TextViewRoboto">
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="TextViewUbuntuC12" parent="TextViewFontUbuntuC">
+    <style name="TextViewRoboto12" parent="TextViewRoboto">
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="TextViewFontUbuntuC">
-        <item name="fontPath">fonts/Ubuntu-C.ttf</item>
+    <style name="TextViewRoboto">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
