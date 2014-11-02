@@ -8,6 +8,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 
 /**
  * @author Filipe Bezerra
+ * @since 2.0
  */
 public abstract class BaseActivity extends ActionBarActivity {
 
@@ -28,6 +29,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected abstract int getLayoutResource();
 
     protected void setActionBarIcon(int iconRes) {
-        toolbar.setNavigationIcon(iconRes);
+        if (toolbar != null) {
+            toolbar.setNavigationIcon(iconRes);
+        }
     }
 }

@@ -4,6 +4,9 @@
     <string name="app_name">HorariosRmtcGoiania</string>
     <string name="title_activity_main">Horários Rmtc Gyn</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_search">Buscar Ponto</string>
+    <string name="search_hint">Número do ponto</string>
+    <string name="voicePromptText">Fale o número do ponto. Somente números!</string>
+    <string name="non_digit_voice_search">Somente e possivel busca pelo numero do ponto!</string>
 
 </resources>
