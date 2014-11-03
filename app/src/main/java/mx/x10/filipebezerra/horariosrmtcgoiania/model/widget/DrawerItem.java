@@ -63,4 +63,8 @@ public class DrawerItem {
         this.isCounterVisible = isCounterVisible;
     }
 
+    @Override
+    public String toString() {
+        return title;
+    }
 }

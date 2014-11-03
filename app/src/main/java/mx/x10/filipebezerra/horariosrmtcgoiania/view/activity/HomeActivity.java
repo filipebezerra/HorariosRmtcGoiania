@@ -44,6 +44,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class HomeActivity extends BaseActivity {
 
+    public static final int DEFAULT_MENU_ITEM = 0;
     private SearchView searchView;
 
     private DrawerLayout mDrawerLayout;
@@ -56,10 +57,18 @@ public class HomeActivity extends BaseActivity {
 
     private List<DrawerItem> mDrawerItems = new ArrayList<>();
 
+    private String[] urls;
+    private String[] drawerMenuTitles;
+    private TypedArray drawerMenuIcons;
+
+    private int mActiveMenuItem = DEFAULT_MENU_ITEM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setActionBarIcon(R.drawable.ic_menu_white_24dp);
+        loadResoures();
+
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
         SuperCardToast.onRestoreState(savedInstanceState, this);
@@ -68,14 +77,19 @@ public class HomeActivity extends BaseActivity {
 
         setupDrawer();
         if (savedInstanceState == null) {
-            displayView(0);
+            displayView(DEFAULT_MENU_ITEM);
+            mDrawerLayout.openDrawer(mDrawerList);
+            mDrawerToggle.onDrawerOpened(mDrawerList);
         }
     }
 
-    private void setupDrawer() {
-        String[] drawerMenuTitles = getResources().getStringArray(R.array.drawer_menu_row_title);
-        TypedArray drawerMenuIcons = getResources().obtainTypedArray(R.array.drawer_menu_row_icon);
+    private void loadResoures() {
+        drawerMenuTitles = getResources().getStringArray(R.array.drawer_menu_row_title);
+        drawerMenuIcons = getResources().obtainTypedArray(R.array.drawer_menu_row_icon);
+        urls = getResources().getStringArray(R.array.drawer_menu_row_url);
+    }
 
+    private void setupDrawer() {
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
@@ -91,25 +105,15 @@ public class HomeActivity extends BaseActivity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name) {
+                this, mDrawerLayout, mToolbar, R.string.drawer_title_opened, R.string.app_name) {
             @Override
-            public void onDrawerStateChanged(int newState) {
-                super.onDrawerStateChanged(newState);
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setSubtitle(R.string.drawer_title_opened);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
+                getSupportActionBar().setSubtitle(drawerMenuTitles[mActiveMenuItem]);
             }
         };
 
@@ -118,8 +122,6 @@ public class HomeActivity extends BaseActivity {
 
     private void displayView(int position) {
         Fragment fragment = null;
-
-        final String[] urls = getResources().getStringArray(R.array.drawer_menu_row_url);
 
         switch (position) {
             case 0:
@@ -144,6 +146,7 @@ public class HomeActivity extends BaseActivity {
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             mDrawerLayout.closeDrawer(mDrawerList);
+            mActiveMenuItem = position;
         } else {
             // TODO samethins is wrong
         }

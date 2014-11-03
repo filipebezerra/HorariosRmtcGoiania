@@ -26,4 +26,8 @@
     <string name="rmtc_ponto_a_ponto_description">Fluidez do trânsito e transporte</string>
     <string name="rmtc_sac_description">Atendimento ao Cliente</string>
 
+
+    <string name="drawer_title_opened">Serviços Rmtc</string>
+    <string name="drawer_title_closed">@string/title_activity_main</string>
+
 </resources>
