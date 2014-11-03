@@ -5,8 +5,8 @@
     <color name="colorPrimaryDark">@color/colorPrimary</color>
 
     <color name="list_item_title">#ffffff</color>
-    <color name="list_background">@color/colorPrimary</color>
-    <color name="list_background_pressed">#FF4081</color>
+    <color name="list_background">#ad1457</color>
+    <color name="list_background_pressed">#880e4f</color>
     <color name="list_divider">@android:color/transparent</color>
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>

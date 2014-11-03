@@ -1,11 +1,11 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.adapter;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -98,18 +98,12 @@ public class DrawerAdapter extends BaseAdapter {
                 view = LayoutInflater.from(mContext).inflate(R.layout.menu_row_item, parent, false);
             }
 
-            TextView textTitle = (TextView) view.findViewById(R.id.title);
+            ImageView imageIcon = (ImageView) view.findViewById(R.id.menu_icon);
+            TextView textTitle = (TextView) view.findViewById(R.id.menu_title);
+            TextView textCounter = (TextView) view.findViewById(R.id.menu_counter);
+
             textTitle.setText(((DrawerItem) item).getTitle());
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                textTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(((DrawerItem) item)
-                        .getIconRes(), 0, 0, 0);
-            } else {
-                textTitle.setCompoundDrawablesWithIntrinsicBounds(((DrawerItem) item)
-                        .getIconRes(), 0, 0, 0);
-            }
-
-            TextView textCounter = (TextView) view.findViewById(R.id.counter);
+            imageIcon.setImageResource(((DrawerItem) item).getIconRes());
 
             if ((mItems.get(position)).isCounterVisible()) {
                 textCounter.setText((mItems.get(position)).getCount());
