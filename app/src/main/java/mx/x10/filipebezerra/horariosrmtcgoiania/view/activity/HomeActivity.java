@@ -178,7 +178,7 @@ public class HomeActivity extends BaseActivity {
                         SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
                 suggestions.saveRecentQuery(query, null);
             } else {
-                new ToastHelper(this).showGeneralMessage(getResources()
+                new ToastHelper(this).showGeneralAlert(getResources()
                         .getString(R.string.non_digit_voice_search));
             }
         }

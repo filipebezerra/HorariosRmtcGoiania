@@ -35,15 +35,4 @@ public class ToastHelper {
         showGeneralAlert(toast.getActivity().getResources().getString(R.string.no_connectivity));
     }
 
-    public void showGeneralMessage(final String message) {
-        toast.setAnimations(SuperToast.Animations.FLYIN);
-        toast.setDuration(SuperToast.Duration.LONG);
-        toast.setBackground(SuperToast.Background.BLUE);
-        toast.setTextSize(SuperToast.TextSize.MEDIUM);
-        toast.setSwipeToDismiss(true);
-        toast.setTouchToDismiss(true);
-        toast.setIcon(SuperToast.Icon.Dark.INFO, SuperToast.IconPosition.LEFT);
-        toast.setText(message);
-        toast.show();
-    }
 }
