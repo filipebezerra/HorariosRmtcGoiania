@@ -1,6 +1,7 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +12,15 @@ import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
 
 /**
@@ -87,7 +91,9 @@ public class BaseWebViewFragment extends Fragment {
 
     private void setUpViews() {
         // Habilitando suporte JavaScript
-        webView.getSettings().setJavaScriptEnabled(true);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
 
         // Especifica o estilo das barras de rolagem.
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -104,6 +110,7 @@ public class BaseWebViewFragment extends Fragment {
         // Habilitando o clique em links para serem abertos pela própria aplicação e não
         // pelo aplicativo browser padrão do dispositivo
         webView.setWebChromeClient(new CustomWebChromeClient());
+        webView.setWebViewClient(new CustomWebViewClient());
 
         webView.requestFocus(View.FOCUS_DOWN);
         webView.setOnTouchListener(new View.OnTouchListener() {
@@ -120,6 +127,41 @@ public class BaseWebViewFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    private class CustomWebViewClient extends WebViewClient {
+
+        private boolean errorWhenLoading = false;
+        private boolean isInternetPresent = true;
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return false;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            errorWhenLoading = true;
+
+            isInternetPresent = NetworkUtils.isConnectingToInternet(getActivity());
+
+            if (!isInternetPresent) {
+                new ToastHelper(getActivity()).showNoConnectionAlert();
+            }
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            if (progressBar.getVisibility() == View.VISIBLE) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     private class CustomWebChromeClient extends WebChromeClient {
