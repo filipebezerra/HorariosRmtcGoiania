@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- App / Activities -->
     <string name="app_name">HorariosRmtcGoiania</string>
     <string name="title_activity_main">Horários Rmtc Gyn</string>
 
+    <!-- Actions -->
     <string name="action_search">Buscar Ponto</string>
+
+    <!-- Search Action -->
     <string name="search_hint">Número do ponto</string>
     <string name="voicePromptText">Fale o número do ponto. Somente números!</string>
     <string name="non_digit_voice_search">Somente e possivel busca pelo numero do ponto!</string>
+
+    <!-- Utils -->
     <string name="no_connectivity">Desculpe, mas você não está conectado à internet</string>
 
     <!-- URL's -->
@@ -25,10 +31,15 @@
     <string name="rmtc_planeje_viagem_description">Roteiros, linhas e mapas</string>
     <string name="rmtc_ponto_a_ponto_description">Fluidez do trânsito e transporte</string>
     <string name="rmtc_sac_description">Atendimento ao Cliente</string>
-
-
-    <string name="drawer_title_opened">Serviços Rmtc</string>
+    <string name="drawer_title_opened">@string/title_activity_main</string>
     <string name="drawer_title_closed">@string/title_activity_main</string>
     <string name="desc_list_item_icon">Item Icon</string>
+
+    <!-- Drawer Headers -->
+    <string name="drawer_header_personalizacao">SEUS ITENS</string>
+    <string name="drawer_header_servicos_rmtc">SERVIÇOS RMTC</string>
+    <string name="drawer_header_outros">OUTROS</string>
+
+    <string name="drawer_item_personalizacao_pontos_favoritados">Pontos Favoritos</string>
 
 </resources>

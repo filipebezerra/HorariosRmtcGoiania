@@ -95,20 +95,25 @@ public class HomeActivity extends BaseActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mDrawerAdapter = new DrawerAdapter(this);
 
-        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_title_opened)));
+        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_header_personalizacao)));
+        mDrawerAdapter.addItem(new DrawerItem(getString(R.string.drawer_item_personalizacao_pontos_favoritados),
+                R.drawable.ic_favorite_24px));
+
+        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_header_servicos_rmtc)));
 
         for (int i = 0; i < drawerMenuTitles.length; i++) {
             mDrawerAdapter.addItem(new DrawerItem(drawerMenuTitles[i],
                     drawerMenuIcons.getResourceId(i, -1)));
         }
-
         drawerMenuIcons.recycle();
+
+        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_header_outros)));
 
         mDrawerList.setAdapter(mDrawerAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.drawer_title_opened, R.string.app_name) {
+                this, mDrawerLayout, mToolbar, R.string.drawer_title_opened, R.string.drawer_title_closed) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);

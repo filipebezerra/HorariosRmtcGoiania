@@ -13,7 +13,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:contentDescription="@string/desc_list_item_icon"
-        android:src="@drawable/rmtc_horarios_viagem"
+        android:src="@drawable/ic_rmtc_horarios_viagem"
         android:layout_centerVertical="true" />
 
     <TextView
