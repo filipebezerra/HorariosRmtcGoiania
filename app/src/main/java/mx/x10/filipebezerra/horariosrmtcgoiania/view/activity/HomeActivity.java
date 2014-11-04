@@ -29,6 +29,7 @@ import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.DrawerAdapter;
+import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerHeader;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
@@ -92,15 +93,17 @@ public class HomeActivity extends BaseActivity {
     private void setupDrawer() {
         mDrawerList = (ListView) findViewById(R.id.list_drawer);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawerAdapter = new DrawerAdapter(this);
+
+        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_title_opened)));
 
         for (int i = 0; i < drawerMenuTitles.length; i++) {
-            mDrawerItems.add(new DrawerItem(drawerMenuTitles[i],
+            mDrawerAdapter.addItem(new DrawerItem(drawerMenuTitles[i],
                     drawerMenuIcons.getResourceId(i, -1)));
         }
 
         drawerMenuIcons.recycle();
 
-        mDrawerAdapter = new DrawerAdapter(this, mDrawerItems);
         mDrawerList.setAdapter(mDrawerAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 

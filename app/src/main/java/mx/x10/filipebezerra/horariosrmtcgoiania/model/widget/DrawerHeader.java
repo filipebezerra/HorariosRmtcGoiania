@@ -4,15 +4,15 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.model.widget;
  * @author Filipe Bezerra
  * @since 2.0
  */
-public class DrawerCategory {
+public class DrawerHeader {
 
-    private String title;
+    protected String title;
 
-    public DrawerCategory() {
+    public DrawerHeader() {
         super();
     }
 
-    public DrawerCategory(final String title) {
+    public DrawerHeader(final String title) {
         this();
         this.title = title;
     }

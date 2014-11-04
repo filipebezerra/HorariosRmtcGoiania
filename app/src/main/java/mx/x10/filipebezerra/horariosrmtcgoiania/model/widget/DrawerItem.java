@@ -4,9 +4,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.model.widget;
  * @author Filipe Bezerra
  * @since 2.0
  */
-public class DrawerItem {
-
-    private String title;
+public class DrawerItem extends DrawerHeader {
 
     private int iconRes;
 
@@ -29,14 +27,6 @@ public class DrawerItem {
         this(title, iconRes);
         this.isCounterVisible = isCounterVisible;
         this.count = count;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public int getIconRes() {
