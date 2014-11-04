@@ -93,13 +93,13 @@ public class DrawerAdapter extends BaseAdapter {
             holder = new ViewHolder();
             switch (rowType) {
                 case TYPE_ITEM:
-                    convertView = mInflater.inflate(R.layout.menu_row_item, null);
+                    convertView = mInflater.inflate(R.layout.drawer_menu_item, null);
                     holder.mTitle = (TextView) convertView.findViewById(R.id.menu_title);
                     holder.mIconRes = (ImageView) convertView.findViewById(R.id.menu_icon);
                     holder.mCounter = (TextView) convertView.findViewById(R.id.menu_counter);
                     break;
                 case TYPE_SEPARATOR:
-                    convertView = mInflater.inflate(R.layout.menu_row_header, null);
+                    convertView = mInflater.inflate(R.layout.drawer_menu_header, null);
                     holder.mTitle = (TextView) convertView.findViewById(R.id.menu_header);
                     break;
             }
@@ -206,14 +206,14 @@ public class DrawerAdapter extends BaseAdapter {
 
         if (item instanceof DrawerCategory) {
             if (view == null) {
-                view = LayoutInflater.from(mContext).inflate(R.layout.menu_row_header, parent,
+                view = LayoutInflater.from(mContext).inflate(R.layout.drawer_menu_header, parent,
                         false);
             }
 
             ((TextView) view).setText(((DrawerCategory) item).getTitle());
         } else {
             if (view == null) {
-                view = LayoutInflater.from(mContext).inflate(R.layout.menu_row_item, parent, false);
+                view = LayoutInflater.from(mContext).inflate(R.layout.drawer_menu_item, parent, false);
             }
 
             ImageView imageIcon = (ImageView) view.findViewById(R.id.menu_icon);
