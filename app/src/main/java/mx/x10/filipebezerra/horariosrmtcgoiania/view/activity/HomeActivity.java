@@ -120,11 +120,12 @@ public class HomeActivity extends BaseActivity {
                 this, mDrawerLayout, mToolbar, R.string.drawer_title_opened, R.string.drawer_title_closed) {
             @Override
             public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
+                supportInvalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
+                supportInvalidateOptionsMenu();
                 getSupportActionBar().setSubtitle(drawerMenuTitles[mActiveMenuItem]);
             }
         };
@@ -234,6 +235,17 @@ public class HomeActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final boolean drawerMenuIsOpened = mDrawerLayout.isDrawerOpen(mDrawerList);
+
+        for(int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).setVisible(! drawerMenuIsOpened);
+        }
+
+        return true;
     }
 
     @Override
