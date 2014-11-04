@@ -57,4 +57,18 @@ public class DrawerItem extends DrawerHeader {
     public String toString() {
         return title;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other != null) {
+            if (other instanceof DrawerItem) {
+                DrawerItem otherItem = (DrawerItem) other;
+
+                return title != null && otherItem.getTitle() != null &&
+                        title.equals(otherItem.getTitle());
+            }
+        }
+
+        return false;
+    }
 }

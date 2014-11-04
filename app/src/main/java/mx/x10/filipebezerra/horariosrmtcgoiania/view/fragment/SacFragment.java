@@ -1,8 +1,9 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+
+import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 
 /**
  * @author Filipe Bezerra
@@ -12,9 +13,9 @@ public class SacFragment extends BaseWebViewFragment {
 
     public SacFragment(){}
 
-    @SuppressLint("ValidFragment")
-    public SacFragment(final Bundle args) {
-        super(args);
+    @Override
+    protected String getUrlToLoad() {
+        return getString(R.string.url_rmtc_sac);
     }
 
     @Override

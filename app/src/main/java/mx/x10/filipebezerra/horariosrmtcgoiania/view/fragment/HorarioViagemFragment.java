@@ -1,6 +1,5 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,23 +8,51 @@ import android.view.ViewGroup;
 
 import com.github.johnpersano.supertoasts.SuperCardToast;
 
+import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+
 /**
  * @author Filipe Bezerra
  * @since 1.6
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
 
+    private static final String ARG_PARAM_BUS_STOP_NUMBER = "BUS_STOP_NUMBER";
+
+    private String busStopNumber = null;
+
     public HorarioViagemFragment() {
     }
 
-    @SuppressLint("ValidFragment")
-    public HorarioViagemFragment(final Bundle args) {
-        super(args);
+    public static HorarioViagemFragment newInstance(final String busStopNumber) {
+        HorarioViagemFragment fragment = new HorarioViagemFragment();
+
+        if (busStopNumber != null) {
+            Bundle args = new Bundle();
+            args.putString(ARG_PARAM_BUS_STOP_NUMBER, busStopNumber);
+            fragment.setArguments(args);
+        }
+
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            if (args.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
+                busStopNumber = args.getString(ARG_PARAM_BUS_STOP_NUMBER);
+            }
+        }
+    }
+
+    @Override
+    protected String getUrlToLoad() {
+        return busStopNumber == null ? getString(R.string.url_rmtc_horarios_viagem) :
+                String.format(getString(R.string.view_by_code_url),
+                        getString(R.string.url_rmtc_horarios_viagem),
+                        getString(R.string.visualizar_ponto), busStopNumber);
     }
 
     @Override

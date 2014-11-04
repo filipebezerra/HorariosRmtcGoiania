@@ -1,6 +1,5 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,13 +29,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
  * @author Filipe Bezerra
  * @since 1.6
  */
-public class BaseWebViewFragment extends Fragment {
-
-    public static final String ARG_PARAM_URL_TO_LOAD = "PARAM_URL_TO_LOAD";
-    public static final String ARG_PARAM_POINT_TO_LOAD = "POINT_TO_LOAD";
-
-    protected String urlToLoad;
-    protected View rootView;
+public abstract class BaseWebViewFragment extends Fragment {
 
     @InjectView(R.id.progressBar)
     protected SmoothProgressBar progressBar;
@@ -44,30 +37,20 @@ public class BaseWebViewFragment extends Fragment {
     @InjectView(R.id.webView)
     protected WebView webView;
 
-    public BaseWebViewFragment() {
-    }
+    protected String urlToLoad;
 
-    @SuppressLint("ValidFragment")
-    public BaseWebViewFragment(final Bundle args) {
-        setArguments(args);
+    protected View rootView;
+
+    public BaseWebViewFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-
-        if (args != null) {
-            if (args.containsKey(ARG_PARAM_URL_TO_LOAD)) {
-                urlToLoad = args.getString(ARG_PARAM_URL_TO_LOAD);
-            } else {
-                urlToLoad = String.format(getString(R.string.view_by_code_url),
-                        getString(R.string.url_rmtc_horarios_viagem),
-                        getString(R.string.visualizar_ponto),
-                        args.getInt(ARG_PARAM_POINT_TO_LOAD));
-            }
-        }
+        urlToLoad = getUrlToLoad();
     }
+
+    protected abstract String getUrlToLoad();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

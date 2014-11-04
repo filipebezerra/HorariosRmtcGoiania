@@ -1,8 +1,9 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+
+import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 
 /**
  * @author Filipe Bezerra
@@ -10,11 +11,13 @@ import android.view.View;
  */
 public class PlanejeViagemFragment extends BaseWebViewFragment {
 
-    public PlanejeViagemFragment(){}
+    public PlanejeViagemFragment(){
 
-    @SuppressLint("ValidFragment")
-    public PlanejeViagemFragment(final Bundle args) {
-        super(args);
+    }
+
+    @Override
+    protected String getUrlToLoad() {
+        return getString(R.string.url_rmtc_planeje_viagem);
     }
 
     @Override

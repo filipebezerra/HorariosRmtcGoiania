@@ -25,16 +25,12 @@ import android.widget.ListView;
 
 import com.github.johnpersano.supertoasts.SuperCardToast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.DrawerAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerHeader;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
-import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.BaseWebViewFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PontoToPontoFragment;
@@ -47,8 +43,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class HomeActivity extends BaseActivity {
 
-    public static final int DEFAULT_MENU_ITEM = 0;
-    private SearchView searchView;
+    public static final int DEFAULT_VIEW = 1;
+
+    public static final int SEARCH_RESULT_VIEW = 1;
+
+    private SearchView mSearchView;
 
     private DrawerLayout mDrawerLayout;
 
@@ -58,13 +57,10 @@ public class HomeActivity extends BaseActivity {
 
     private DrawerAdapter mDrawerAdapter;
 
-    private List<DrawerItem> mDrawerItems = new ArrayList<>();
-
-    private String[] urls;
     private String[] drawerMenuTitles;
     private TypedArray drawerMenuIcons;
 
-    private int mActiveMenuItem = DEFAULT_MENU_ITEM;
+    private int mActiveMenuItem = DEFAULT_VIEW;
 
     private String query = null;
 
@@ -82,7 +78,7 @@ public class HomeActivity extends BaseActivity {
 
         setupDrawer();
         if (savedInstanceState == null) {
-            displayView(DEFAULT_MENU_ITEM);
+            displayView(DEFAULT_VIEW);
             mDrawerLayout.openDrawer(mDrawerList);
             mDrawerToggle.onDrawerOpened(mDrawerList);
         }
@@ -91,7 +87,6 @@ public class HomeActivity extends BaseActivity {
     private void loadResoures() {
         drawerMenuTitles = getResources().getStringArray(R.array.drawer_menu_row_title);
         drawerMenuIcons = getResources().obtainTypedArray(R.array.drawer_menu_row_icon);
-        urls = getResources().getStringArray(R.array.drawer_menu_row_url);
     }
 
     private void setupDrawer() {
@@ -136,25 +131,21 @@ public class HomeActivity extends BaseActivity {
     private void displayView(int position) {
         Fragment fragment = null;
 
-        Bundle args = new Bundle();
-        if (query == null) {
-            args.putString(BaseWebViewFragment.ARG_PARAM_URL_TO_LOAD, urls[position]);
-        } else {
-            args.putInt(BaseWebViewFragment.ARG_PARAM_POINT_TO_LOAD, Integer.parseInt(query));
-        }
-
         switch (position) {
             case 0:
-                fragment = new HorarioViagemFragment(args);
+                // TODO reserved for Pontos Favoritos
                 break;
             case 1:
-                fragment = new PlanejeViagemFragment(args);
+                fragment = HorarioViagemFragment.newInstance(query == null ? null : query);
                 break;
             case 2:
-                fragment = new PontoToPontoFragment(args);
+                fragment = new PlanejeViagemFragment();
                 break;
             case 3:
-                fragment = new SacFragment(args);
+                fragment = new PontoToPontoFragment();
+                break;
+            case 4:
+                fragment = new SacFragment();
                 break;
             default:
                 break;
@@ -175,7 +166,9 @@ public class HomeActivity extends BaseActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            displayView(position);
+            if (mDrawerAdapter.isItem(position)) {
+                displayView(mDrawerAdapter.getItemIndex(position));
+            }
         }
     }
 
@@ -196,14 +189,14 @@ public class HomeActivity extends BaseActivity {
         query = intent.getStringExtra(SearchManager.QUERY);
 
         if (TextUtils.isDigitsOnly(query)) {
-            searchView.clearFocus();
-            searchView.setQuery(query, false);
+            mSearchView.clearFocus();
+            mSearchView.setQuery(query, false);
 
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
             suggestions.saveRecentQuery(query, null);
 
-            displayView(0);
+            displayView(SEARCH_RESULT_VIEW);
         } else {
             new ToastHelper(this).showGeneralAlert(getResources()
                     .getString(R.string.non_digit_voice_search));
@@ -222,9 +215,9 @@ public class HomeActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(true);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setIconifiedByDefault(true);
 
         return true;
     }
