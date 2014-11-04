@@ -111,7 +111,7 @@ public class HomeActivity extends BaseActivity {
                 this, mDrawerLayout, mToolbar, R.string.drawer_title_opened, R.string.app_name) {
             @Override
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setSubtitle(R.string.drawer_title_opened);
+                super.onDrawerOpened(drawerView);
             }
 
             @Override
