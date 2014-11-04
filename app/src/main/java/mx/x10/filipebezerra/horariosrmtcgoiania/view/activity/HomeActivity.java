@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -274,10 +275,24 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if(mDrawerLayout.isDrawerOpen(Gravity.START|Gravity.LEFT)){
-            mDrawerLayout.closeDrawers();
+            mDrawerLayout.closeDrawer(mDrawerList);
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent e) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            if (!mDrawerLayout.isDrawerOpen(mDrawerList)) {
+                mDrawerLayout.openDrawer(mDrawerList);
+            } else {
+                mDrawerLayout.closeDrawer(mDrawerList);
+            }
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, e);
     }
 
 }
