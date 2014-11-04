@@ -13,8 +13,8 @@ public class PlanejeViagemFragment extends BaseWebViewFragment {
     public PlanejeViagemFragment(){}
 
     @SuppressLint("ValidFragment")
-    public PlanejeViagemFragment(String urlToLoad) {
-        super(urlToLoad);
+    public PlanejeViagemFragment(final Bundle args) {
+        super(args);
     }
 
     @Override

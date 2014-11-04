@@ -42,4 +42,7 @@
 
     <string name="drawer_item_personalizacao_pontos_favoritados">Pontos Favoritos</string>
 
+    <string name="visualizar_ponto">/visualizar/ponto/</string>
+    <string name="view_by_code_url">%1$s%2$s%3$d</string>
+    
 </resources>

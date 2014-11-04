@@ -19,8 +19,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     }
 
     @SuppressLint("ValidFragment")
-    public HorarioViagemFragment(String urlToLoad) {
-        super(urlToLoad);
+    public HorarioViagemFragment(final Bundle args) {
+        super(args);
     }
 
     @Override

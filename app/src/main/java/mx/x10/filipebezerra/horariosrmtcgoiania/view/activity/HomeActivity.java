@@ -33,6 +33,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerHeader;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.BaseWebViewFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PontoToPontoFragment;
@@ -63,6 +64,8 @@ public class HomeActivity extends BaseActivity {
     private TypedArray drawerMenuIcons;
 
     private int mActiveMenuItem = DEFAULT_MENU_ITEM;
+
+    private String query = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,18 +134,25 @@ public class HomeActivity extends BaseActivity {
     private void displayView(int position) {
         Fragment fragment = null;
 
+        Bundle args = new Bundle();
+        if (query == null) {
+            args.putString(BaseWebViewFragment.ARG_PARAM_URL_TO_LOAD, urls[position]);
+        } else {
+            args.putInt(BaseWebViewFragment.ARG_PARAM_POINT_TO_LOAD, Integer.parseInt(query));
+        }
+
         switch (position) {
             case 0:
-                fragment = new HorarioViagemFragment(urls[position]);
+                fragment = new HorarioViagemFragment(args);
                 break;
             case 1:
-                fragment = new PlanejeViagemFragment(urls[position]);
+                fragment = new PlanejeViagemFragment(args);
                 break;
             case 2:
-                fragment = new PontoToPontoFragment(urls[position]);
+                fragment = new PontoToPontoFragment(args);
                 break;
             case 3:
-                fragment = new SacFragment(urls[position]);
+                fragment = new SacFragment(args);
                 break;
             default:
                 break;
@@ -176,20 +186,28 @@ public class HomeActivity extends BaseActivity {
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH == intent.getAction()) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-
-            if (TextUtils.isDigitsOnly(query)) {
-                searchView.setQuery(query, false);
-                searchView.requestFocus();
-
-                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                        SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
-                suggestions.saveRecentQuery(query, null);
-            } else {
-                new ToastHelper(this).showGeneralAlert(getResources()
-                        .getString(R.string.non_digit_voice_search));
-            }
+            doSearch(intent);
         }
+    }
+
+    private void doSearch(Intent intent) {
+        query = intent.getStringExtra(SearchManager.QUERY);
+
+        if (TextUtils.isDigitsOnly(query)) {
+            searchView.clearFocus();
+            searchView.setQuery(query, false);
+
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
+
+            displayView(0);
+        } else {
+            new ToastHelper(this).showGeneralAlert(getResources()
+                    .getString(R.string.non_digit_voice_search));
+        }
+
+        query = null;
     }
 
     @Override
@@ -204,6 +222,7 @@ public class HomeActivity extends BaseActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);
 
         return true;
     }

@@ -32,7 +32,8 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
  */
 public class BaseWebViewFragment extends Fragment {
 
-    private static final String ARG_PARAM_URL_TO_LOAD = "PARAM_URL_TO_LOAD";
+    public static final String ARG_PARAM_URL_TO_LOAD = "PARAM_URL_TO_LOAD";
+    public static final String ARG_PARAM_POINT_TO_LOAD = "POINT_TO_LOAD";
 
     protected String urlToLoad;
     protected View rootView;
@@ -47,9 +48,7 @@ public class BaseWebViewFragment extends Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public BaseWebViewFragment(String urlToLoad) {
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM_URL_TO_LOAD, urlToLoad);
+    public BaseWebViewFragment(final Bundle args) {
         setArguments(args);
     }
 
@@ -59,7 +58,14 @@ public class BaseWebViewFragment extends Fragment {
         Bundle args = getArguments();
 
         if (args != null) {
-            urlToLoad = args.getString(ARG_PARAM_URL_TO_LOAD);
+            if (args.containsKey(ARG_PARAM_URL_TO_LOAD)) {
+                urlToLoad = args.getString(ARG_PARAM_URL_TO_LOAD);
+            } else {
+                urlToLoad = String.format(getString(R.string.view_by_code_url),
+                        getString(R.string.url_rmtc_horarios_viagem),
+                        getString(R.string.visualizar_ponto),
+                        args.getInt(ARG_PARAM_POINT_TO_LOAD));
+            }
         }
     }
 

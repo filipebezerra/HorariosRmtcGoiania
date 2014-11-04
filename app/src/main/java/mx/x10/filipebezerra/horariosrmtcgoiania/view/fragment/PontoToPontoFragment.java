@@ -13,8 +13,8 @@ public class PontoToPontoFragment extends BaseWebViewFragment {
     public PontoToPontoFragment(){}
 
     @SuppressLint("ValidFragment")
-    public PontoToPontoFragment(String urlToLoad) {
-        super(urlToLoad);
+    public PontoToPontoFragment(final Bundle args) {
+        super(args);
     }
 
     @Override

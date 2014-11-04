@@ -13,8 +13,8 @@ public class SacFragment extends BaseWebViewFragment {
     public SacFragment(){}
 
     @SuppressLint("ValidFragment")
-    public SacFragment(String urlToLoad) {
-        super(urlToLoad);
+    public SacFragment(final Bundle args) {
+        super(args);
     }
 
     @Override
