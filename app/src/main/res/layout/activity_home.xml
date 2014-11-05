@@ -32,14 +32,14 @@
 
     <!-- Menu drawer -->
     <ListView
-        android:id="@+id/list_drawer"
+        android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:divider="@color/list_divider"
-        android:dividerHeight="0dp"
-        android:listSelector="@drawable/list_selector"
-        android:background="@color/list_background" />
+        android:divider="@color/navdrawer_list_divider"
+        android:dividerHeight="0.1dp"
+        android:listSelector="@drawable/navdrawer_list_selector"
+        android:background="@color/navdrawer_list_background" />
 
 </android.support.v4.widget.DrawerLayout>

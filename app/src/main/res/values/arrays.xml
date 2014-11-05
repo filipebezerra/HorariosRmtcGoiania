@@ -11,7 +11,7 @@
         <item>@drawable/ic_rmtc_horarios_viagem</item>
         <item>@drawable/ic_rmtc_planeje_viagem</item>
         <item>@drawable/ic_rmtc_ponto_a_ponto</item>
-        <item>@drawable/ic_rmtc_sac_icon</item>
+        <item>@drawable/ic_rmtc_sac</item>
     </string-array>
 
     <string-array name="drawer_menu_row_description">

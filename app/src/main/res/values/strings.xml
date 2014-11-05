@@ -36,11 +36,11 @@
     <string name="desc_list_item_icon">Item Icon</string>
 
     <!-- Drawer Headers -->
-    <string name="drawer_header_personalizacao">SEUS ITENS</string>
-    <string name="drawer_header_servicos_rmtc">SERVIÇOS RMTC</string>
-    <string name="drawer_header_outros">OUTROS</string>
+    <string name="drawer_section_user_items">SEUS ITENS</string>
+    <string name="drawer_section_rmtc_services">SERVIÇOS RMTC</string>
+    <string name="drawer_section_others">OUTROS</string>
 
-    <string name="drawer_item_personalizacao_pontos_favoritados">Pontos Favoritos</string>
+    <string name="navdrawer_item_favorites_bus_stops">Pontos Favoritos</string>
 
     <string name="visualizar_ponto">/visualizar/ponto/</string>
     <string name="view_by_code_url">%1$s%2$s%3$s</string>

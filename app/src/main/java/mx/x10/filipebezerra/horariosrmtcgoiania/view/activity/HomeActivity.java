@@ -4,147 +4,100 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.github.johnpersano.supertoasts.SuperCardToast;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.DrawerAdapter;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerHeader;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.DrawerItem;
+import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.NavDrawerAdapter;
+import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
+import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuItem;
+import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.AbstractNavDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PontoToPontoFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.SacFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.view.util.fragment.NavDrawerActivityConfiguration;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * @author Filipe Bezerra
  * @since 2.0
  */
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends AbstractNavDrawerActivity {
 
-    public static final int DEFAULT_VIEW = 1;
+    private static final int ID_NAV_MENU_SECTION_SEUS_ITENS = 1;
+    private static final int ID_NAV_MENU_SECTION_SERVICOS_RMTC = 3;
+    private static final int ID_NAV_MENU_SECTION_OUTROS = 8;
 
-    public static final int SEARCH_RESULT_VIEW = 1;
+    private static final int ID_NAV_MENU_ITEM_PONTOS_FAVORITOS = 2;
+    private static final int ID_NAV_MENU_ITEM_HORARIOS_VIAGEM = 4;
+    private static final int ID_NAV_MENU_ITEM_PLANEJE_VIAGEM = 5;
+    private static final int ID_NAV_MENU_ITEM_PONTO_A_PONTO = 6;
+    private static final int ID_NAV_MENU_ITEM_SAC = 7;
+
+    public static final int DEFAULT_NAV_MENU_ITEM_SELECTED = ID_NAV_MENU_ITEM_HORARIOS_VIAGEM;
+
+    public static final int SEARCH_RESULT_VIEW = DEFAULT_NAV_MENU_ITEM_SELECTED;
 
     private SearchView mSearchView;
-
-    private DrawerLayout mDrawerLayout;
-
-    private ActionBarDrawerToggle mDrawerToggle;
-
-    private ListView mDrawerList;
-
-    private DrawerAdapter mDrawerAdapter;
-
-    private String[] drawerMenuTitles;
-    private TypedArray drawerMenuIcons;
-
-    private int mActiveMenuItem = DEFAULT_VIEW;
 
     private String query = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setActionBarIcon(R.drawable.ic_menu_white_24dp);
-        loadResoures();
-
-        setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
-
-        SuperCardToast.onRestoreState(savedInstanceState, this);
-
-        handleIntent(getIntent());
-
-        setupDrawer();
-        if (savedInstanceState == null) {
-            displayView(DEFAULT_VIEW);
-            mDrawerLayout.openDrawer(mDrawerList);
-            mDrawerToggle.onDrawerOpened(mDrawerList);
-        }
-    }
-
-    private void loadResoures() {
-        drawerMenuTitles = getResources().getStringArray(R.array.drawer_menu_row_title);
-        drawerMenuIcons = getResources().obtainTypedArray(R.array.drawer_menu_row_icon);
-    }
-
-    private void setupDrawer() {
-        mDrawerList = (ListView) findViewById(R.id.list_drawer);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        mDrawerAdapter = new DrawerAdapter(this);
-
-        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_header_personalizacao)));
-        mDrawerAdapter.addItem(new DrawerItem(getString(R.string.drawer_item_personalizacao_pontos_favoritados),
-                R.drawable.ic_favorite_24px));
-
-        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_header_servicos_rmtc)));
-
-        for (int i = 0; i < drawerMenuTitles.length; i++) {
-            mDrawerAdapter.addItem(new DrawerItem(drawerMenuTitles[i],
-                    drawerMenuIcons.getResourceId(i, -1)));
-        }
-        drawerMenuIcons.recycle();
-
-        mDrawerAdapter.addSectionHeaderItem(new DrawerHeader(getString(R.string.drawer_header_outros)));
-
-        mDrawerList.setAdapter(mDrawerAdapter);
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.drawer_title_opened, R.string.drawer_title_closed) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                supportInvalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                supportInvalidateOptionsMenu();
-                getSupportActionBar().setSubtitle(drawerMenuTitles[mActiveMenuItem]);
-            }
+    protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
+        NavDrawerItem[] menu = new NavDrawerItem[] {
+                NavMenuSection.create(ID_NAV_MENU_SECTION_SEUS_ITENS, getString(R.string.drawer_section_user_items)),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTOS_FAVORITOS, getString(R.string.navdrawer_item_favorites_bus_stops), "ic_favorite_24px", "10", true, false, this),
+                NavMenuSection.create(ID_NAV_MENU_SECTION_SERVICOS_RMTC, getString(R.string.drawer_section_rmtc_services)),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_HORARIOS_VIAGEM, getString(R.string.rmtc_horarios_viagem_title), "ic_rmtc_horarios_viagem", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PLANEJE_VIAGEM, getString(R.string.rmtc_planeje_viagem_title), "ic_rmtc_planeje_viagem", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTO_A_PONTO, getString(R.string.rmtc_ponto_a_ponto_title), "ic_rmtc_ponto_a_ponto", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_SAC, getString(R.string.rmtc_sac_title), "ic_rmtc_sac", false, this),
+                NavMenuSection.create(ID_NAV_MENU_SECTION_OUTROS, getString(R.string.drawer_section_others))
         };
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        NavDrawerActivityConfiguration navDrawerActivityConfiguration = new NavDrawerActivityConfiguration();
+        navDrawerActivityConfiguration.setMainLayout(R.layout.activity_home);
+        navDrawerActivityConfiguration.setDrawerLayoutId(R.id.drawer);
+        navDrawerActivityConfiguration.setLeftDrawerId(R.id.left_drawer);
+        navDrawerActivityConfiguration.setNavItems(menu);
+        //navDrawerActivityConfiguration.setDrawerShadow(R.drawable.drawer_shadow);
+        navDrawerActivityConfiguration.setDrawerOpenDesc(R.string.drawer_title_opened);
+        navDrawerActivityConfiguration.setDrawerCloseDesc(R.string.drawer_title_closed);
+        navDrawerActivityConfiguration.setBaseAdapter(
+                new NavDrawerAdapter(this, R.layout.navdrawer_item, menu));
+        return navDrawerActivityConfiguration;
     }
 
-    private void displayView(int position) {
+    @Override
+    protected void onNavItemSelected(int id) {
         Fragment fragment = null;
 
-        switch (position) {
-            case 0:
+        switch (id) {
+            case ID_NAV_MENU_ITEM_PONTOS_FAVORITOS:
                 // TODO reserved for Pontos Favoritos
                 break;
-            case 1:
+            case ID_NAV_MENU_ITEM_HORARIOS_VIAGEM:
                 fragment = HorarioViagemFragment.newInstance(query == null ? null : query);
                 break;
-            case 2:
+            case ID_NAV_MENU_ITEM_PLANEJE_VIAGEM:
                 fragment = new PlanejeViagemFragment();
                 break;
-            case 3:
+            case ID_NAV_MENU_ITEM_PONTO_A_PONTO:
                 fragment = new PontoToPontoFragment();
                 break;
-            case 4:
+            case ID_NAV_MENU_ITEM_SAC:
                 fragment = new SacFragment();
                 break;
             default:
@@ -154,21 +107,31 @@ public class HomeActivity extends BaseActivity {
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     fragment).commit();
+            /*
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             mDrawerLayout.closeDrawer(mDrawerList);
             mActiveMenuItem = position;
+            */
         } else {
             // TODO samethins is wrong
         }
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            if (mDrawerAdapter.isItem(position)) {
-                displayView(mDrawerAdapter.getItemIndex(position));
-            }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setActionBarIcon(R.drawable.ic_menu_white_24dp); // TODO duplicated ???
+
+        setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
+
+        SuperCardToast.onRestoreState(savedInstanceState, this);
+
+        handleIntent(getIntent());
+
+        if (savedInstanceState == null) {
+            onNavItemSelected(DEFAULT_NAV_MENU_ITEM_SELECTED);
         }
     }
 
@@ -196,7 +159,7 @@ public class HomeActivity extends BaseActivity {
                     SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
             suggestions.saveRecentQuery(query, null);
 
-            displayView(SEARCH_RESULT_VIEW);
+            onNavItemSelected(SEARCH_RESULT_VIEW);
         } else {
             new ToastHelper(this).showGeneralAlert(getResources()
                     .getString(R.string.non_digit_voice_search));
@@ -222,6 +185,7 @@ public class HomeActivity extends BaseActivity {
         return true;
     }
 
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -229,7 +193,9 @@ public class HomeActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 
+    /*
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         final boolean drawerMenuIsOpened = mDrawerLayout.isDrawerOpen(mDrawerList);
@@ -240,6 +206,7 @@ public class HomeActivity extends BaseActivity {
 
         return true;
     }
+    */
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -265,39 +232,5 @@ public class HomeActivity extends BaseActivity {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase));
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(mDrawerLayout.isDrawerOpen(Gravity.START|Gravity.LEFT)){
-            mDrawerLayout.closeDrawer(mDrawerList);
-            return;
-        }
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent e) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (!mDrawerLayout.isDrawerOpen(mDrawerList)) {
-                mDrawerLayout.openDrawer(mDrawerList);
-            } else {
-                mDrawerLayout.closeDrawer(mDrawerList);
-            }
-
-            return true;
-        }
-        return super.onKeyDown(keyCode, e);
-    }
 
 }

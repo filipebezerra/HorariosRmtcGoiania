@@ -28,6 +28,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true); // TODO checar comportamento, compatibilidade com toolbar
         }
     }
 
