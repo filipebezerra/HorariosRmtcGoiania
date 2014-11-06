@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- TODO: See how to support android:background="?android:attr/activatedBackgroundIndicator" -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="?attr/textAppearanceListItemSmall"
     android:gravity="center_vertical"
     android:paddingRight="10dp"
-    android:minHeight="?attr/listPreferredItemHeightSmall">
+    android:minHeight="?attr/listPreferredItemHeightSmall"
+    android:background="?android:attr/activatedBackgroundIndicator">
 
     <ImageView
         android:id="@+id/navdrawer_item_icon"
