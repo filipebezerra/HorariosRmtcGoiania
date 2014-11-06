@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_internet_connectivity">Desculpe, mas você não está conectado à internet</string>
+    <string name="non_digit_voice_search">Somente e possivel busca pelo numero do ponto!</string>
+</resources>

@@ -50,9 +50,9 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     protected String getUrlToLoad() {
         return busStopNumber == null ? getString(R.string.url_rmtc_horarios_viagem) :
-                String.format(getString(R.string.view_by_code_url),
+                String.format(getString(R.string.formatted_url_rmtc_horarios_viagem),
                         getString(R.string.url_rmtc_horarios_viagem),
-                        getString(R.string.visualizar_ponto), busStopNumber);
+                        getString(R.string.resource_visualizar_ponto), busStopNumber);
     }
 
     @Override

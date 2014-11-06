@@ -11,38 +11,7 @@
     <!-- Search Action -->
     <string name="search_hint">Número do ponto</string>
     <string name="voicePromptText">Fale o número do ponto. Somente números!</string>
-    <string name="non_digit_voice_search">Somente e possivel busca pelo numero do ponto!</string>
 
-    <!-- Utils -->
-    <string name="no_connectivity">Desculpe, mas você não está conectado à internet</string>
-
-    <!-- URL's -->
-    <string name="url_rmtc_horarios_viagem">http://m.rmtcgoiania.com.br/horariodeviagem</string>
-    <string name="url_rmtc_planeje_viagem">http://m.rmtcgoiania.com.br/planejesuaviagem</string>
-    <string name="url_rmtc_ponto_a_ponto">http://m.rmtcgoiania.com.br/pontoaponto</string>
-    <string name="url_rmtc_sac">http://m.rmtcgoiania.com.br/sac</string>
-
-    <!-- Drawer Items -->
-    <string name="rmtc_horarios_viagem_title">Horário de Viagem</string>
-    <string name="rmtc_planeje_viagem_title">Planeje sua Viagem</string>
-    <string name="rmtc_ponto_a_ponto_title">Ponto a Ponto</string>
-    <string name="rmtc_sac_title">SAC</string>
-    <string name="rmtc_horarios_viagem_description">Tempo real e pontos de parada</string>
-    <string name="rmtc_planeje_viagem_description">Roteiros, linhas e mapas</string>
-    <string name="rmtc_ponto_a_ponto_description">Fluidez do trânsito e transporte</string>
-    <string name="rmtc_sac_description">Atendimento ao Cliente</string>
-    <string name="drawer_title_opened">@string/title_activity_main</string>
-    <string name="drawer_title_closed">@string/title_activity_main</string>
     <string name="desc_list_item_icon">Item Icon</string>
 
-    <!-- Drawer Headers -->
-    <string name="drawer_section_user_items">SEUS ITENS</string>
-    <string name="drawer_section_rmtc_services">SERVIÇOS RMTC</string>
-    <string name="drawer_section_others">OUTROS</string>
-
-    <string name="navdrawer_item_favorites_bus_stops">Pontos Favoritos</string>
-
-    <string name="visualizar_ponto">/visualizar/ponto/</string>
-    <string name="view_by_code_url">%1$s%2$s%3$s</string>
-    
 </resources>

@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
+package mx.x10.filipebezerra.horariosrmtcgoiania.view.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.widget.ListView;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
-import mx.x10.filipebezerra.horariosrmtcgoiania.view.activity.BaseActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.util.fragment.NavDrawerActivityConfiguration;
 
 /**

@@ -22,7 +22,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
-import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.AbstractNavDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.PontoToPontoFragment;
@@ -60,10 +59,10 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SEUS_ITENS, getString(R.string.drawer_section_user_items)),
                 NavMenuItem.create(ID_NAV_MENU_ITEM_PONTOS_FAVORITOS, getString(R.string.navdrawer_item_favorites_bus_stops), "ic_favorite_24px", "10", true, false, this),
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SERVICOS_RMTC, getString(R.string.drawer_section_rmtc_services)),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_HORARIOS_VIAGEM, getString(R.string.rmtc_horarios_viagem_title), "ic_rmtc_horarios_viagem", false, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PLANEJE_VIAGEM, getString(R.string.rmtc_planeje_viagem_title), "ic_rmtc_planeje_viagem", false, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTO_A_PONTO, getString(R.string.rmtc_ponto_a_ponto_title), "ic_rmtc_ponto_a_ponto", false, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_SAC, getString(R.string.rmtc_sac_title), "ic_rmtc_sac", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_HORARIOS_VIAGEM, getString(R.string.navdrawer_item_rmtc_horarios_viagem), "ic_rmtc_horarios_viagem", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PLANEJE_VIAGEM, getString(R.string.navdrawer_item_rmtc_planeje_viagem), "ic_rmtc_planeje_viagem", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTO_A_PONTO, getString(R.string.navdrawer_item_rmtc_ponto_a_ponto), "ic_rmtc_ponto_a_ponto", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_SAC, getString(R.string.navdrawer_item_rmtc_sac), "ic_rmtc_sac", false, this),
                 NavMenuSection.create(ID_NAV_MENU_SECTION_OUTROS, getString(R.string.drawer_section_others))
         };
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="drawer_menu_row_title">
-        <item>@string/rmtc_horarios_viagem_title</item>
-        <item>@string/rmtc_planeje_viagem_title</item>
-        <item>@string/rmtc_ponto_a_ponto_title</item>
-        <item>@string/rmtc_sac_title</item>
+        <item>@string/navdrawer_item_rmtc_horarios_viagem</item>
+        <item>@string/navdrawer_item_rmtc_planeje_viagem</item>
+        <item>@string/navdrawer_item_rmtc_ponto_a_ponto</item>
+        <item>@string/navdrawer_item_rmtc_sac</item>
     </string-array>
 
     <string-array name="drawer_menu_row_icon">
@@ -12,13 +12,6 @@
         <item>@drawable/ic_rmtc_planeje_viagem</item>
         <item>@drawable/ic_rmtc_ponto_a_ponto</item>
         <item>@drawable/ic_rmtc_sac</item>
-    </string-array>
-
-    <string-array name="drawer_menu_row_description">
-        <item>@string/rmtc_horarios_viagem_description</item>
-        <item>@string/rmtc_planeje_viagem_description</item>
-        <item>@string/rmtc_ponto_a_ponto_description</item>
-        <item>@string/rmtc_sac_description</item>
     </string-array>
 
     <string-array name="drawer_menu_row_url">

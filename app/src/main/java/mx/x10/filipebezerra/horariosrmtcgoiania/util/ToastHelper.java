@@ -32,7 +32,7 @@ public class ToastHelper {
     }
 
     public void showNoConnectionAlert() {
-        showGeneralAlert(toast.getActivity().getResources().getString(R.string.no_connectivity));
+        showGeneralAlert(toast.getActivity().getResources().getString(R.string.no_internet_connectivity));
     }
 
 }
