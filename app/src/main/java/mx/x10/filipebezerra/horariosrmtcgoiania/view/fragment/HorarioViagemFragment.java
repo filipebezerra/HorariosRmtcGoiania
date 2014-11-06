@@ -18,8 +18,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
     private static final String ARG_PARAM_BUS_STOP_NUMBER = "BUS_STOP_NUMBER";
 
-    private String busStopNumber = null;
-
     public HorarioViagemFragment() {
     }
 
@@ -36,19 +34,16 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected String getUrlToLoad() {
+        String busStopNumber = null;
         Bundle args = getArguments();
+
         if (args != null) {
             if (args.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
                 busStopNumber = args.getString(ARG_PARAM_BUS_STOP_NUMBER);
             }
         }
-    }
 
-    @Override
-    protected String getUrlToLoad() {
         return busStopNumber == null ? getString(R.string.url_rmtc_horarios_viagem) :
                 String.format(getString(R.string.formatted_url_rmtc_horarios_viagem),
                         getString(R.string.url_rmtc_horarios_viagem),
