@@ -55,7 +55,7 @@ public class HomeActivity extends AbstractNavDrawerActivity {
 
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
-        NavDrawerItem[] menu = new NavDrawerItem[] {
+        final NavDrawerItem[] menu = new NavDrawerItem[] {
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SEUS_ITENS, getString(R.string.drawer_section_user_items)),
                 NavMenuItem.create(ID_NAV_MENU_ITEM_PONTOS_FAVORITOS, getString(R.string.navdrawer_item_favorites_bus_stops), "ic_favorite_24px", "10", true, false, this),
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SERVICOS_RMTC, getString(R.string.drawer_section_rmtc_services)),
@@ -70,11 +70,17 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         navDrawerActivityConfiguration.setDrawerLayoutId(R.id.drawer);
         navDrawerActivityConfiguration.setLeftDrawerId(R.id.left_drawer);
         navDrawerActivityConfiguration.setNavItems(menu);
+
+        // TODO: Set the Drawer Shadow
         navDrawerActivityConfiguration.setDrawerShadow(0);
         navDrawerActivityConfiguration.setDrawerOpenDesc(R.string.drawer_title_opened);
         navDrawerActivityConfiguration.setDrawerCloseDesc(R.string.drawer_title_closed);
         navDrawerActivityConfiguration.setBaseAdapter(
                 new NavDrawerAdapter(this, R.layout.navdrawer_item, menu));
+
+        final int [] menuItems = {R.id.action_search};
+
+        navDrawerActivityConfiguration.setActionMenuItemsToHideWhenDrawerOpen(menuItems);
         return navDrawerActivityConfiguration;
     }
 
@@ -105,12 +111,6 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     fragment).commit();
-            /*
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
-            mDrawerLayout.closeDrawer(mDrawerList);
-            mActiveMenuItem = position;
-            */
         } else {
             // TODO samethins is wrong
         }
@@ -180,29 +180,6 @@ public class HomeActivity extends AbstractNavDrawerActivity {
 
         return true;
     }
-
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    */
-
-    /*
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        final boolean drawerMenuIsOpened = mDrawerLayout.isDrawerOpen(mDrawerList);
-
-        for(int i = 0; i < menu.size(); i++) {
-            menu.getItem(i).setVisible(! drawerMenuIsOpened);
-        }
-
-        return true;
-    }
-    */
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
