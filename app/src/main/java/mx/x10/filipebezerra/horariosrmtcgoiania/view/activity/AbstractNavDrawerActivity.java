@@ -43,8 +43,6 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
 
         navConf = getNavDrawerConfiguration();
 
-        setContentView(navConf.getMainLayout());
-
         mTitle = mDrawerTitle = getTitle();
 
         mDrawerLayout = (DrawerLayout) findViewById(navConf.getDrawerLayoutId());
@@ -52,7 +50,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         mDrawerList.setAdapter(navConf.getBaseAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        //this.initDrawerShadow();
+        this.initDrawerShadow();
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -72,15 +70,14 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        this.getDrawerIcon();
+        setActionBarIcon(R.drawable.ic_menu_white_24dp);
     }
 
     protected void initDrawerShadow() {
-        mDrawerLayout.setDrawerShadow(navConf.getDrawerShadow(), GravityCompat.START);
-    }
-
-    protected int getDrawerIcon() {
-        return R.drawable.ic_menu_white_24dp;
+        int drawerShadow = navConf.getDrawerShadow();
+        if (drawerShadow != 0) {
+            mDrawerLayout.setDrawerShadow(drawerShadow, GravityCompat.START);
+        }
     }
 
     @Override

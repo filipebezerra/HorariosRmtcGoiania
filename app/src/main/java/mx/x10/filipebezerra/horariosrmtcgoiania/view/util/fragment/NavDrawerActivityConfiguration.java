@@ -9,7 +9,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
  * @since 2.0
  */
 public class NavDrawerActivityConfiguration {
-    private int mainLayout;
     private int drawerShadow;
     private int drawerLayoutId;
     private int leftDrawerId;
@@ -18,14 +17,6 @@ public class NavDrawerActivityConfiguration {
     private int drawerOpenDesc;
     private int drawerCloseDesc;
     private BaseAdapter baseAdapter;
-
-    public int getMainLayout() {
-        return mainLayout;
-    }
-
-    public void setMainLayout(int mainLayout) {
-        this.mainLayout = mainLayout;
-    }
 
     public int getDrawerShadow() {
         return drawerShadow;

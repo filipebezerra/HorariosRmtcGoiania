@@ -67,11 +67,10 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         };
 
         NavDrawerActivityConfiguration navDrawerActivityConfiguration = new NavDrawerActivityConfiguration();
-        navDrawerActivityConfiguration.setMainLayout(R.layout.activity_home);
         navDrawerActivityConfiguration.setDrawerLayoutId(R.id.drawer);
         navDrawerActivityConfiguration.setLeftDrawerId(R.id.left_drawer);
         navDrawerActivityConfiguration.setNavItems(menu);
-        //navDrawerActivityConfiguration.setDrawerShadow(R.drawable.drawer_shadow);
+        navDrawerActivityConfiguration.setDrawerShadow(0);
         navDrawerActivityConfiguration.setDrawerOpenDesc(R.string.drawer_title_opened);
         navDrawerActivityConfiguration.setDrawerCloseDesc(R.string.drawer_title_closed);
         navDrawerActivityConfiguration.setBaseAdapter(
@@ -120,8 +119,6 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setActionBarIcon(R.drawable.ic_menu_white_24dp); // TODO duplicated ???
 
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
