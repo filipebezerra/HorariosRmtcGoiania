@@ -50,7 +50,9 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         mDrawerList.setAdapter(navConf.getBaseAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+
         this.initDrawerShadow();
+        this.initDrawerIcon();
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -60,16 +62,20 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
                 navConf.getDrawerCloseDesc()
         ) {
             public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
+                getSupportActionBar().setSubtitle(mTitle);
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
+                getSupportActionBar().setSubtitle(null);
                 invalidateOptionsMenu();
             }
         };
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    protected void initDrawerIcon() {
         setActionBarIcon(R.drawable.ic_menu_white_24dp);
     }
 
@@ -157,7 +163,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         this.onNavItemSelected(selectedItem.getId());
         mDrawerList.setItemChecked(position, true);
 
-        if ( selectedItem.updateActionBarTitle()) {
+        if ( selectedItem.updateActionBarSubtitle()) {
             setTitle(selectedItem.getLabel());
         }
 
@@ -169,6 +175,13 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        getSupportActionBar().setSubtitle(mTitle);
     }
+
+    public void openDrawer(){
+        if (mDrawerLayout != null) {
+            mDrawerLayout.openDrawer(mDrawerList);
+        }
+    }
+
 }

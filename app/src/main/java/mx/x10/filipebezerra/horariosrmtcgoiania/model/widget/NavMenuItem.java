@@ -16,23 +16,23 @@ public class NavMenuItem implements NavDrawerItem {
     private int icon;
     private String count = "0";
     private boolean isCounterVisible = false;
-    private boolean updateActionBarTitle;
+    private boolean updateActionBarSubtitle;
 
     private NavMenuItem() {
     }
 
-    public static NavMenuItem create(int id, String label, String icon, boolean updateActionBarTitle,
+    public static NavMenuItem create(int id, String label, String icon, boolean updateActionBarSubtitle,
                                      Context context) {
         NavMenuItem item = new NavMenuItem();
         item.setId(id);
         item.setLabel(label);
         item.setIcon(context.getResources().getIdentifier(icon, "drawable", context.getPackageName()));
-        item.setUpdateActionBarTitle(updateActionBarTitle);
+        item.setupdateActionBarSubtitle(updateActionBarSubtitle);
         return item;
     }
 
     public static NavMenuItem create(int id, String label, String icon, String count,
-                                     boolean isCounterVisible, boolean updateActionBarTitle,
+                                     boolean isCounterVisible, boolean updateActionBarSubtitle,
                                      Context context) {
         NavMenuItem item = new NavMenuItem();
         item.setId(id);
@@ -40,7 +40,7 @@ public class NavMenuItem implements NavDrawerItem {
         item.setIcon(context.getResources().getIdentifier(icon, "drawable", context.getPackageName()));
         item.setCount(count);
         item.setCounterVisible(isCounterVisible);
-        item.setUpdateActionBarTitle(updateActionBarTitle);
+        item.setupdateActionBarSubtitle(updateActionBarSubtitle);
         return item;
     }
 
@@ -95,12 +95,12 @@ public class NavMenuItem implements NavDrawerItem {
     }
 
     @Override
-    public boolean updateActionBarTitle() {
-        return this.updateActionBarTitle;
+    public boolean updateActionBarSubtitle() {
+        return this.updateActionBarSubtitle;
     }
 
-    public void setUpdateActionBarTitle(boolean updateActionBarTitle) {
-        this.updateActionBarTitle = updateActionBarTitle;
+    public void setupdateActionBarSubtitle(boolean updateActionBarSubtitle) {
+        this.updateActionBarSubtitle = updateActionBarSubtitle;
     }
 
     @Override

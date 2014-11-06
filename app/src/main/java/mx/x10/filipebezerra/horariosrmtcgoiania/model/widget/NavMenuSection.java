@@ -46,7 +46,7 @@ public class NavMenuSection implements NavDrawerItem {
     }
 
     @Override
-    public boolean updateActionBarTitle() {
+    public boolean updateActionBarSubtitle() {
         return false;
     }
 

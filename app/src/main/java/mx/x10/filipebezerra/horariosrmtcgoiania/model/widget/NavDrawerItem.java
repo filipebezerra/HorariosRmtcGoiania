@@ -10,6 +10,6 @@ public interface NavDrawerItem {
     String getLabel();
     int getType();
     boolean isEnabled();
-    boolean updateActionBarTitle();
+    boolean updateActionBarSubtitle();
 
 }

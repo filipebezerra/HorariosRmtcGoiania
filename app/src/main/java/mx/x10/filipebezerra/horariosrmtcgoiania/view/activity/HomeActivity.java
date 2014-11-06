@@ -57,12 +57,12 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
         final NavDrawerItem[] menu = new NavDrawerItem[] {
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SEUS_ITENS, getString(R.string.drawer_section_user_items)),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTOS_FAVORITOS, getString(R.string.navdrawer_item_favorites_bus_stops), "ic_favorite_24px", "10", true, false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTOS_FAVORITOS, getString(R.string.navdrawer_item_favorites_bus_stops), "ic_favorite_24px", "10", true, true, this),
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SERVICOS_RMTC, getString(R.string.drawer_section_rmtc_services)),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_HORARIOS_VIAGEM, getString(R.string.navdrawer_item_rmtc_horarios_viagem), "ic_rmtc_horarios_viagem", false, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PLANEJE_VIAGEM, getString(R.string.navdrawer_item_rmtc_planeje_viagem), "ic_rmtc_planeje_viagem", false, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTO_A_PONTO, getString(R.string.navdrawer_item_rmtc_ponto_a_ponto), "ic_rmtc_ponto_a_ponto", false, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_SAC, getString(R.string.navdrawer_item_rmtc_sac), "ic_rmtc_sac", false, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_HORARIOS_VIAGEM, getString(R.string.navdrawer_item_rmtc_horarios_viagem), "ic_rmtc_horarios_viagem", true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PLANEJE_VIAGEM, getString(R.string.navdrawer_item_rmtc_planeje_viagem), "ic_rmtc_planeje_viagem", true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTO_A_PONTO, getString(R.string.navdrawer_item_rmtc_ponto_a_ponto), "ic_rmtc_ponto_a_ponto", true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_SAC, getString(R.string.navdrawer_item_rmtc_sac), "ic_rmtc_sac", true, this),
                 NavMenuSection.create(ID_NAV_MENU_SECTION_OUTROS, getString(R.string.drawer_section_others))
         };
 
@@ -79,8 +79,8 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                 new NavDrawerAdapter(this, R.layout.navdrawer_item, menu));
 
         final int [] menuItems = {R.id.action_search};
-
         navDrawerActivityConfiguration.setActionMenuItemsToHideWhenDrawerOpen(menuItems);
+
         return navDrawerActivityConfiguration;
     }
 
@@ -127,7 +127,8 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         handleIntent(getIntent());
 
         if (savedInstanceState == null) {
-            onNavItemSelected(DEFAULT_NAV_MENU_ITEM_SELECTED);
+            selectItem(DEFAULT_NAV_MENU_ITEM_SELECTED);
+            openDrawer();
         }
     }
 
@@ -204,6 +205,5 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(new CalligraphyContextWrapper(newBase));
     }
-
 
 }
