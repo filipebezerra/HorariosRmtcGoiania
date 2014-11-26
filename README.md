@@ -16,7 +16,14 @@ sobre todos os efeitos, transições, animações, fontes e cores, mas acredite 
 
 ### Funcionalidades e Recursos
 Com este aplicativo você pode:
-* Item
+
+1. Busca dos horários de um determinado ponto de parada. É possível fazer busca textual ou por voz;
+2. Favoritar seus pontos mais utilizados para busca do horário automática;
+3. Pesquisa pelo seu ponto de parada pela rua ou bairro;
+4. Planejamento de sua viagem a partir do endereço de origem e do destino;
+5. Visualizar o itinerário da sua linha ou de outra qualquer;
+6. Saber da fluidez do trânsito nos corredores da grande Goiânia;
+7. Se comunicar com a central da RMTC por meio do envio de mensagem.
 
 ### Download
 <a href="https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania">
@@ -25,6 +32,8 @@ Com este aplicativo você pode:
 </a>
 
 ### Colaboradores
+
+* Filipe Bezerra {[GitHub](https://github.com/filipebezerra/)} {[Site](http://filipebezerra.github.io/)}
 
 ### Versões/Mudanças
 * 2.0
