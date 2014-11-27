@@ -12,11 +12,14 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.github.johnpersano.supertoasts.SuperCardToast;
 
+import mx.x10.filipebezerra.horariosrmtcgoiania.HorariosRmtcGoianiaApplication;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.NavDrawerAdapter;
+import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuSection;
@@ -35,34 +38,38 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class HomeActivity extends AbstractNavDrawerActivity {
 
-    private static final int ID_NAV_MENU_SECTION_SEUS_ITENS = 1;
-    private static final int ID_NAV_MENU_SECTION_SERVICOS_RMTC = 3;
-    private static final int ID_NAV_MENU_SECTION_OUTROS = 8;
+    private static final int ID_NAV_MENU_SECTION_SEUS_ITENS = 10;
+    private static final int ID_NAV_MENU_SECTION_SERVICOS_RMTC = 20;
+    private static final int ID_NAV_MENU_SECTION_OUTROS = 30;
 
-    private static final int ID_NAV_MENU_ITEM_PONTOS_FAVORITOS = 2;
-    private static final int ID_NAV_MENU_ITEM_HORARIOS_VIAGEM = 4;
-    private static final int ID_NAV_MENU_ITEM_PLANEJE_VIAGEM = 5;
-    private static final int ID_NAV_MENU_ITEM_PONTO_A_PONTO = 6;
-    private static final int ID_NAV_MENU_ITEM_SAC = 7;
+    private static final int ID_NAV_MENU_ITEM_PONTOS_FAVORITOS = 11;
+    private static final int ID_NAV_MENU_ITEM_HORARIOS_VIAGEM = 21;
+    private static final int ID_NAV_MENU_ITEM_PLANEJE_VIAGEM = 22;
+    private static final int ID_NAV_MENU_ITEM_PONTO_A_PONTO = 23;
+    private static final int ID_NAV_MENU_ITEM_SAC = 24;
 
-    public static final int DEFAULT_NAV_MENU_ITEM_SELECTED = ID_NAV_MENU_ITEM_HORARIOS_VIAGEM;
+    public static final int DEFAULT_NAV_MENU_ITEM_SELECTED = 3;
 
-    public static final int SEARCH_RESULT_VIEW = DEFAULT_NAV_MENU_ITEM_SELECTED;
+    public static final int SEARCH_RESULT_VIEW = ID_NAV_MENU_ITEM_HORARIOS_VIAGEM;
 
     private SearchView mSearchView;
 
     private String query = null;
 
+    private Fragment currentView;
+
     @Override
     protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
         final NavDrawerItem[] menu = new NavDrawerItem[] {
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SEUS_ITENS, getString(R.string.drawer_section_user_items)),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTOS_FAVORITOS, getString(R.string.navdrawer_item_favorites_bus_stops), "ic_favorite_24px", "10", true, true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTOS_FAVORITOS, getString(R.string.navdrawer_item_favorites_bus_stops), "ic_favorite_white_24dp", "10", true, false, this),
+
                 NavMenuSection.create(ID_NAV_MENU_SECTION_SERVICOS_RMTC, getString(R.string.drawer_section_rmtc_services)),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_HORARIOS_VIAGEM, getString(R.string.navdrawer_item_rmtc_horarios_viagem), "ic_rmtc_horarios_viagem", true, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PLANEJE_VIAGEM, getString(R.string.navdrawer_item_rmtc_planeje_viagem), "ic_rmtc_planeje_viagem", true, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTO_A_PONTO, getString(R.string.navdrawer_item_rmtc_ponto_a_ponto), "ic_rmtc_ponto_a_ponto", true, this),
-                NavMenuItem.create(ID_NAV_MENU_ITEM_SAC, getString(R.string.navdrawer_item_rmtc_sac), "ic_rmtc_sac", true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_HORARIOS_VIAGEM, getString(R.string.navdrawer_item_rmtc_horarios_viagem), "ic_alarm_white_24dp", true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PLANEJE_VIAGEM, getString(R.string.navdrawer_item_rmtc_planeje_viagem), "ic_map_white_24dp", true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_PONTO_A_PONTO, getString(R.string.navdrawer_item_rmtc_ponto_a_ponto), "ic_place_white_24dp", true, this),
+                NavMenuItem.create(ID_NAV_MENU_ITEM_SAC, getString(R.string.navdrawer_item_rmtc_sac), "ic_call_white_24dp", true, this),
+
                 NavMenuSection.create(ID_NAV_MENU_SECTION_OUTROS, getString(R.string.drawer_section_others))
         };
 
@@ -78,41 +85,41 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         navDrawerActivityConfiguration.setBaseAdapter(
                 new NavDrawerAdapter(this, R.layout.navdrawer_item, menu));
 
-        final int [] menuItems = {R.id.action_search};
-        navDrawerActivityConfiguration.setActionMenuItemsToHideWhenDrawerOpen(menuItems);
+        // TODO: Maybe in the future, disabling the menu items
+        navDrawerActivityConfiguration.setActionMenuItemsToHideWhenDrawerOpen(null);
 
         return navDrawerActivityConfiguration;
     }
 
     @Override
     protected void onNavItemSelected(int id) {
-        Fragment fragment = null;
+        currentView = null;
 
         switch (id) {
             case ID_NAV_MENU_ITEM_PONTOS_FAVORITOS:
-                // TODO reserved for Pontos Favoritos
+                openRightDrawer();
                 break;
             case ID_NAV_MENU_ITEM_HORARIOS_VIAGEM:
-                fragment = HorarioViagemFragment.newInstance(query == null ? null : query);
+                currentView = HorarioViagemFragment.newInstance(query == null ? null : query);
                 break;
             case ID_NAV_MENU_ITEM_PLANEJE_VIAGEM:
-                fragment = new PlanejeViagemFragment();
+                currentView = new PlanejeViagemFragment();
                 break;
             case ID_NAV_MENU_ITEM_PONTO_A_PONTO:
-                fragment = new PontoToPontoFragment();
+                currentView = new PontoToPontoFragment();
                 break;
             case ID_NAV_MENU_ITEM_SAC:
-                fragment = new SacFragment();
+                currentView = new SacFragment();
                 break;
             default:
                 break;
         }
 
-        if (fragment != null) {
+        if (currentView != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    fragment).commit();
+                    currentView).commit();
         } else {
-            // TODO samethins is wrong
+            // TODO: catch some error here
         }
     }
 
@@ -128,7 +135,7 @@ public class HomeActivity extends AbstractNavDrawerActivity {
 
         if (savedInstanceState == null) {
             selectItem(DEFAULT_NAV_MENU_ITEM_SELECTED);
-            openDrawer();
+            openLeftDrawer();
         }
     }
 
@@ -180,6 +187,34 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         mSearchView.setIconifiedByDefault(true);
 
         return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.action_mark_as_favorite:
+                if (currentView instanceof HorarioViagemFragment) {
+                    String currentUrl = ((HorarioViagemFragment) currentView).getWebView().getUrl();
+
+                    int idx = currentUrl.lastIndexOf("/");
+                    String stopCode = currentUrl.substring(idx);
+
+                    ((HorariosRmtcGoianiaApplication) getApplicationContext())
+                            .getDaoSession()
+                            .getFavoriteBusStopDao()
+                            .queryBuilder()
+                            .where(FavoriteBusStopDao.Properties.StopCode.eq(1))
+                            .unique();
+                }
+                break;
+        }
+
+        return false;
     }
 
     @Override

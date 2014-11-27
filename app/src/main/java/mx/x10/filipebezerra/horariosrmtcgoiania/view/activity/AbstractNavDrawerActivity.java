@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -123,10 +124,14 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
-                this.mDrawerLayout.closeDrawer(this.mDrawerList);
+                this.mDrawerLayout.closeDrawer(Gravity.LEFT);
             }
             else {
-                this.mDrawerLayout.openDrawer(this.mDrawerList);
+                if (this.mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    this.mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                }
+
+                this.mDrawerLayout.openDrawer(Gravity.LEFT);
             }
             return true;
         }
@@ -178,9 +183,15 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         getSupportActionBar().setSubtitle(mTitle);
     }
 
-    public void openDrawer(){
+    public void openLeftDrawer(){
         if (mDrawerLayout != null) {
-            mDrawerLayout.openDrawer(mDrawerList);
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+    }
+
+    public void openRightDrawer(){
+        if (mDrawerLayout != null) {
+            mDrawerLayout.openDrawer(Gravity.RIGHT);
         }
     }
 

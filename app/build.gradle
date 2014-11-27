@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.github.johnpersano:supertoasts:1.3.4@aar'
     compile 'com.github.castorflex.smoothprogressbar:library:0.5.2'

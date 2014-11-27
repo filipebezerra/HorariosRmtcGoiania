@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.readystatesoftware.viewbadger.BadgeView;
+
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuItem;
@@ -74,7 +76,12 @@ public class NavDrawerAdapter extends ArrayAdapter<NavDrawerItem> {
 
         if (navMenuItemHolder.counterView != null) {
             if (menuItem.isCounterVisible()) {
-                navMenuItemHolder.counterView.setText(menuItem.getCount());
+                final BadgeView badgeView = new BadgeView(getContext(), navMenuItemHolder.counterView);
+                badgeView.setText(menuItem.getCount());
+                badgeView.setBadgePosition(BadgeView.POSITION_CENTER);
+                badgeView.setBadgeBackgroundColor(getContext().getResources()
+                        .getColor(R.color.badge_counter_background));
+                badgeView.show();
             } else {
                 navMenuItemHolder.counterView.setVisibility(View.GONE);
             }

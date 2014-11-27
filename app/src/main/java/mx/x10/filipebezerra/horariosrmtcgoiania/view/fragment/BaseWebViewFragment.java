@@ -118,6 +118,10 @@ public abstract class BaseWebViewFragment extends Fragment {
         });
     }
 
+    public WebView getWebView() {
+        return webView;
+    }
+
     private class CustomWebViewClient extends WebViewClient {
 
         private boolean errorWhenLoading = false;
