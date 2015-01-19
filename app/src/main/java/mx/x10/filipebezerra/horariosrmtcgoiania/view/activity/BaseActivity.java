@@ -44,7 +44,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
         if (NetworkUtils.isConnectingToInternet(context) == false) {
-            new ToastHelper(BaseActivity.this).showNoConnectionAlert();
+            new ToastHelper(BaseActivity.this).showWarning(getResources().getString(
+                    R.string.no_internet_connectivity));
         }
         }
     };

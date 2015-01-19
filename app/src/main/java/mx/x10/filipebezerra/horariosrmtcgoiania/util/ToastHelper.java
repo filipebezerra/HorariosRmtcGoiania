@@ -17,22 +17,38 @@ public class ToastHelper {
 
     public ToastHelper(final Activity activity) {
         toast = new SuperCardToast(activity, SuperToast.Type.STANDARD);
+        prepareCommonConfiguration();
     }
-
-    public void showGeneralAlert(final String message) {
+    
+    private void prepareCommonConfiguration() {
         toast.setAnimations(SuperToast.Animations.FLYIN);
         toast.setDuration(SuperToast.Duration.LONG);
-        toast.setBackground(SuperToast.Background.RED);
         toast.setTextSize(SuperToast.TextSize.MEDIUM);
         toast.setSwipeToDismiss(true);
         toast.setTouchToDismiss(true);
-        toast.setIcon(SuperToast.Icon.Dark.INFO, SuperToast.IconPosition.LEFT);
-        toast.setText(message);
+    }
+    
+    private void show(final String text) {
+        toast.setText(text);
         toast.show();
     }
 
-    public void showNoConnectionAlert() {
-        showGeneralAlert(toast.getActivity().getResources().getString(R.string.no_internet_connectivity));
+    public void showError(final String error) {
+        toast.setBackground(SuperToast.Background.RED);
+        toast.setIcon(SuperToast.Icon.Dark.EXIT, SuperToast.IconPosition.LEFT);
+        show(error);
+    }
+    
+    public void showWarning(final String warning) {
+        toast.setBackground(SuperToast.Background.ORANGE);
+        toast.setIcon(SuperToast.Icon.Dark.REDO, SuperToast.IconPosition.LEFT);
+        show(warning);
+    }
+    
+    public void showInformation(final String info) {
+        toast.setBackground(SuperToast.Background.BLUE);
+        toast.setIcon(SuperToast.Icon.Dark.INFO, SuperToast.IconPosition.LEFT);
+        show(info);
     }
 
 }

@@ -144,7 +144,8 @@ public abstract class BaseWebViewFragment extends Fragment {
             isInternetPresent = NetworkUtils.isConnectingToInternet(getActivity());
 
             if (!isInternetPresent) {
-                new ToastHelper(getActivity()).showNoConnectionAlert();
+                new ToastHelper(getActivity()).showWarning(getResources().getString(
+                        R.string.no_internet_connectivity));
             }
         }
 
@@ -165,14 +166,14 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            new ToastHelper(getActivity()).showGeneralAlert(message);
+            new ToastHelper(getActivity()).showInformation(message);
             result.confirm();
             return true;
         }
 
         @Override
         public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-            new ToastHelper(getActivity()).showGeneralAlert(consoleMessage.message());
+            new ToastHelper(getActivity()).showInformation(consoleMessage.message());
             return true;
         }
 
