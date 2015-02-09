@@ -27,7 +27,6 @@ public class FavoriteBusStopDao extends AbstractDao<FavoriteBusStop, Long> {
         public final static Property StopCode = new Property(1, int.class, "stopCode", false, "STOP_CODE");
         public final static Property Address = new Property(2, String.class, "address", false, "ADDRESS");
         public final static Property StopReference = new Property(3, String.class, "stopReference", false, "STOP_REFERENCE");
-        public final static Property LinesAvailable = new Property(4, String.class, "linesAvailable", false, "LINES_AVAILABLE");
     };
 
 
@@ -46,8 +45,7 @@ public class FavoriteBusStopDao extends AbstractDao<FavoriteBusStop, Long> {
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE ," + // 0: id
                 "'STOP_CODE' INTEGER NOT NULL UNIQUE ," + // 1: stopCode
                 "'ADDRESS' TEXT NOT NULL ," + // 2: address
-                "'STOP_REFERENCE' TEXT," + // 3: stopReference
-                "'LINES_AVAILABLE' TEXT);"); // 4: linesAvailable
+                "'STOP_REFERENCE' TEXT);"); // 3: stopReference
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_FAVORITE_BUS_STOP_STOP_CODE ON FAVORITE_BUS_STOP" +
                 " (STOP_CODE);");
@@ -75,11 +73,6 @@ public class FavoriteBusStopDao extends AbstractDao<FavoriteBusStop, Long> {
         if (stopReference != null) {
             stmt.bindString(4, stopReference);
         }
- 
-        String linesAvailable = entity.getLinesAvailable();
-        if (linesAvailable != null) {
-            stmt.bindString(5, linesAvailable);
-        }
     }
 
     /** @inheritdoc */
@@ -95,8 +88,7 @@ public class FavoriteBusStopDao extends AbstractDao<FavoriteBusStop, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getInt(offset + 1), // stopCode
             cursor.getString(offset + 2), // address
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // stopReference
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // linesAvailable
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // stopReference
         );
         return entity;
     }
@@ -108,7 +100,6 @@ public class FavoriteBusStopDao extends AbstractDao<FavoriteBusStop, Long> {
         entity.setStopCode(cursor.getInt(offset + 1));
         entity.setAddress(cursor.getString(offset + 2));
         entity.setStopReference(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setLinesAvailable(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     /** @inheritdoc */

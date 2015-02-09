@@ -11,7 +11,6 @@ public class FavoriteBusStop {
     /** Not-null value. */
     private String address;
     private String stopReference;
-    private String linesAvailable;
 
     public FavoriteBusStop() {
     }
@@ -20,12 +19,11 @@ public class FavoriteBusStop {
         this.id = id;
     }
 
-    public FavoriteBusStop(Long id, int stopCode, String address, String stopReference, String linesAvailable) {
+    public FavoriteBusStop(Long id, int stopCode, String address, String stopReference) {
         this.id = id;
         this.stopCode = stopCode;
         this.address = address;
         this.stopReference = stopReference;
-        this.linesAvailable = linesAvailable;
     }
 
     public Long getId() {
@@ -60,14 +58,6 @@ public class FavoriteBusStop {
 
     public void setStopReference(String stopReference) {
         this.stopReference = stopReference;
-    }
-
-    public String getLinesAvailable() {
-        return linesAvailable;
-    }
-
-    public void setLinesAvailable(String linesAvailable) {
-        this.linesAvailable = linesAvailable;
     }
 
 }

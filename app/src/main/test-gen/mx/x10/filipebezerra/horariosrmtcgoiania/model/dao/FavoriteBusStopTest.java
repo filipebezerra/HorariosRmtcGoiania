@@ -16,7 +16,6 @@ public class FavoriteBusStopTest extends AbstractDaoTestLongPk<FavoriteBusStopDa
         entity.setStopCode(1416);
         entity.setAddress("Praca Universitaria, Setor Leste Universitario - Goiania");
         entity.setStopReference("Faculdade De Direito Da Ufg");
-        entity.setLinesAvailable("164, 167, 180, 257, 302, 606, 901, 905, 906, 907, 908, 909, 913, 914, 917");
         return entity;
     }
 

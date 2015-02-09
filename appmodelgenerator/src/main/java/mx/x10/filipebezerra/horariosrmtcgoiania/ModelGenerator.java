@@ -24,7 +24,7 @@ public class ModelGenerator {
     private static final String JAVA_OUTPUT_DIR = "../app/src/main/java-gen";
     private static final String TEST_OUTPUT_DIR = "../app/src/main/test-gen";
 
-    private static Schema schema;
+    private static Schema mSchema;
 
     public static void main(String[] args) {
         prepareSchema();
@@ -32,7 +32,7 @@ public class ModelGenerator {
 
         try {
             DaoGenerator daoGenerator = new DaoGenerator();
-            daoGenerator.generateAll(schema, JAVA_OUTPUT_DIR, TEST_OUTPUT_DIR);
+            daoGenerator.generateAll(mSchema, JAVA_OUTPUT_DIR, TEST_OUTPUT_DIR);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -41,11 +41,11 @@ public class ModelGenerator {
     }
 
     private static void prepareEntities() {
-        if (schema == null) {
+        if (mSchema == null) {
             throw new IllegalArgumentException("Schema não pode ser nulo.");
         }
 
-        Entity favoriteBusStop = schema.addEntity(FAVORITE_BUS_STOP_ENTITY);
+        Entity favoriteBusStop = mSchema.addEntity(FAVORITE_BUS_STOP_ENTITY);
         favoriteBusStop.addIdProperty()
                 .autoincrement()
                 .unique();
@@ -56,12 +56,11 @@ public class ModelGenerator {
         favoriteBusStop.addStringProperty("address")
                 .notNull();
         favoriteBusStop.addStringProperty("stopReference");
-        favoriteBusStop.addStringProperty("linesAvailable");
     }
 
     private static void prepareSchema() {
-        schema = new Schema(DATABASE_VERSION, MODEL_PACKAGE);
-        schema.setDefaultJavaPackageDao(DAO_PACKAGE);
+        mSchema = new Schema(DATABASE_VERSION, MODEL_PACKAGE);
+        mSchema.setDefaultJavaPackageDao(DAO_PACKAGE);
     }
 
 }
