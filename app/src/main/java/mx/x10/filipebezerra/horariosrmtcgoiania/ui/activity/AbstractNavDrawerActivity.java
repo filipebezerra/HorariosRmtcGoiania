@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.view.activity;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.widget.ListView;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
-import mx.x10.filipebezerra.horariosrmtcgoiania.view.util.fragment.NavDrawerActivityConfiguration;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.util.fragment.NavDrawerActivityConfiguration;
 
 /**
  * @author Filipe Bezerra
@@ -27,7 +27,8 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private ListView mDrawerList;
+    private ListView mLeftDrawerList;
+    private ListView mRightDrawerList;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
@@ -47,10 +48,12 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         mTitle = mDrawerTitle = getTitle();
 
         mDrawerLayout = (DrawerLayout) findViewById(navConf.getDrawerLayoutId());
-        mDrawerList = (ListView) findViewById(navConf.getLeftDrawerId());
-        mDrawerList.setAdapter(navConf.getBaseAdapter());
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mLeftDrawerList = (ListView) findViewById(navConf.getLeftDrawerId());
+        mLeftDrawerList.setAdapter(navConf.getLeftNavAdapter());
+        mLeftDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+        mRightDrawerList = (ListView) findViewById(navConf.getRightDrawerId());
+        mRightDrawerList.setAdapter(navConf.getRightNavAdapter());
 
         this.initDrawerShadow();
         this.initDrawerIcon();
@@ -84,6 +87,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         int drawerShadow = navConf.getDrawerShadow();
         if (drawerShadow != 0) {
             mDrawerLayout.setDrawerShadow(drawerShadow, GravityCompat.START);
+            mDrawerLayout.setDrawerShadow(drawerShadow, GravityCompat.END);
         }
     }
 
@@ -102,7 +106,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (navConf.getActionMenuItemsToHideWhenDrawerOpen() != null) {
-            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawerList);
             for(int iItem : navConf.getActionMenuItemsToHideWhenDrawerOpen()) {
                 menu.findItem(iItem).setVisible(!drawerOpen);
             }
@@ -123,7 +127,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
+            if (this.mDrawerLayout.isDrawerOpen(this.mLeftDrawerList)) {
                 this.mDrawerLayout.closeDrawer(Gravity.LEFT);
             }
             else {
@@ -140,8 +144,8 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if ( this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
-            mDrawerLayout.closeDrawer(mDrawerList);
+        if ( this.mDrawerLayout.isDrawerOpen(this.mLeftDrawerList)) {
+            mDrawerLayout.closeDrawer(mLeftDrawerList);
             return;
         }
         super.onBackPressed();
@@ -163,17 +167,17 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     }
 
     public void selectItem(int position) {
-        NavDrawerItem selectedItem = navConf.getNavItems()[position];
+        NavDrawerItem selectedItem = navConf.getLeftNavItems()[position];
 
         this.onNavItemSelected(selectedItem.getId());
-        mDrawerList.setItemChecked(position, true);
+        mLeftDrawerList.setItemChecked(position, true);
 
         if ( selectedItem.updateActionBarSubtitle()) {
             setTitle(selectedItem.getLabel());
         }
 
-        if ( this.mDrawerLayout.isDrawerOpen(this.mDrawerList)) {
-            mDrawerLayout.closeDrawer(mDrawerList);
+        if ( this.mDrawerLayout.isDrawerOpen(this.mLeftDrawerList)) {
+            mDrawerLayout.closeDrawer(mLeftDrawerList);
         }
     }
 

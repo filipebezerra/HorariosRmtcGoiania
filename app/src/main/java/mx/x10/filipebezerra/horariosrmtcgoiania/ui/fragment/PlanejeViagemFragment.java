@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +9,15 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
  * @author Filipe Bezerra
  * @since 2.0
  */
-public class SacFragment extends BaseWebViewFragment {
+public class PlanejeViagemFragment extends BaseWebViewFragment {
 
-    public SacFragment(){}
+    public PlanejeViagemFragment(){
+
+    }
 
     @Override
     protected String getUrlToLoad() {
-        return getString(R.string.url_rmtc_sac);
+        return getString(R.string.url_rmtc_planeje_viagem);
     }
 
     @Override

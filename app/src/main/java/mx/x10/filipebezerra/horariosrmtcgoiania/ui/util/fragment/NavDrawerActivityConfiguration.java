@@ -1,6 +1,8 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.view.util.fragment;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui.util.fragment;
 
 import android.widget.BaseAdapter;
+
+import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
 
@@ -12,11 +14,14 @@ public class NavDrawerActivityConfiguration {
     private int drawerShadow;
     private int drawerLayoutId;
     private int leftDrawerId;
+    private int rightDrawerId;
     private int[] actionMenuItemsToHideWhenDrawerOpen;
-    private NavDrawerItem[] navItems;
+    private NavDrawerItem[] leftNavItems;
+    private List<NavDrawerItem> rightNavItems;
     private int drawerOpenDesc;
     private int drawerCloseDesc;
-    private BaseAdapter baseAdapter;
+    private BaseAdapter mLeftNavAdapter;
+    private BaseAdapter mRightNavAdapter;
 
     public int getDrawerShadow() {
         return drawerShadow;
@@ -42,6 +47,14 @@ public class NavDrawerActivityConfiguration {
         this.leftDrawerId = leftDrawerId;
     }
 
+    public int getRightDrawerId() {
+        return rightDrawerId;
+    }
+
+    public void setRightDrawerId(final int rightDrawerId) {
+        this.rightDrawerId = rightDrawerId;
+    }
+
     public int[] getActionMenuItemsToHideWhenDrawerOpen() {
         return actionMenuItemsToHideWhenDrawerOpen;
     }
@@ -51,12 +64,20 @@ public class NavDrawerActivityConfiguration {
         this.actionMenuItemsToHideWhenDrawerOpen = actionMenuItemsToHideWhenDrawerOpen;
     }
 
-    public NavDrawerItem[] getNavItems() {
-        return navItems;
+    public NavDrawerItem[] getLeftNavItems() {
+        return leftNavItems;
     }
 
-    public void setNavItems(NavDrawerItem[] navItems) {
-        this.navItems = navItems;
+    public void setLeftNavItems(NavDrawerItem[] leftNavItems) {
+        this.leftNavItems = leftNavItems;
+    }
+
+    public List<NavDrawerItem> getRightNavItems() {
+        return rightNavItems;
+    }
+
+    public void setRightNavItems(final List<NavDrawerItem> rightNavItems) {
+        this.rightNavItems = rightNavItems;
     }
 
     public int getDrawerOpenDesc() {
@@ -75,11 +96,20 @@ public class NavDrawerActivityConfiguration {
         this.drawerCloseDesc = drawerCloseDesc;
     }
 
-    public BaseAdapter getBaseAdapter() {
-        return baseAdapter;
+    public BaseAdapter getLeftNavAdapter() {
+        return mLeftNavAdapter;
     }
 
-    public void setBaseAdapter(BaseAdapter baseAdapter) {
-        this.baseAdapter = baseAdapter;
+    public void setLeftNavAdapter(BaseAdapter leftNavAdapter) {
+        this.mLeftNavAdapter = leftNavAdapter;
     }
+
+    public BaseAdapter getRightNavAdapter() {
+        return mRightNavAdapter;
+    }
+
+    public void setRightNavAdapter(final BaseAdapter rightNavAdapter) {
+        mRightNavAdapter = rightNavAdapter;
+    }
+
 }

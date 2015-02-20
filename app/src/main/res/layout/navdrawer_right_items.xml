@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	
+	<TextView
+		android:id="@+id/numeroPontoItem"
+		android:text="508"
+		android:textSize="20sp"
+		android:textStyle="bold"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentLeft="true"
+		android:padding="8dp"/>
+	
+	<TextView
+		android:id="@+id/referenciaPontoItem"
+		android:text="Entre Rua D.gercina B.teixeira E Avenida 85"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/numeroPontoItem"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"/>
+	
+	<TextView
+		android:id="@+id/enderecoPontoItem"
+		android:text="Rua 82 (praca Civica), Setor Central - Goiania"
+		android:layout_below="@id/referenciaPontoItem"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/numeroPontoItem"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"/>
+	
+    
+</RelativeLayout>

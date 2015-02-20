@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;

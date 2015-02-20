@@ -3,14 +3,18 @@
     <string name="drawer_title_opened">@string/title_activity_main</string>
     <string name="drawer_title_closed">@string/title_activity_main</string>
 
-    <string name="drawer_section_user_items">SEUS ITENS</string>
+    <string name="drawer_section_user_custom_items">SEUS ITENS</string>
     <string name="drawer_section_rmtc_services">SERVIÇOS RMTC</string>
-    <string name="drawer_section_others">OUTROS</string>
+    <string name="drawer_section_about">SOBRE</string>
 
-    <string name="navdrawer_item_favorites_bus_stops">Pontos Favoritos</string>
+    <string name="navdrawer_item_favorite_bus_stops">Pontos Favoritos</string>
     <string name="navdrawer_item_rmtc_horarios_viagem">Horário de Viagem</string>
     <string name="navdrawer_item_rmtc_planeje_viagem">Planeje sua Viagem</string>
     <string name="navdrawer_item_rmtc_ponto_a_ponto">Ponto a Ponto</string>
     <string name="navdrawer_item_rmtc_sac">SAC</string>
 
+    <string name="navdrawer_item_product_tour">Tour do produto</string>
+    <string name="navdrawer_item_product_share">Compatilhar com seus amigos</string>
+    <string name="navdrawer_item_product_evaluate">Avaliar na Play Store</string>
+    <string name="navdrawer_item_user_preferences">Preferências</string>
 </resources>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.view.fragment.BaseWebViewFragment" >
+    tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment" >
 
     <include
         android:id="@+id/progressBar"

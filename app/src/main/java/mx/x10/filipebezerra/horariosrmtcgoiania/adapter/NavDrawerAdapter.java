@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.readystatesoftware.viewbadger.BadgeView;
 
+import java.util.List;
+
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuItem;
@@ -25,6 +27,11 @@ public class NavDrawerAdapter extends ArrayAdapter<NavDrawerItem> {
     private LayoutInflater inflater;
 
     public NavDrawerAdapter(Context context, int textViewResourceId, NavDrawerItem[] objects ) {
+        super(context, textViewResourceId, objects);
+        this.inflater = LayoutInflater.from(context);
+    }
+
+    public NavDrawerAdapter(Context context, int textViewResourceId, List<NavDrawerItem> objects ) {
         super(context, textViewResourceId, objects);
         this.inflater = LayoutInflater.from(context);
     }
@@ -49,7 +56,7 @@ public class NavDrawerAdapter extends ArrayAdapter<NavDrawerItem> {
         NavMenuItemHolder navMenuItemHolder = null;
 
         if (convertView == null) {
-            convertView = inflater.inflate( R.layout.navdrawer_item, parentView, false);
+            convertView = inflater.inflate( R.layout.navdrawer_left_items, parentView, false);
             TextView labelView = (TextView) convertView
                     .findViewById(R.id.navdrawer_item_label);
             ImageView iconView = (ImageView) convertView

@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.view.activity;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
