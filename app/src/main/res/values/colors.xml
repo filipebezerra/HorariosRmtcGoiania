@@ -25,4 +25,8 @@
     <color name="strong_yellow">#cdd500</color>
     <color name="light_grayish_cyan">#ecf0f1</color>
 
+    <color name="progressBarBackground">
+        #16a085
+    </color>
+
 </resources>

@@ -15,9 +15,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
@@ -32,14 +33,12 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
 public abstract class BaseWebViewFragment extends Fragment {
 
     @InjectView(R.id.progressBar)
-    protected SmoothProgressBar progressBar;
+    protected ProgressBarCircularIndeterminate mProgressBar;
 
     @InjectView(R.id.webView)
-    protected WebView webView;
+    protected WebView mWebView;
 
-    protected String urlToLoad;
-
-    protected View rootView;
+    protected String mUrlToLoad;
 
     public BaseWebViewFragment() {
     }
@@ -47,7 +46,7 @@ public abstract class BaseWebViewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        urlToLoad = getUrlToLoad();
+        mUrlToLoad = getUrlToLoad();
     }
 
     protected abstract String getUrlToLoad();
@@ -55,7 +54,7 @@ public abstract class BaseWebViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_browser, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_browser, container, false);
         ButterKnife.inject(this, rootView);
         setUpViews();
         return rootView;
@@ -64,7 +63,7 @@ public abstract class BaseWebViewFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        webView.saveState(outState);
+        mWebView.saveState(outState);
     }
 
     @Override
@@ -72,37 +71,37 @@ public abstract class BaseWebViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState == null) {
-            webView.loadUrl(urlToLoad);
+            mWebView.loadUrl(mUrlToLoad);
         } else {
-            webView.restoreState(savedInstanceState);
+            mWebView.restoreState(savedInstanceState);
         }
     }
 
     private void setUpViews() {
         // Habilitando suporte JavaScript
-        WebSettings webSettings = webView.getSettings();
+        WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
 
         // Especifica o estilo das barras de rolagem.
-        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 
         // Define se as barras de rolagem vai desaparecer quando a view não estiver em rolagem.
-        webView.setScrollbarFadingEnabled(true);
+        mWebView.setScrollbarFadingEnabled(true);
 
         // Define se esta view pode receber o foco no modo de toque.
-        webView.setFocusableInTouchMode(true);
+        mWebView.setFocusableInTouchMode(true);
 
         // Ativa ou desativa eventos de clique para este view.
-        webView.setClickable(true);
+        mWebView.setClickable(true);
 
         // Habilitando o clique em links para serem abertos pela própria aplicação e não
         // pelo aplicativo browser padrão do dispositivo
-        webView.setWebChromeClient(new CustomWebChromeClient());
-        webView.setWebViewClient(new CustomWebViewClient());
+        mWebView.setWebChromeClient(new CustomWebChromeClient());
+        mWebView.setWebViewClient(new CustomWebViewClient());
 
-        webView.requestFocus(View.FOCUS_DOWN);
-        webView.setOnTouchListener(new View.OnTouchListener() {
+        mWebView.requestFocus(View.FOCUS_DOWN);
+        mWebView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -119,7 +118,7 @@ public abstract class BaseWebViewFragment extends Fragment {
     }
 
     public WebView getWebView() {
-        return webView;
+        return mWebView;
     }
 
     private class CustomWebViewClient extends WebViewClient {
@@ -134,7 +133,7 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            progressBar.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -151,8 +150,8 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if (progressBar.getVisibility() == View.VISIBLE) {
-                progressBar.setVisibility(View.GONE);
+            if (mProgressBar.getVisibility() == View.VISIBLE) {
+                mProgressBar.setVisibility(View.GONE);
             }
         }
 
@@ -161,7 +160,7 @@ public abstract class BaseWebViewFragment extends Fragment {
     private class CustomWebChromeClient extends WebChromeClient {
 
         public CustomWebChromeClient() {
-            progressBar.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -180,8 +179,8 @@ public abstract class BaseWebViewFragment extends Fragment {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             if (newProgress == 100) {
-                if (progressBar.getVisibility() == View.VISIBLE) {
-                    progressBar.setVisibility(View.GONE);
+                if (mProgressBar.getVisibility() == View.VISIBLE) {
+                    mProgressBar.setVisibility(View.GONE);
                 }
             }
         }

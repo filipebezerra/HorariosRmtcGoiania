@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<fr.castorflex.android.smoothprogressbar.SmoothProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/GNowProgressBar"
-    android:id="@+id/progressBar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:indeterminate="true"
-    android:visibility="gone" />
+<com.gc.materialdesign.views.ProgressBarCircularIndeterminate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    android:background="@color/progressBarBackground" />
