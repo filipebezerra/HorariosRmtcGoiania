@@ -22,7 +22,7 @@
             android:name=".ui.activity.HomeActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

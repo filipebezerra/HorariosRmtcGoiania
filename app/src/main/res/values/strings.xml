@@ -10,7 +10,8 @@
 
     <!-- Search Action -->
     <string name="search_hint">Número do ponto</string>
-    <string name="voicePromptText">Fale o número do ponto. Somente números!</string>
+    <string name="voicePromptText">Fale o número do ponto.</string>
+    <string name="searchSettingsDescription">Pontos de parada de ônibus</string>
 
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="action_mark_as_favorite">Favoritar Ponto</string>

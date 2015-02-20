@@ -1,6 +1,5 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -13,23 +12,16 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuItem;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringUTF8Request;
 import com.github.johnpersano.supertoasts.SuperCardToast;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.NavDrawerAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavDrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.widget.NavMenuSection;
-import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment;
@@ -145,7 +137,7 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
+        //setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
         SuperCardToast.onRestoreState(savedInstanceState, this);
 
@@ -165,7 +157,7 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     }
 
     private void handleIntent(Intent intent) {
-        if (intent.getAction() == Intent.ACTION_SEARCH) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             doSearch(intent);
         }
     }

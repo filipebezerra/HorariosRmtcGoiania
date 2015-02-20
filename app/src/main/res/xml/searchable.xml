@@ -2,18 +2,12 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/app_name"
     android:hint="@string/search_hint"
-    android:imeOptions="actionSearch"
+    android:inputType="number"
+    android:searchSuggestAuthority="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
+    android:searchSuggestSelection=" ?"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
     android:voiceLanguageModel="web_search"
-    android:inputType="number"
-    android:searchMode="queryRewriteFromText"
     android:voicePromptText="@string/voicePromptText"
-    android:searchSuggestAuthority="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
-    android:searchSuggestSelection="query=?"
-    android:searchSuggestThreshold="1"
-    android:searchSettingsDescription="@string/search_hint"
-    android:includeInGlobalSearch="false"/>
-    <!-- TODO: test on pre-Kitkat devices to see if includeInGlobalSearch="true" would work. -->
-    <!-- until then it's probably safer to set it to false -->
-
-    <!-- See http://developer.android.com/guide/topics/search/searchable-config.html. -->
+    android:includeInGlobalSearch="true"
+    android:searchSettingsDescription="@string/searchSettingsDescription"
+    />
