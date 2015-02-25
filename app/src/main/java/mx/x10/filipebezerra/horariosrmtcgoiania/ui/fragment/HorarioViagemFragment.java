@@ -1,26 +1,35 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringUTF8Request;
+import com.gc.materialdesign.widgets.ProgressDialog;
+import com.gc.materialdesign.widgets.SnackBar;
 import com.github.johnpersano.supertoasts.SuperCardToast;
+import com.google.common.primitives.Ints;
 
+import butterknife.OnClick;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPersistenceEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
 import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPersistenceEvent
+        .PersistenceOperationType.INSERTION;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPersistenceEvent
+        .PersistenceOperationType.DELETION;
 
 /**
  * @author Filipe Bezerra
@@ -32,6 +41,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
     private static final String TAG_REQUEST = "tagStringRequest_"
             + String.valueOf(System.currentTimeMillis());
+
+    private Bundle mArguments;
 
     public HorarioViagemFragment() {
     }
@@ -51,11 +62,11 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     protected String getUrlToLoad() {
         String busStopNumber = null;
-        Bundle args = getArguments();
+        mArguments = getArguments();
 
-        if (args != null) {
-            if (args.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
-                busStopNumber = args.getString(ARG_PARAM_BUS_STOP_NUMBER);
+        if (mArguments != null) {
+            if (mArguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
+                busStopNumber = mArguments.getString(ARG_PARAM_BUS_STOP_NUMBER);
             }
         }
 
@@ -63,6 +74,30 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 String.format(getString(R.string.formatted_url_rmtc_horarios_viagem),
                         getString(R.string.url_rmtc_horarios_viagem),
                         getString(R.string.resource_visualizar_ponto), busStopNumber);
+    }
+
+    @Override
+    protected void setViewStateForPageStarted() {
+        super.setViewStateForPageStarted();
+        mButtonFloat.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void setViewStateForPageFinished() {
+        super.setViewStateForPageFinished();
+        if (isPreviewPagePoint()) {
+            mButtonFloat.setVisibility(View.VISIBLE);
+
+            FavoriteBusStop favoriteBusStop = ApplicationSingleton.getInstance().getDaoSession()
+                    .getFavoriteBusStopDao()
+                    .queryBuilder().where(FavoriteBusStopDao.Properties.StopCode
+                            .eq(getBusStopSearched())).unique();
+
+            if (favoriteBusStop != null) {
+                mButtonFloat.setDrawableIcon(getResources().getDrawable(
+                        R.drawable.ic_favorite_white_24dp));
+            }
+        }
     }
 
     @Override
@@ -81,79 +116,118 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
+        mButtonFloat.setBackgroundColor(getResources().getColor(R.color.floatingActionButtonBackground));
     }
 
-    @Override
-    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
-        inflater.inflate(R.menu.horario_viagem_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        int itemId = item.getItemId();
-
-        switch (itemId) {
-            case R.id.action_mark_as_favorite:
-                String currentUrl = getWebView().getUrl();
-
-                if (!currentUrl.contains("/visualizar/ponto")) {
-                    new ToastHelper(getActivity()).showWarning("Você deve buscar por um ponto de parada.");
-                    return false;
-                }
-
-                final ProgressDialog dialog = new ProgressDialog(getActivity());
-                dialog.setMessage("Buscando parada...");
-                dialog.setIndeterminate(true);
-                dialog.show();
-
-                StringUTF8Request request = new StringUTF8Request(currentUrl,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String result) {
-                                FavoriteBusStop favoriteBusStop = new BusStopHtmlParser()
-                                        .parse(result);
-                                //mAdapter.add(favoriteBusStop);
-
-                                FavoriteBusStopDao dao = ApplicationSingleton.getInstance().getDaoSession()
-                                        .getFavoriteBusStopDao();
-
-                                FavoriteBusStop favoriteBusStopFound = dao.queryBuilder()
-                                        .where(FavoriteBusStopDao.Properties.StopCode
-                                                .eq(favoriteBusStop.getStopCode())).unique();
-
-                                if (favoriteBusStopFound == null) {
-                                    dao.insert(favoriteBusStop);
-                                    item.setIcon(R.drawable.ic_favorite_outline_white_24dp);
-                                } else {
-                                    dao.delete(favoriteBusStopFound);
-                                    new ToastHelper(getActivity()).showInformation(
-                                            "O ponto de parada " + favoriteBusStopFound.getStopCode() +
-                                                    " foi removido de seus favoritos.");
-                                    item.setIcon(R.drawable.ic_favorite_white_24dp);
-                                }
-
-                                dialog.hide();
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                dialog.hide();
-                                new ToastHelper(getActivity()).showError(error.getLocalizedMessage());
-                            }
-                        }
-                );
-
-                ApplicationSingleton.getInstance().addToRequestQueue(request,
-                        TAG_REQUEST);
-
-                break;
+    @OnClick(R.id.floatingActionButton)
+    public void markFavorite() {
+        if (!isPreviewPagePoint()) {
+            return;
         }
 
-        return false;
+        final ProgressDialog dialog = new ProgressDialog(getActivity(), "Pesquisando...",
+                R.color.progressBarBackground);
+        // TODO : make cancelable
+        dialog.setCancelable(false);
+        dialog.show();
+
+        final FavoriteBusStopDao dao = ApplicationSingleton.getInstance().getDaoSession()
+                .getFavoriteBusStopDao();
+
+        FavoriteBusStop favoriteBusStopFound = dao.queryBuilder()
+                .where(FavoriteBusStopDao.Properties.StopCode
+                        .eq(getBusStopSearched())).unique();
+
+        if (favoriteBusStopFound != null) {
+            dialog.setTitle("Removendo...");
+            dao.delete(favoriteBusStopFound);
+
+            ApplicationSingleton.getInstance().getEventBus().post(
+                    new FavoriteBusStopPersistenceEvent(favoriteBusStopFound, DELETION));
+
+            dialog.hide();
+
+            animate(mButtonFloat).setInterpolator(new BounceInterpolator())
+                    .translationYBy(-34).start();
+
+            SnackBar snackBar = new SnackBar(getActivity(), "Ponto removido de seus favoritos.");
+            snackBar.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    animate(mButtonFloat).setInterpolator(
+                            new BounceInterpolator()).translationYBy(44).start();
+                }
+            });
+            snackBar.show();
+
+            mButtonFloat.setDrawableIcon(getResources().getDrawable(
+                    R.drawable.ic_favorite_outline_white_24dp));
+        } else {
+            dialog.setTitle("Adicionando...");
+            String currentUrl = getWebView().getUrl();
+
+            StringUTF8Request request = new StringUTF8Request(currentUrl,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String result) {
+                            FavoriteBusStop newFavoriteBusStop = new BusStopHtmlParser()
+                                    .parse(result);
+
+                            dao.insert(newFavoriteBusStop);
+
+                            ApplicationSingleton.getInstance().getEventBus().post(
+                                    new FavoriteBusStopPersistenceEvent(newFavoriteBusStop, INSERTION));
+
+                            dialog.hide();
+
+                            animate(mButtonFloat).setInterpolator(new BounceInterpolator())
+                                    .translationYBy(-34).start();
+
+                            SnackBar snackBar = new SnackBar(getActivity(), "Ponto marcado como favorito.");
+                            snackBar.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    animate(mButtonFloat).setInterpolator(
+                                            new BounceInterpolator()).translationYBy(44).start();
+                                }
+                            });
+
+                            snackBar.show();
+
+                            mButtonFloat.setDrawableIcon(getResources().getDrawable(
+                                    R.drawable.ic_favorite_white_24dp));
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            dialog.hide();
+                            // TODO : make some toast more friendly
+                            new ToastHelper(getActivity()).showError(error.getLocalizedMessage());
+                        }
+                    }
+            );
+
+            ApplicationSingleton.getInstance().addToRequestQueue(request,
+                    TAG_REQUEST);
+        }
+
+    }
+
+    private boolean isPreviewPagePoint() {
+        Integer busStopCode = Ints.tryParse(getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT));
+        return busStopCode != null || mArguments != null && mArguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER);
+    }
+
+    private Integer getBusStopSearched() {
+        if (!isPreviewPagePoint()) {
+            return null;
+        }
+
+        Integer busStopCode = Ints.tryParse(getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT));
+
+        return busStopCode != null ? busStopCode : Integer.parseInt(mArguments.getString
+                (ARG_PARAM_BUS_STOP_NUMBER));
     }
 
 }

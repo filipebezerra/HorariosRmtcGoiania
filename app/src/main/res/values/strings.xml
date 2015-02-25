@@ -15,5 +15,11 @@
 
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="action_mark_as_favorite">Favoritar Ponto</string>
+    <string name="empty_favorites">
+        Você ainda não tem favoritos!!!\n\n
+        Pesquise por um ponto e ao visualizar o botão flutuante com um lindo coração, toque e veja
+        seus favoritos ganharem vida.
+    </string>
+    <string name="title_left_navdrawer">PONTOS FAVORITOS</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.model.widget;
+package mx.x10.filipebezerra.horariosrmtcgoiania.model;
 
 /**
  * @author Michenux (http://www.michenux.net/android-navigation-drawer-748.html)

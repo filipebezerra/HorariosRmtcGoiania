@@ -1,6 +1,6 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer"
+    android:id="@+id/drawer_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity.HomeActivity">
@@ -30,28 +30,22 @@
 
     </LinearLayout>
 
-    <!-- Right menu drawer -->
-    <ListView
+    <!-- Left menu drawer -->
+    <fragment
+        android:name="mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment"
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@color/navdrawer_list_divider"
-        android:dividerHeight="0.1dp"
-        android:listSelector="@drawable/navdrawer_list_selector"
-        android:background="@color/navdrawer_list_background" />
+        tools:layout="@layout/fragment_left_drawer"/>
 
-    <!-- Left menu drawer -->
-    <ListView
+    <!-- Right menu drawer -->
+    <fragment
+        android:name="mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.RightDrawerFragment"
         android:id="@+id/right_drawer"
-        android:layout_width="240dp"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:choiceMode="singleChoice"
-        android:divider="@color/navdrawer_list_divider"
-        android:dividerHeight="0.1dp"
-        android:listSelector="@drawable/navdrawer_list_selector"
-        android:background="@color/navdrawer_list_background" />
+        tools:layout="@layout/fragment_right_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

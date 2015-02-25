@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.model.widget;
+package mx.x10.filipebezerra.horariosrmtcgoiania.model;
 
 import android.content.Context;
 

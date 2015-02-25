@@ -1,6 +1,7 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import butterknife.ButterKnife;
@@ -38,7 +40,22 @@ public abstract class BaseWebViewFragment extends Fragment {
     @InjectView(R.id.webView)
     protected WebView mWebView;
 
+    @InjectView(R.id.floatingActionButton)
+    protected ButtonFloat mButtonFloat;
+
     protected String mUrlToLoad;
+
+    protected abstract String getUrlToLoad();
+
+    protected void setViewStateForPageStarted() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void setViewStateForPageFinished() {
+        if (mProgressBar.getVisibility() == View.VISIBLE) {
+            mProgressBar.setVisibility(View.GONE);
+        }
+    }
 
     public BaseWebViewFragment() {
     }
@@ -49,14 +66,12 @@ public abstract class BaseWebViewFragment extends Fragment {
         mUrlToLoad = getUrlToLoad();
     }
 
-    protected abstract String getUrlToLoad();
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_browser, container, false);
         ButterKnife.inject(this, rootView);
-        setUpViews();
+        loadBaseContentView();
         return rootView;
     }
 
@@ -77,7 +92,24 @@ public abstract class BaseWebViewFragment extends Fragment {
         }
     }
 
-    private void setUpViews() {
+    public WebView getWebView() {
+        return mWebView;
+    }
+
+    public enum UrlPart {
+        LAST_PATH_SEGMENT
+    }
+
+    public String getUrlPartFromCurrentUrl(UrlPart part) {
+        switch (part) {
+            case LAST_PATH_SEGMENT:
+                return Uri.parse(mWebView.getUrl()).getLastPathSegment();
+            default:
+                return null;
+        }
+    }
+
+    private void loadBaseContentView() {
         // Habilitando suporte JavaScript
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -117,10 +149,6 @@ public abstract class BaseWebViewFragment extends Fragment {
         });
     }
 
-    public WebView getWebView() {
-        return mWebView;
-    }
-
     private class CustomWebViewClient extends WebViewClient {
 
         private boolean errorWhenLoading = false;
@@ -133,7 +161,7 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            mProgressBar.setVisibility(View.VISIBLE);
+            setViewStateForPageStarted();
         }
 
         @Override
@@ -150,9 +178,7 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if (mProgressBar.getVisibility() == View.VISIBLE) {
-                mProgressBar.setVisibility(View.GONE);
-            }
+            setViewStateForPageFinished();
         }
 
     }

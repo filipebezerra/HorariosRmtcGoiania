@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="count">10dp</dimen>
+    <dimen name="floating_action_button_margin">16dp</dimen>
 </resources>

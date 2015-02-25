@@ -9,6 +9,7 @@
     <color name="navdrawer_list_divider">@android:color/transparent</color>
 
     <color name="list_item_title">#ffffff</color>
+    <color name="navdrawer_section_text_color">#ffffff</color>
     <color name="list_background_pressed_start">#2ecc71</color>
     <color name="list_background_pressed_end">#27ae60</color>
 
@@ -25,8 +26,8 @@
     <color name="strong_yellow">#cdd500</color>
     <color name="light_grayish_cyan">#ecf0f1</color>
 
-    <color name="progressBarBackground">
-        #16a085
-    </color>
+    <color name="progressBarBackground">#16a085</color>
+    <color name="floatingActionButtonBackground">#1abc9c</color>
+    <color name="floatingActionButtonRippleColor">#16a085</color>
 
 </resources>

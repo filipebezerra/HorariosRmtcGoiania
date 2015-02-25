@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.squareup.otto.Bus;
+
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
 
@@ -17,19 +20,28 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
  */
 public abstract class BaseActivity extends ActionBarActivity {
 
-    public Toolbar mToolbar;
+    protected Toolbar mToolbar;
+    protected Bus mEventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mEventBus = ApplicationSingleton.getInstance().getEventBus();
+        mEventBus.register(this);
 
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true); // TODO checar comportamento, compatibilidade com toolbar
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mEventBus.unregister(this);
     }
 
     protected abstract int getLayoutResource();
@@ -43,7 +55,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        if (NetworkUtils.isConnectingToInternet(context) == false) {
+        if (!NetworkUtils.isConnectingToInternet(context)) {
             new ToastHelper(BaseActivity.this).showWarning(getResources().getString(
                     R.string.no_internet_connectivity));
         }
