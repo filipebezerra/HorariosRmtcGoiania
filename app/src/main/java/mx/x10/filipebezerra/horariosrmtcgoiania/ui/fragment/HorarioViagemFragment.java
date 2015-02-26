@@ -1,6 +1,5 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
@@ -11,7 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringUTF8Request;
 import com.gc.materialdesign.widgets.ProgressDialog;
-import com.gc.materialdesign.widgets.SnackBar;
 import com.google.common.primitives.Ints;
 import com.squareup.otto.Bus;
 
@@ -27,6 +25,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
@@ -174,15 +173,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             animate(mButtonFloat).setInterpolator(new BounceInterpolator())
                     .translationYBy(-34).start();
 
-            SnackBar snackBar = new SnackBar(getActivity(), "Ponto removido de seus favoritos.");
-            snackBar.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    animate(mButtonFloat).setInterpolator(
-                            new BounceInterpolator()).translationYBy(44).start();
-                }
-            });
-            snackBar.show();
+            SnackBarHelper.show(getActivity(), "Ponto removido de seus favoritos.");
 
             mButtonFloat.setDrawableIcon(getResources().getDrawable(
                     R.drawable.ic_favorite_outline_white_24dp));
@@ -208,16 +199,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             animate(mButtonFloat).setInterpolator(new BounceInterpolator())
                                     .translationYBy(-34).start();
 
-                            SnackBar snackBar = new SnackBar(getActivity(), "Ponto marcado como favorito.");
-                            snackBar.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    animate(mButtonFloat).setInterpolator(
-                                            new BounceInterpolator()).translationYBy(44).start();
-                                }
-                            });
-
-                            snackBar.show();
+                            SnackBarHelper.show(getActivity(), "Ponto marcado como favorito.");
 
                             mButtonFloat.setDrawableIcon(getResources().getDrawable(
                                     R.drawable.ic_favorite_white_24dp));
@@ -229,11 +211,9 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             dialog.hide();
                             Log.e(LOG_TAG, String.format("Error string request of", currentUrl),
                                     error);
-                            SnackBar snackbar = new SnackBar(getActivity(),
+                            SnackBarHelper.show(getActivity(),
                                     "Não foi possível carregar os resultados. Por favor, " +
-                                            "Tente novamente!", 
-                                    null, null);
-                            snackbar.show();
+                                            "Tente novamente!");
                         }
                     }
             );

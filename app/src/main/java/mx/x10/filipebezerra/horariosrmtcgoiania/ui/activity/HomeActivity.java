@@ -19,7 +19,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.gc.materialdesign.widgets.SnackBar;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
@@ -36,6 +35,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.AbstractNavDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.NavDrawerActivityConfiguration;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment.ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS;
@@ -182,9 +182,7 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                                             LeftDrawerFragment.getDrawerItemHorariosViagem(), 
                                             arguments)));
                                 } else {
-                                    SnackBar snackbar = new SnackBar(HomeActivity.this,
-                                            response.getString("mensagem"), null, null);
-                                    snackbar.show();
+                                    SnackBarHelper.show(HomeActivity.this, response.getString("mensagem"));
                                 }
                             } catch (JSONException e) {
                                 Log.e(LOG_TAG, String.format("Erro no parsing de %s",
@@ -197,19 +195,15 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                         public void onErrorResponse(VolleyError error) {
                             Log.e(LOG_TAG, String.format("Erro na requisição de %s", query),
                                     error);
-                            SnackBar snackbar = new SnackBar(HomeActivity.this,
-                                    "Não foi possível fazer a busca. Por favor, Tente novamente!",
-                                    null, null);
-                            snackbar.show();
+                            SnackBarHelper.show(HomeActivity.this,
+                                    "Não foi possível fazer a busca. Por favor, Tente novamente!");
                         }
                     }
             );
 
             RequestQueueManager.getInstance(HomeActivity.this).addToRequestQueue(request, LOG_TAG);
         } else {
-            SnackBar snackbar = new SnackBar(HomeActivity.this,
-                    getString(R.string.non_digit_voice_search), null, null);
-            snackbar.show();
+            SnackBarHelper.show(HomeActivity.this, getString(R.string.non_digit_voice_search));
         }
     }
 

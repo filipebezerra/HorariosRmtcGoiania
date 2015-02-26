@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.gc.materialdesign.widgets.SnackBar;
 import com.squareup.otto.Bus;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
 /**
  * @author Filipe Bezerra
@@ -57,9 +57,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
         if (!NetworkUtils.isConnectingToInternet(context)) {
-            SnackBar snackbar = new SnackBar(BaseActivity.this,
-                    getString(R.string.no_internet_connectivity), null, null);
-            snackbar.show();
+            SnackBarHelper.show(BaseActivity.this, getString(R.string.no_internet_connectivity));
         }
         }
     };
