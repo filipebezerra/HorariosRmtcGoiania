@@ -26,11 +26,16 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
 /**
- * Classe UI (Fragment) base responsável por renderizar as páginas no componente WebBrowser. Deve
- * ser classe uma classe especializada para implementação de novas páginas.
+ * Base fragment for each loaded page inside the webview. Each page is served inside your own
+ * fragment implementation.
  *
  * @author Filipe Bezerra
+ * @version 2.0, 02/26/2015
  * @since 1.6
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment
  */
 public abstract class BaseWebViewFragment extends Fragment {
 
@@ -40,18 +45,18 @@ public abstract class BaseWebViewFragment extends Fragment {
     @InjectView(R.id.webView)
     protected WebView mWebView;
 
-    @InjectView(R.id.floatingActionButton)
-    protected ButtonFloat mButtonFloat;
+    @InjectView(R.id.floatButtonMarkFavorite)
+    protected ButtonFloat mFloatButtonMarkFavorite;
 
     protected String mUrlToLoad;
 
     protected abstract String getUrlToLoad();
 
-    protected void setViewStateForPageStarted() {
+    protected void onWebViewPageStarted() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
-    protected void setViewStateForPageFinished() {
+    protected void onWebViewPageFinished() {
         if (mProgressBar.getVisibility() == View.VISIBLE) {
             mProgressBar.setVisibility(View.GONE);
         }
@@ -161,7 +166,7 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            setViewStateForPageStarted();
+            onWebViewPageStarted();
         }
 
         @Override
@@ -177,7 +182,7 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            setViewStateForPageFinished();
+            onWebViewPageFinished();
         }
 
     }

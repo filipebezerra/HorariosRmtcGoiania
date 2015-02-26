@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,11 +26,18 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
-
 /**
+ * Fragment composed by a {@link android.webkit.WebView}, an animated
+ * {@link com.gc.materialdesign.views.ProgressBarCircularIndeterminate} and a special action
+ * {@link com.gc.materialdesign.views.ButtonFloat} based in Material design.
+ *
  * @author Filipe Bezerra
+ * @version 2.0, 02/26/2015
  * @since 1.6
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment 
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
 
@@ -68,17 +74,19 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     }
 
     @Override
-    protected void setViewStateForPageStarted() {
-        super.setViewStateForPageStarted();
-        mButtonFloat.setVisibility(View.INVISIBLE);
+    protected void onWebViewPageStarted() {
+        super.onWebViewPageStarted();
+        mFloatButtonMarkFavorite.setVisibility(View.GONE);
+        mFloatButtonMarkFavorite.hide();
     }
 
     @Override
-    protected void setViewStateForPageFinished() {
-        super.setViewStateForPageFinished();
+    protected void onWebViewPageFinished() {
+        super.onWebViewPageFinished();
         
         if (isPreviewPagePoint()) {
-            mButtonFloat.setVisibility(View.VISIBLE);
+            mFloatButtonMarkFavorite.setVisibility(View.VISIBLE);
+            mFloatButtonMarkFavorite.show();
 
             final SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
                     getActivity(), SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
@@ -88,7 +96,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                     .where(FavoriteBusStopDao.Properties.StopCode.eq(getBusStopSearched())).unique();
 
             if (favoriteBusStop != null) {
-                mButtonFloat.setDrawableIcon(getResources().getDrawable(
+                mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                         R.drawable.ic_favorite_white_24dp));
 
                 suggestions.saveRecentQuery(
@@ -137,12 +145,12 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mButtonFloat.setBackgroundColor(getResources().getColor(
+        mFloatButtonMarkFavorite.setBackgroundColor(getResources().getColor(
                 R.color.floatingActionButtonBackground));
         mEventBus = EventBusProvider.getInstance().getEventBus();
     }
 
-    @OnClick(R.id.floatingActionButton)
+    @OnClick(R.id.floatButtonMarkFavorite)
     public void markFavorite() {
         if (!isPreviewPagePoint()) {
             return;
@@ -170,12 +178,13 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
             dialog.hide();
 
-            animate(mButtonFloat).setInterpolator(new BounceInterpolator())
-                    .translationYBy(-34).start();
+            // TODO : Animate to avoid SnackBar blocking the Floating Button
+            //animate(mFloatButtonMarkFavorite).setInterpolator(new BounceInterpolator())
+                    //.translationYBy(-34).start();
 
             SnackBarHelper.show(getActivity(), "Ponto removido de seus favoritos.");
 
-            mButtonFloat.setDrawableIcon(getResources().getDrawable(
+            mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                     R.drawable.ic_favorite_outline_white_24dp));
         } else {
             dialog.setTitle("Adicionando...");
@@ -196,12 +205,13 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                             dialog.hide();
 
-                            animate(mButtonFloat).setInterpolator(new BounceInterpolator())
-                                    .translationYBy(-34).start();
+                            // TODO : Animate to avoid SnackBar blocking the Floating Button
+                            //animate(mFloatButtonMarkFavorite).setInterpolator(new BounceInterpolator())
+                                    //.translationYBy(-34).start();
 
                             SnackBarHelper.show(getActivity(), "Ponto marcado como favorito.");
 
-                            mButtonFloat.setDrawableIcon(getResources().getDrawable(
+                            mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                                     R.drawable.ic_favorite_white_24dp));
                         }
                     },

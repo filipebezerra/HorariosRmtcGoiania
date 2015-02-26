@@ -15,7 +15,7 @@
         layout="@layout/include_progress_bar" />
 
     <com.gc.materialdesign.views.ButtonFloat
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/floatButtonMarkFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -25,7 +25,6 @@
         android:layout_marginEnd="@dimen/floating_action_button_margin"
         android:layout_marginBottom="@dimen/floating_action_button_margin"
         android:background="@color/floatingActionButtonBackground"
-        android:visibility="invisible"
         materialdesign:animate="true"
         materialdesign:rippleColor="@color/floatingActionButtonRippleColor"
         materialdesign:iconDrawable="@drawable/ic_favorite_outline_white_24dp" />
