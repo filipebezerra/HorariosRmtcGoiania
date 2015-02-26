@@ -21,5 +21,17 @@
         seus favoritos ganharem vida.
     </string>
     <string name="title_left_navdrawer">PONTOS FAVORITOS</string>
+    <string name="action_share">Compartilhar o App</string>
 
+    <string name="share_text">
+        Faça o download do aplicativo Horários Rmtc Goiânia e fique sabendo dos horários de viagem 
+        da sua linha ou planeje sua viagem de forma rápida e eficiente. Disponível na Região 
+        Metropolitana de Goiânia.\n\nBaixe da Google Store: 
+        https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania
+    </string>
+    
+    <string name="share_dialog_title">
+        Compartilhe com seus amigos...
+    </string>
+    
 </resources>

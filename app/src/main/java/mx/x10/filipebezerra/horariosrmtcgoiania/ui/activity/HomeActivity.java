@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -14,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -79,6 +81,31 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         mSearchView.setIconifiedByDefault(true);
 
         return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        } else {
+            shareIntent.addFlags(shareIntent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        }
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+        return shareIntent;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int id = item.getItemId();
+        switch (id) {
+            case R.id.action_share:
+                startActivity(Intent.createChooser(createShareIntent(), 
+                        getString(R.string.share_dialog_title)));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
