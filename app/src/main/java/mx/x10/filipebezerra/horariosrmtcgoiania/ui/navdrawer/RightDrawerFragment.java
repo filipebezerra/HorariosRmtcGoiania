@@ -1,7 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,11 @@ import java.util.List;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPersistenceEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavigationDrawerSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
 
 /**
  * Right drawer fragment composed for the favorites (@Link FavoriteBusStop) which are persistence
@@ -55,19 +56,22 @@ public class RightDrawerFragment extends BaseDrawerSideFragment {
         super.onItemClick(parent, view, position, id);
 
         FavoriteBusStop favoriteBusStop = mListAdapter.getItem(position);
-        NavigationDrawerSelectionEvent event = new NavigationDrawerSelectionEvent(
-                favoriteBusStop.getStopCode(), Gravity.RIGHT);
-        postNavigationDrawerSelectionEvent(event);
+        Bundle arguments = new Bundle();
+        arguments.putString(HorarioViagemFragment.ARG_PARAM_BUS_STOP_NUMBER,
+                String.valueOf(favoriteBusStop.getStopCode()));
+        
+        postDrawerItemSelectionEvent(new DrawerItemSelectionEvent(new DrawerItemSelectionMessage(
+                LeftDrawerFragment.getDrawerItemHorariosViagem(), arguments)));
     }
-
+    
     @Subscribe
-    public void onFavoriteBusStopPersistenceEvent(FavoriteBusStopPersistenceEvent event) {
-        switch (event.getPersistenceOperationType()) {
+    public void onPersistenceEvent(PersistenceEvent event) {
+        switch (event.getMessage().getPersistenceType())  {
             case INSERTION:
-                mListAdapter.add(event.getFavoriteBusStop());
+                mListAdapter.add((FavoriteBusStop) event.getMessage().getEntity());
                 break;
             case DELETION:
-                mListAdapter.remove(event.getFavoriteBusStop());
+                mListAdapter.remove((FavoriteBusStop) event.getMessage().getEntity());
                 break;
         }
 

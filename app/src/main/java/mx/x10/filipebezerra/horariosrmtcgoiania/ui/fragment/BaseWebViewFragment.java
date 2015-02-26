@@ -18,12 +18,12 @@ import android.webkit.WebViewClient;
 
 import com.gc.materialdesign.views.ButtonFloat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
+import com.gc.materialdesign.widgets.SnackBar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
 
 /**
  * Classe UI (Fragment) base responsável por renderizar as páginas no componente WebBrowser. Deve
@@ -171,8 +171,9 @@ public abstract class BaseWebViewFragment extends Fragment {
             isInternetPresent = NetworkUtils.isConnectingToInternet(getActivity());
 
             if (!isInternetPresent) {
-                new ToastHelper(getActivity()).showWarning(getResources().getString(
-                        R.string.no_internet_connectivity));
+                SnackBar snackbar = new SnackBar(getActivity(),
+                        getString(R.string.no_internet_connectivity), null, null);
+                snackbar.show();
             }
         }
 
@@ -191,14 +192,17 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            new ToastHelper(getActivity()).showInformation(message);
+            SnackBar snackbar = new SnackBar(getActivity(), message, null, null);
+            snackbar.show();
+            
             result.confirm();
             return true;
         }
 
         @Override
         public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-            new ToastHelper(getActivity()).showInformation(consoleMessage.message());
+            SnackBar snackbar = new SnackBar(getActivity(), consoleMessage.message(), null, null);
+            snackbar.show();
             return true;
         }
 

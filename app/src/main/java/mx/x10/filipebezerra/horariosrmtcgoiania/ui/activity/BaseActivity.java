@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.gc.materialdesign.widgets.SnackBar;
 import com.squareup.otto.Bus;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
 
 /**
  * @author Filipe Bezerra
@@ -28,7 +28,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mEventBus = ApplicationSingleton.getInstance().getEventBus();
+        
+        mEventBus = EventBusProvider.getInstance().getEventBus();
         mEventBus.register(this);
 
         if (mToolbar != null) {
@@ -56,8 +57,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
         if (!NetworkUtils.isConnectingToInternet(context)) {
-            new ToastHelper(BaseActivity.this).showWarning(getResources().getString(
-                    R.string.no_internet_connectivity));
+            SnackBar snackbar = new SnackBar(BaseActivity.this,
+                    getString(R.string.no_internet_connectivity), null, null);
+            snackbar.show();
         }
         }
     };

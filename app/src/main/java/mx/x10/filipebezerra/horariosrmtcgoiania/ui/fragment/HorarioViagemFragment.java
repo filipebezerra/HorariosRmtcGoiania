@@ -2,10 +2,9 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
+import android.provider.SearchRecentSuggestions;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 
 import com.android.volley.Response;
@@ -13,23 +12,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringUTF8Request;
 import com.gc.materialdesign.widgets.ProgressDialog;
 import com.gc.materialdesign.widgets.SnackBar;
-import com.github.johnpersano.supertoasts.SuperCardToast;
 import com.google.common.primitives.Ints;
+import com.squareup.otto.Bus;
 
 import butterknife.OnClick;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPersistenceEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.SQLitePersistenceMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
+import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.ToastHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPersistenceEvent
-        .PersistenceOperationType.INSERTION;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPersistenceEvent
-        .PersistenceOperationType.DELETION;
 
 /**
  * @author Filipe Bezerra
@@ -37,36 +36,29 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteBusStopPers
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
 
-    private static final String ARG_PARAM_BUS_STOP_NUMBER = "BUS_STOP_NUMBER";
+    private static final String LOG_TAG = HorarioViagemFragment.class.getSimpleName();
 
-    private static final String TAG_REQUEST = "tagStringRequest_"
-            + String.valueOf(System.currentTimeMillis());
+    public static final String ARG_PARAM_BUS_STOP_NUMBER = "BUS_STOP_NUMBER";
 
-    private Bundle mArguments;
-
+    private Bus mEventBus;
+    
     public HorarioViagemFragment() {
     }
 
-    public static HorarioViagemFragment newInstance(final String busStopNumber) {
+    public static HorarioViagemFragment newInstance(final Bundle arguments) {
         HorarioViagemFragment fragment = new HorarioViagemFragment();
-
-        if (busStopNumber != null) {
-            Bundle args = new Bundle();
-            args.putString(ARG_PARAM_BUS_STOP_NUMBER, busStopNumber);
-            fragment.setArguments(args);
-        }
-
+        fragment.setArguments(arguments);
         return fragment;
     }
 
     @Override
     protected String getUrlToLoad() {
         String busStopNumber = null;
-        mArguments = getArguments();
+        Bundle arguments = getArguments();
 
-        if (mArguments != null) {
-            if (mArguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
-                busStopNumber = mArguments.getString(ARG_PARAM_BUS_STOP_NUMBER);
+        if (arguments != null) {
+            if (arguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
+                busStopNumber = arguments.getString(ARG_PARAM_BUS_STOP_NUMBER);
             }
         }
 
@@ -85,38 +77,70 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     protected void setViewStateForPageFinished() {
         super.setViewStateForPageFinished();
+        
         if (isPreviewPagePoint()) {
             mButtonFloat.setVisibility(View.VISIBLE);
 
-            FavoriteBusStop favoriteBusStop = ApplicationSingleton.getInstance().getDaoSession()
-                    .getFavoriteBusStopDao()
-                    .queryBuilder().where(FavoriteBusStopDao.Properties.StopCode
-                            .eq(getBusStopSearched())).unique();
+            final SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
+                    getActivity(), SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
+
+            final FavoriteBusStop favoriteBusStop = ApplicationSingleton.getInstance()
+                    .getDaoSession().getFavoriteBusStopDao().queryBuilder()
+                    .where(FavoriteBusStopDao.Properties.StopCode.eq(getBusStopSearched())).unique();
 
             if (favoriteBusStop != null) {
                 mButtonFloat.setDrawableIcon(getResources().getDrawable(
                         R.drawable.ic_favorite_white_24dp));
+
+                suggestions.saveRecentQuery(
+                        String.valueOf(favoriteBusStop.getStopCode()),
+                        favoriteBusStop.getAddress());
+            } else {
+
+                final ProgressDialog dialog = new ProgressDialog(getActivity(), "Salvando...",
+                        R.color.progressBarBackground);
+                // TODO : make cancelable
+                dialog.setCancelable(false);
+                dialog.show();
+
+                final String currentUrl = getWebView().getUrl();
+
+                StringUTF8Request request = new StringUTF8Request(currentUrl,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String result) {
+                                FavoriteBusStop favoriteBusStop = new BusStopHtmlParser()
+                                        .parse(result);
+
+                                suggestions.saveRecentQuery(
+                                        String.valueOf(favoriteBusStop.getStopCode()),
+                                        favoriteBusStop.getAddress());
+
+                                dialog.hide();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                dialog.hide();
+                                Log.e(LOG_TAG, String.format(
+                                        "Request for url %s", currentUrl), error);
+                            }
+                        }
+                );
+
+                RequestQueueManager.getInstance(getActivity()).addToRequestQueue(request,
+                        LOG_TAG);
             }
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        SuperCardToast.onSaveState(outState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        SuperCardToast.onRestoreState(savedInstanceState, getActivity());
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mButtonFloat.setBackgroundColor(getResources().getColor(R.color.floatingActionButtonBackground));
+        mButtonFloat.setBackgroundColor(getResources().getColor(
+                R.color.floatingActionButtonBackground));
+        mEventBus = EventBusProvider.getInstance().getEventBus();
     }
 
     @OnClick(R.id.floatingActionButton)
@@ -142,8 +166,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             dialog.setTitle("Removendo...");
             dao.delete(favoriteBusStopFound);
 
-            ApplicationSingleton.getInstance().getEventBus().post(
-                    new FavoriteBusStopPersistenceEvent(favoriteBusStopFound, DELETION));
+            mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
+                    PersistenceMessage.PersistenceType.DELETION, favoriteBusStopFound)));
 
             dialog.hide();
 
@@ -164,7 +188,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                     R.drawable.ic_favorite_outline_white_24dp));
         } else {
             dialog.setTitle("Adicionando...");
-            String currentUrl = getWebView().getUrl();
+            final String currentUrl = getWebView().getUrl();
 
             StringUTF8Request request = new StringUTF8Request(currentUrl,
                     new Response.Listener<String>() {
@@ -175,8 +199,9 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                             dao.insert(newFavoriteBusStop);
 
-                            ApplicationSingleton.getInstance().getEventBus().post(
-                                    new FavoriteBusStopPersistenceEvent(newFavoriteBusStop, INSERTION));
+                            mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
+                                    PersistenceMessage.PersistenceType.INSERTION,
+                                    newFavoriteBusStop)));                            
 
                             dialog.hide();
 
@@ -202,20 +227,27 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             dialog.hide();
-                            // TODO : make some toast more friendly
-                            new ToastHelper(getActivity()).showError(error.getLocalizedMessage());
+                            Log.e(LOG_TAG, String.format("Error string request of", currentUrl),
+                                    error);
+                            SnackBar snackbar = new SnackBar(getActivity(),
+                                    "Não foi possível carregar os resultados. Por favor, " +
+                                            "Tente novamente!", 
+                                    null, null);
+                            snackbar.show();
                         }
                     }
             );
 
-            ApplicationSingleton.getInstance().addToRequestQueue(request,
-                    TAG_REQUEST);
+            RequestQueueManager.getInstance(getActivity()).addToRequestQueue(request,
+                    LOG_TAG);
         }
 
     }
 
     private boolean isPreviewPagePoint() {
+        // TODO : remove usage of Ints from guava lib
         Integer busStopCode = Ints.tryParse(getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT));
+        Bundle mArguments = getArguments();
         return busStopCode != null || mArguments != null && mArguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER);
     }
 
@@ -226,7 +258,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
         Integer busStopCode = Ints.tryParse(getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT));
 
-        return busStopCode != null ? busStopCode : Integer.parseInt(mArguments.getString
+        return busStopCode != null ? busStopCode : Integer.parseInt(getArguments().getString
                 (ARG_PARAM_BUS_STOP_NUMBER));
     }
 

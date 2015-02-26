@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavigationDrawerSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity.BaseActivity;
 
 /**
@@ -136,7 +136,8 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             return;
-        } if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+        }
+        if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
             mDrawerLayout.closeDrawer(Gravity.RIGHT);
             return;
         }
@@ -151,20 +152,15 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         return mDrawerToggle;
     }
 
-    public void onNavigationDrawerSelectionEvent(NavigationDrawerSelectionEvent event) {
-        final int position = event.getPosition();
-        final int gravity = event.getGravity();
-
-        if (gravity == Gravity.LEFT) {
-            if (event.isUpdatable()) {
-                setTitle(event.getDescription());
-            }
-        } else if (gravity != Gravity.RIGHT) {
-            Log.d(LOG_TAG, String.format("No navigation drawer set for gravity %d", gravity));
+    public void onDrawerItemSelectionEvent(DrawerItemSelectionEvent event) {
+        if (event.getMessage().getNavDrawerItem().updateActionBarSubtitle()) {
+            setTitle(event.getMessage().getNavDrawerItem().getLabel());
         }
 
-        if (mDrawerLayout.isDrawerOpen(gravity)) {
-            mDrawerLayout.closeDrawer(gravity);
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+            mDrawerLayout.closeDrawer(Gravity.RIGHT);
         }
     }
 

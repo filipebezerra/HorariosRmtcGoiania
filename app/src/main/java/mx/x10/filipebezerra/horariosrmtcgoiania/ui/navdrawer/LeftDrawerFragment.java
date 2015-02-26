@@ -2,13 +2,10 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
-import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +13,8 @@ import java.util.List;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.NavDrawerAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.BasicNavigationDrawerEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavigationDrawerSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavDrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuSection;
@@ -43,18 +40,18 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
     public static final int ID_DRAWER_MENU_MENU_ITEM_SAC = 24;
 
     public static final int ID_DRAWER_MENU_SECTION_ABOUT = 30;
-    public static final int ID_NAV_MENU_ITEM_PRODUCT_TOUR = 31;
-    public static final int ID_NAV_MENU_ITEM_PRODUCT_SHARE = 32;
+
     public static final int ID_DRAWER_FIXED_MENU_ITEM_HELP = 33;
     public static final int ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS = 34;
 
+    private static NavDrawerItem mNavDrawerItemHorariosViagem = null;
+    
     private NavDrawerAdapter mListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_left_drawer, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_left_drawer, container, false);
     }
 
     @Override
@@ -66,8 +63,8 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
         setListAdapter(mListAdapter);
         getListView().setOnItemClickListener(LeftDrawerFragment.this);
 
-        onBasicNavigationDrawerEvent(new BasicNavigationDrawerEvent(
-                ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM));
+        postDrawerItemSelectionEvent(new DrawerItemSelectionEvent(new DrawerItemSelectionMessage(
+                getDrawerItemHorariosViagem(), null)));
     }
 
     @Override
@@ -75,23 +72,12 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
         super.onItemClick(parent, view, position, id);
 
         NavDrawerItem drawerItem = mListAdapter.getItem(position);
-        createAndPostNavigationDrawerSelectionEvent(drawerItem);
+        postDrawerItemSelectionEvent(new DrawerItemSelectionEvent(new DrawerItemSelectionMessage(
+                drawerItem, null)));
     }
-
-    @Subscribe
-    public void onBasicNavigationDrawerEvent(BasicNavigationDrawerEvent event) {
-        for(NavDrawerItem drawerItem : mListAdapter.getAll()) {
-            if (drawerItem.getId() == event.getId()) {
-                createAndPostNavigationDrawerSelectionEvent(drawerItem);
-                break;
-            }
-        }
-    }
-
-    private void createAndPostNavigationDrawerSelectionEvent(NavDrawerItem drawerItem) {
-        NavigationDrawerSelectionEvent event = new NavigationDrawerSelectionEvent(drawerItem.getId(),
-                Gravity.LEFT, drawerItem.updateActionBarSubtitle(), drawerItem.getLabel());
-        postNavigationDrawerSelectionEvent(event);
+    
+    public static NavDrawerItem getDrawerItemHorariosViagem() {
+        return mNavDrawerItemHorariosViagem;
     }
 
     private String getFavoriteCount() {
@@ -100,6 +86,10 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
     }
 
     private List<NavDrawerItem> getDrawerItems() {
+        mNavDrawerItemHorariosViagem = NavMenuItem.create(ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM,
+                mActivity.getString(R.string.drawer_menu_item_rmtc_horarios_viagem),
+                "ic_alarm_white_24dp", true, mActivity);
+        
         return Arrays.asList(
                 NavMenuSection.create(ID_DRAWER_MENU_SECTION_FAVORITES,
                         mActivity.getString(R.string.drawer_menu_section_favorites)),
@@ -112,9 +102,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
                 NavMenuSection.create(ID_DRAWER_MENU_SECTION_SERVICOS_RMTC,
                         mActivity.getString(R.string.drawer_menu_section_rmtc_services)),
 
-                NavMenuItem.create(ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM,
-                        mActivity.getString(R.string.drawer_menu_item_rmtc_horarios_viagem),
-                        "ic_alarm_white_24dp", true, mActivity),
+                mNavDrawerItemHorariosViagem,
 
                 NavMenuItem.create(ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM,
                         mActivity.getString(R.string.drawer_menu_item_rmtc_planeje_viagem),
@@ -140,5 +128,5 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
                         "ic_settings_white_24dp", false, mActivity)
         );
     }
-
+    
 }

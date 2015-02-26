@@ -8,8 +8,8 @@ import android.widget.AdapterView;
 
 import com.squareup.otto.Bus;
 
-import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavigationDrawerSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 
 /**
  * @author Filipe Bezerra
@@ -26,7 +26,7 @@ public abstract class BaseDrawerSideFragment extends ListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEventBus = ApplicationSingleton.getInstance().getEventBus();
+        mEventBus = EventBusProvider.getInstance().getEventBus();
         mEventBus.register(this);
     }
 
@@ -48,7 +48,7 @@ public abstract class BaseDrawerSideFragment extends ListFragment
         getListView().setSelection(position);
     }
 
-    public void postNavigationDrawerSelectionEvent(final NavigationDrawerSelectionEvent event) {
+    public void postDrawerItemSelectionEvent(final DrawerItemSelectionEvent event) {
         mEventBus.post(event);
     }
 
