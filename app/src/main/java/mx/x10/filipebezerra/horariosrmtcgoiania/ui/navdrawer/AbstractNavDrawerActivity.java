@@ -16,9 +16,18 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity.BaseActivity;
 
 /**
+ * Abstraction of a Navigation Drawer containing configuration and behavior to Drawers 
+ * {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment} and
+ * {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.RightDrawerFragment}.
+ *  
  * @author Filipe Bezerra
- *         Michenux (http://www.michenux.net/android-navigation-drawer-748.html)
+ * @version 2.0, 02/26/2015
  * @since 2.0
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.RightDrawerFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavDrawerItem
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuItem
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuSection
  */
 public abstract class AbstractNavDrawerActivity extends BaseActivity {
 
@@ -55,13 +64,11 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
                 navConf.getDrawerCloseDesc()
         ) {
             public void onDrawerClosed(View view) {
-                getSupportActionBar().setSubtitle(mTitle);
+                getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setSubtitle(null);
-                invalidateOptionsMenu();
             }
         };
 
@@ -153,7 +160,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     }
 
     public void onDrawerItemSelectionEvent(DrawerItemSelectionEvent event) {
-        if (event.getMessage().getNavDrawerItem().updateActionBarSubtitle()) {
+        if (event.getMessage().getNavDrawerItem().updateActionBarTitle()) {
             setTitle(event.getMessage().getNavDrawerItem().getLabel());
         }
 
@@ -167,7 +174,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setSubtitle(mTitle);
+        getSupportActionBar().setTitle(mTitle);
     }
 
     public void openDrawer(final int gravity) {

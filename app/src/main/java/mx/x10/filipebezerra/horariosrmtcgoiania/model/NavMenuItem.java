@@ -3,9 +3,14 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.model;
 import android.content.Context;
 
 /**
+ * View composed with a drawable and a text.
+ *
  * @author Filipe Bezerra
- *          Michenux (http://www.michenux.net/android-navigation-drawer-748.html)
+ * @version 2.0, 02/26/2015
  * @since 2.0
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavDrawerItem
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuSection
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.adapter.NavDrawerAdapter
  */
 public class NavMenuItem implements NavDrawerItem {
 
@@ -16,23 +21,23 @@ public class NavMenuItem implements NavDrawerItem {
     private int icon;
     private String count = "0";
     private boolean isCounterVisible = false;
-    private boolean updateActionBarSubtitle;
+    private boolean updateActionBarTitle;
 
     private NavMenuItem() {
     }
 
-    public static NavMenuItem create(int id, String label, String icon, boolean updateActionBarSubtitle,
+    public static NavMenuItem create(int id, String label, String icon, boolean updateActionBarTitle,
                                      Context context) {
         NavMenuItem item = new NavMenuItem();
         item.setId(id);
         item.setLabel(label);
         item.setIcon(context.getResources().getIdentifier(icon, "drawable", context.getPackageName()));
-        item.setupdateActionBarSubtitle(updateActionBarSubtitle);
+        item.setUpdateActionBarTitle(updateActionBarTitle);
         return item;
     }
 
     public static NavMenuItem create(int id, String label, String icon, String count,
-                                     boolean isCounterVisible, boolean updateActionBarSubtitle,
+                                     boolean isCounterVisible, boolean updateActionBarTitle,
                                      Context context) {
         NavMenuItem item = new NavMenuItem();
         item.setId(id);
@@ -40,7 +45,7 @@ public class NavMenuItem implements NavDrawerItem {
         item.setIcon(context.getResources().getIdentifier(icon, "drawable", context.getPackageName()));
         item.setCount(count);
         item.setCounterVisible(isCounterVisible);
-        item.setupdateActionBarSubtitle(updateActionBarSubtitle);
+        item.setUpdateActionBarTitle(updateActionBarTitle);
         return item;
     }
 
@@ -95,12 +100,12 @@ public class NavMenuItem implements NavDrawerItem {
     }
 
     @Override
-    public boolean updateActionBarSubtitle() {
-        return this.updateActionBarSubtitle;
+    public boolean updateActionBarTitle() {
+        return this.updateActionBarTitle;
     }
 
-    public void setupdateActionBarSubtitle(boolean updateActionBarSubtitle) {
-        this.updateActionBarSubtitle = updateActionBarSubtitle;
+    public void setUpdateActionBarTitle(boolean updateActionBarTitle) {
+        this.updateActionBarTitle = updateActionBarTitle;
     }
 
     @Override

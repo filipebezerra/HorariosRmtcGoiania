@@ -1,8 +1,15 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.model;
 
 /**
- * @author Michenux (http://www.michenux.net/android-navigation-drawer-748.html)
+ * Stylized navigation drawer section. Represents the label for a set of 
+ * {@link mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuItem}.
+ *
+ * @author Filipe Bezerra 
+ * @version 2.0, 02/25/2015
  * @since 2.0
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavDrawerItem
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuItem
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.adapter.NavDrawerAdapter 
  */
 public class NavMenuSection implements NavDrawerItem {
 
@@ -46,7 +53,7 @@ public class NavMenuSection implements NavDrawerItem {
     }
 
     @Override
-    public boolean updateActionBarSubtitle() {
+    public boolean updateActionBarTitle() {
         return false;
     }
 
