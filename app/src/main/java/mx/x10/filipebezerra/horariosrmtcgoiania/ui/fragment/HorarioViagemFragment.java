@@ -15,6 +15,8 @@ import com.squareup.otto.Bus;
 import butterknife.OnClick;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceMessage;
@@ -175,6 +177,10 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
             mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
                     PersistenceMessage.PersistenceType.DELETION, favoriteBusStopFound)));
+            
+            mEventBus.post(new CounterNotificationEvent(
+                    new CounterNotificationMessage(R.id.navdrawer_item_counter, 
+                            CounterNotificationMessage.NotificationType.DECREMENT)));
 
             dialog.hide();
 
@@ -201,7 +207,11 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                             mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
                                     PersistenceMessage.PersistenceType.INSERTION,
-                                    newFavoriteBusStop)));                            
+                                    newFavoriteBusStop)));
+
+                            mEventBus.post(new CounterNotificationEvent(
+                                    new CounterNotificationMessage(R.id.navdrawer_item_counter,
+                                            CounterNotificationMessage.NotificationType.INCREMENT)));
 
                             dialog.hide();
 
