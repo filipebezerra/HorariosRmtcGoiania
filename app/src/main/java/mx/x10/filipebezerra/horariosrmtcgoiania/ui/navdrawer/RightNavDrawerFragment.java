@@ -13,6 +13,8 @@ import java.util.List;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceEvent;
@@ -69,9 +71,17 @@ public class RightNavDrawerFragment extends BaseNavDrawerFragment {
         switch (event.getMessage().getPersistenceType())  {
             case INSERTION:
                 mListAdapter.add((FavoriteBusStop) event.getMessage().getEntity());
+
+                mEventBus.post(new CounterNotificationEvent(
+                        new CounterNotificationMessage(R.id.navdrawer_item_counter,
+                                CounterNotificationMessage.NotificationType.INCREMENT)));
                 break;
             case DELETION:
                 mListAdapter.remove((FavoriteBusStop) event.getMessage().getEntity());
+
+                mEventBus.post(new CounterNotificationEvent(
+                        new CounterNotificationMessage(R.id.navdrawer_item_counter,
+                                CounterNotificationMessage.NotificationType.DECREMENT)));
                 break;
         }
     }

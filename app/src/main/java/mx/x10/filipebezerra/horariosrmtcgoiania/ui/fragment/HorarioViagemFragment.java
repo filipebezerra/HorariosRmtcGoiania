@@ -15,8 +15,6 @@ import com.squareup.otto.Bus;
 import butterknife.OnClick;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceMessage;
@@ -39,7 +37,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment 
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
 
@@ -48,7 +46,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     public static final String ARG_PARAM_BUS_STOP_NUMBER = "BUS_STOP_NUMBER";
 
     private Bus mEventBus;
-    
+
     public HorarioViagemFragment() {
     }
 
@@ -85,7 +83,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     protected void onWebViewPageFinished() {
         super.onWebViewPageFinished();
-        
+
         if (isPreviewPagePoint()) {
             mFloatButtonMarkFavorite.setVisibility(View.VISIBLE);
             mFloatButtonMarkFavorite.show();
@@ -177,10 +175,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
             mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
                     PersistenceMessage.PersistenceType.DELETION, favoriteBusStopFound)));
-            
-            mEventBus.post(new CounterNotificationEvent(
-                    new CounterNotificationMessage(R.id.navdrawer_item_counter, 
-                            CounterNotificationMessage.NotificationType.DECREMENT)));
 
             dialog.hide();
 
@@ -208,10 +202,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
                                     PersistenceMessage.PersistenceType.INSERTION,
                                     newFavoriteBusStop)));
-
-                            mEventBus.post(new CounterNotificationEvent(
-                                    new CounterNotificationMessage(R.id.navdrawer_item_counter,
-                                            CounterNotificationMessage.NotificationType.INCREMENT)));
 
                             dialog.hide();
 
