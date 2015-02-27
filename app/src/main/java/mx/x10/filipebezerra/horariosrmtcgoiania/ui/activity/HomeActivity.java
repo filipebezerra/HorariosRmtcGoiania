@@ -58,9 +58,11 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawe
  */
 public class HomeActivity extends AbstractNavDrawerActivity {
 
-    public static final int SEARCH_RESULT_VIEW = ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM;
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
+    
     private SearchView mSearchView;
+    
+    private MenuItem mSearchMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +80,11 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.global_menu, menu);
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        mSearchMenuItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setIconifiedByDefault(true);
-
+        mSearchView.setIconifiedByDefault(false);
         return true;
     }
 
@@ -95,9 +96,6 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                 startActivity(Intent.createChooser(createShareIntent(),
                         getString(R.string.share_dialog_title)));
                 return true;
-            case R.id.action_search:
-                onSearchRequested();
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -105,7 +103,10 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-            return onSearchRequested();
+            if (MenuItemCompat.expandActionView(mSearchMenuItem)) {
+                mSearchView.requestFocus();
+                return true;
+            }
         }
         return super.onKeyUp(keyCode, event);
     }

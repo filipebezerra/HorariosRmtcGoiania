@@ -13,7 +13,6 @@
         android:theme="@style/AppTheme"
         android:name=".app.ApplicationSingleton">
 
-        <!-- Where is the SearchView Widget -->
         <meta-data
             android:name="android.app.default_searchable"
             android:value="mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity.HomeActivity" />
@@ -26,12 +25,12 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
@@ -40,7 +39,6 @@
 
         </activity>
 
-        <!-- Suggestions provider -->
         <provider
             android:name="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
             android:authorities="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider" />
