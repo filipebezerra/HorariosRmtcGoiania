@@ -1,11 +1,12 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.event;
 
 /**
- * .
+ * Event notification dispatched to badge views with a internal counter.
  *
  * @author Filipe Bezerra
- * @version #, 27/02/2015
+ * @version 2.0, 27/02/2015
  * @since #
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationMessage
  */
 public class CounterNotificationEvent implements Event<CounterNotificationMessage> {
     

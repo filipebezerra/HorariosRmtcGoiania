@@ -32,7 +32,7 @@
 
     <!-- Left menu drawer -->
     <fragment
-        android:name="mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment"
+        android:name="mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment"
         android:id="@+id/left_drawer"
         android:layout_width="280dp"
         android:layout_height="match_parent"
@@ -41,7 +41,7 @@
 
     <!-- Right menu drawer -->
     <fragment
-        android:name="mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.RightDrawerFragment"
+        android:name="mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.RightNavDrawerFragment"
         android:id="@+id/right_drawer"
         android:layout_width="280dp"
         android:layout_height="match_parent"

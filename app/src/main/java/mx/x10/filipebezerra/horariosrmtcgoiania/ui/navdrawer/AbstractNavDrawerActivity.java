@@ -12,19 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity.BaseActivity;
 
 /**
  * Abstraction of a Navigation Drawer containing configuration and behavior to Drawers 
- * {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment} and
- * {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.RightDrawerFragment}.
+ * {@link LeftNavDrawerFragment} and
+ * {@link RightNavDrawerFragment}.
  *  
  * @author Filipe Bezerra
  * @version 2.0, 02/26/2015
  * @since 2.0
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.RightDrawerFragment
+ * @see LeftNavDrawerFragment
+ * @see RightNavDrawerFragment
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavDrawerItem
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuItem
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuSection
@@ -77,12 +77,12 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         if (savedInstanceState == null) {
             if (getSupportFragmentManager().findFragmentById(R.id.left_drawer) == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawer_container, new LeftDrawerFragment())
+                        .add(R.id.drawer_container, new LeftNavDrawerFragment())
                         .commit();
             }
             if (getSupportFragmentManager().findFragmentById(R.id.right_drawer) == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawer_container, new RightDrawerFragment())
+                        .add(R.id.drawer_container, new RightNavDrawerFragment())
                         .commit();
             }
         }
@@ -159,7 +159,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
         return mDrawerToggle;
     }
 
-    public void onDrawerItemSelectionEvent(DrawerItemSelectionEvent event) {
+    public void onDrawerItemSelectionEvent(NavDrawerItemSelectionEvent event) {
         if (event.getMessage().getNavDrawerItem().updateActionBarTitle()) {
             setTitle(event.getMessage().getNavDrawerItem().getLabel());
         }

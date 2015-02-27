@@ -27,24 +27,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.AbstractNavDrawerActivity;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.NavDrawerActivityConfiguration;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment.ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment.ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment.ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment.ID_DRAWER_MENU_ITEM_PONTO_A_PONTO;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftDrawerFragment.ID_DRAWER_MENU_MENU_ITEM_SAC;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PONTO_A_PONTO;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_MENU_ITEM_SAC;
 
 /**
  * @author Filipe Bezerra
@@ -143,7 +143,7 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     }
 
     @Subscribe
-    public void onDrawerItemSelectionEvent(DrawerItemSelectionEvent event) {
+    public void onDrawerItemSelectionEvent(NavDrawerItemSelectionEvent event) {
         final int position = event.getMessage().getNavDrawerItem().getId();
         Fragment fragment = null;
 
@@ -205,8 +205,8 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                                     arguments.putString(
                                             HorarioViagemFragment.ARG_PARAM_BUS_STOP_NUMBER, query);
 
-                                    onDrawerItemSelectionEvent(new DrawerItemSelectionEvent(new DrawerItemSelectionMessage(
-                                            LeftDrawerFragment.getDrawerItemHorariosViagem(), 
+                                    onDrawerItemSelectionEvent(new NavDrawerItemSelectionEvent(new NavDrawerItemSelectionMessage(
+                                            LeftNavDrawerFragment.getDrawerItemHorariosViagem(),
                                             arguments)));
                                 } else {
                                     SnackBarHelper.show(HomeActivity.this, response.getString("mensagem"));

@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 
 import com.squareup.otto.Bus;
 
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 
 /**
@@ -16,7 +16,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
  * @version 2.0
  * @since 2.0_23/02/2015
  */
-public abstract class BaseDrawerSideFragment extends ListFragment
+public abstract class BaseNavDrawerFragment extends ListFragment
         implements AdapterView.OnItemClickListener{
 
     protected Bus mEventBus;
@@ -48,7 +48,7 @@ public abstract class BaseDrawerSideFragment extends ListFragment
         getListView().setSelection(position);
     }
 
-    public void postDrawerItemSelectionEvent(final DrawerItemSelectionEvent event) {
+    public void postDrawerItemSelectionEvent(final NavDrawerItemSelectionEvent event) {
         mEventBus.post(event);
     }
 

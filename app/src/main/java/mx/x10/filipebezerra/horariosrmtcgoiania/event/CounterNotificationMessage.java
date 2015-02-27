@@ -1,11 +1,12 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.event;
 
 /**
- * .
+ * Event message for {@link mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationEvent}.
  *
  * @author Filipe Bezerra
- * @version 2, 27/02/2015
+ * @version 2.0, 27/02/2015
  * @since #
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationEvent
  */
 public class CounterNotificationMessage {
     

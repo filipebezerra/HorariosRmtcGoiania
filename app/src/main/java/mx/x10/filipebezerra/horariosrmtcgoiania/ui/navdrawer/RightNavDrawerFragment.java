@@ -13,8 +13,8 @@ import java.util.List;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
@@ -27,7 +27,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragmen
  * @version 2.0
  * @since 2.0_23/02/2015
  */
-public class RightDrawerFragment extends BaseDrawerSideFragment {
+public class RightNavDrawerFragment extends BaseNavDrawerFragment {
 
     private FavoriteBusStopsAdapter mListAdapter;
 
@@ -48,7 +48,7 @@ public class RightDrawerFragment extends BaseDrawerSideFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListView().setOnItemClickListener(RightDrawerFragment.this);
+        getListView().setOnItemClickListener(RightNavDrawerFragment.this);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class RightDrawerFragment extends BaseDrawerSideFragment {
         arguments.putString(HorarioViagemFragment.ARG_PARAM_BUS_STOP_NUMBER,
                 String.valueOf(favoriteBusStop.getStopCode()));
         
-        postDrawerItemSelectionEvent(new DrawerItemSelectionEvent(new DrawerItemSelectionMessage(
-                LeftDrawerFragment.getDrawerItemHorariosViagem(), arguments)));
+        postDrawerItemSelectionEvent(new NavDrawerItemSelectionEvent(new NavDrawerItemSelectionMessage(
+                LeftNavDrawerFragment.getDrawerItemHorariosViagem(), arguments)));
     }
     
     @Subscribe
@@ -74,8 +74,6 @@ public class RightDrawerFragment extends BaseDrawerSideFragment {
                 mListAdapter.remove((FavoriteBusStop) event.getMessage().getEntity());
                 break;
         }
-
-        // TODO : Update the counter in the BadgeView
     }
 
 }

@@ -21,8 +21,8 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.NavDrawerAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.CounterNotificationMessage;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.DrawerItemSelectionMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavDrawerItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuItem;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuSection;
@@ -31,12 +31,12 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuSection;
  * Left drawer fragment composed for the static menus.
  *
  * @author Filipe Bezerra
- * @version 2.0
- * @since 2.0_23/02/2015
+ * @version 2.0, 27/02/2015
+ * @since #
  */
-public class LeftDrawerFragment extends BaseDrawerSideFragment {
+public class LeftNavDrawerFragment extends BaseNavDrawerFragment {
 
-    private static final String LOG_TAG = LeftDrawerFragment.class.getSimpleName();
+    private static final String LOG_TAG = LeftNavDrawerFragment.class.getSimpleName();
     
     public static final int ID_DRAWER_MENU_SECTION_FAVORITES = 10;
     public static final int ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS = 11;
@@ -49,7 +49,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
     public static final int ID_DRAWER_FIXED_MENU_ITEM_HELP = 33;
     public static final int ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS = 34;
     
-    private static NavDrawerItem mNavDrawerItemHorariosViagem = null;
+    private static NavDrawerItem mDefaultNavDrawerItem = null;
 
     private NavDrawerAdapter mListAdapter;
 
@@ -60,7 +60,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
     private Map<Integer, Long> mBufferCounterView = new HashMap<>();
 
     public static NavDrawerItem getDrawerItemHorariosViagem() {
-        return mNavDrawerItemHorariosViagem;
+        return mDefaultNavDrawerItem;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
         mListAdapter = new NavDrawerAdapter(mActivity, R.layout.navdrawer_left_items,
                 getDrawerItems());
         setListAdapter(mListAdapter);
-        getListView().setOnItemClickListener(LeftDrawerFragment.this);
+        getListView().setOnItemClickListener(LeftNavDrawerFragment.this);
 
         int position = mListAdapter.getPosition(getDrawerItemHorariosViagem());
         onItemClick(getListView(), null, position, position);
@@ -87,7 +87,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
         super.onItemClick(parent, view, position, id);
 
         NavDrawerItem drawerItem = mListAdapter.getItem(position);
-        postDrawerItemSelectionEvent(new DrawerItemSelectionEvent(new DrawerItemSelectionMessage(
+        postDrawerItemSelectionEvent(new NavDrawerItemSelectionEvent(new NavDrawerItemSelectionMessage(
                 drawerItem, null)));
     }
 
@@ -209,7 +209,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
     }
 
     private List<NavDrawerItem> getDrawerItems() {
-        mNavDrawerItemHorariosViagem = NavMenuItem.create(ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM,
+        mDefaultNavDrawerItem = NavMenuItem.create(ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM,
                 mActivity.getString(R.string.navdrawer_menu_item_rmtc_horarios_viagem),
                 "ic_drawer_horario_viagem", true, mActivity);
 
@@ -225,7 +225,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
                 NavMenuSection.create(ID_DRAWER_MENU_SECTION_SERVICOS_RMTC,
                         mActivity.getString(R.string.navdrawer_menu_section_rmtc_services)),
 
-                mNavDrawerItemHorariosViagem,
+                mDefaultNavDrawerItem,
 
                 NavMenuItem.create(ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM,
                         mActivity.getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem),

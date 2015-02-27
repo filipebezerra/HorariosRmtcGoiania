@@ -11,15 +11,15 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavDrawerItem;
  * @version 2.0, 25/02/2015
  * @since #
  */
-public class DrawerItemSelectionMessage {
+public class NavDrawerItemSelectionMessage {
     
     private NavDrawerItem mNavDrawerItem;
     private Bundle mParams;
 
-    public DrawerItemSelectionMessage() {
+    public NavDrawerItemSelectionMessage() {
     }
 
-    public DrawerItemSelectionMessage(final NavDrawerItem navDrawerItem, final Bundle params) {
+    public NavDrawerItemSelectionMessage(final NavDrawerItem navDrawerItem, final Bundle params) {
         mNavDrawerItem = navDrawerItem;
         mParams = params;
     }
