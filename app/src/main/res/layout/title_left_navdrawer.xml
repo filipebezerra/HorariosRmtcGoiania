@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/navdrawer_section_label"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="7dp"
-    android:paddingBottom="7dp"
-    android:text="@string/title_left_navdrawer"
-    android:textStyle="bold"
-    android:textSize="14sp"
-    android:textColor="@color/navdrawer_section_text_color"
-    android:gravity="center_vertical"
-    android:singleLine="true"
-    android:ellipsize="end"
-    style="?android:attr/listSeparatorTextViewStyle"
-    android:background="@color/navdrawer_section_background"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="24dp"
+              android:background="@color/navdrawer_section_background">
+
+    <TextView
+        android:id="@+id/navdrawer_section_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_gravity="center_vertical"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="@string/title_left_navdrawer"
+        android:textAllCaps="true"
+        android:textColor="@color/navdrawer_section_text_color"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+</LinearLayout>

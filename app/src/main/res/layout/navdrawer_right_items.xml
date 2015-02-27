@@ -1,34 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingRight="16dp"
-    android:paddingLeft="16dp"
-    android:paddingEnd="16dp"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeight">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
     <TextView
         android:id="@+id/numeroPontoItem"
-        android:text="1416"
-        android:textSize="20sp"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="@color/list_item_title"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center_horizontal" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_centerVertical="true"
+        android:textSize="14sp"
+        android:textColor="@color/list_item_title"
+        android:text="1416" />
 
     <TextView
         android:id="@+id/enderecoPontoItem"
-        android:text="Rua 82 (praca Civica), Setor Central - Goiania"
-        android:textSize="14sp"
-        android:textAppearance="?attr/textAppearanceListItemSmall"
-        android:textColor="@color/list_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginStart="72dp"
+        android:layout_centerVertical="true"
+        android:textSize="14sp"
+        android:textColor="@color/list_item_title"
+        android:text="Rua 82 (praca Civica), Setor Central - Goiania"/>
 
-</LinearLayout>
+</RelativeLayout>
