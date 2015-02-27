@@ -40,18 +40,24 @@ public class LeftNavDrawerFragment extends BaseNavDrawerFragment {
     
     public static final int ID_DRAWER_MENU_SECTION_FAVORITES = 10;
     public static final int ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS = 11;
-    public static final int ID_DRAWER_MENU_SECTION_SERVICOS_RMTC = 20;
-    public static final int ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM = 21;
-    public static final int ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM = 22;
-    public static final int ID_DRAWER_MENU_ITEM_PONTO_A_PONTO = 23;
-    public static final int ID_DRAWER_MENU_MENU_ITEM_SAC = 24;
-    public static final int ID_DRAWER_MENU_SECTION_ABOUT = 30;
-    public static final int ID_DRAWER_FIXED_MENU_ITEM_HELP = 33;
-    public static final int ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS = 34;
     
-    private static NavDrawerItem mDefaultNavDrawerItem = null;
-
+    public static final int ID_DRAWER_MENU_SECTION_SERVICOS_RMTC = 20;
+    public static final int ID_DRAWER_MENU_ITEM_WAP = 21;
+    public static final int ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM = 22;
+    public static final int ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM = 23;
+    public static final int ID_DRAWER_MENU_ITEM_PONTO_A_PONTO = 24;
+    public static final int ID_DRAWER_MENU_MENU_ITEM_SAC = 25;
+    
+    public static final int ID_DRAWER_MENU_SECTION_ABOUT = 30;
+    public static final int ID_DRAWER_FIXED_MENU_ITEM_HELP = 31;
+    public static final int ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS = 32;
+    
     private NavDrawerAdapter mListAdapter;
+
+    /**
+     * Default drawer menu item to be loaded in the first screen.
+     */
+    private static NavDrawerItem mDefaultNavDrawerItem = null;
 
     /**
      * A counter buffer to store each View that receives notifications to update their
@@ -59,7 +65,7 @@ public class LeftNavDrawerFragment extends BaseNavDrawerFragment {
      */
     private Map<Integer, Long> mBufferCounterView = new HashMap<>();
 
-    public static NavDrawerItem getDrawerItemHorariosViagem() {
+    public static NavDrawerItem getDefaultNavDrawerItem() {
         return mDefaultNavDrawerItem;
     }
 
@@ -78,7 +84,7 @@ public class LeftNavDrawerFragment extends BaseNavDrawerFragment {
         setListAdapter(mListAdapter);
         getListView().setOnItemClickListener(LeftNavDrawerFragment.this);
 
-        int position = mListAdapter.getPosition(getDrawerItemHorariosViagem());
+        int position = mListAdapter.getPosition(getDefaultNavDrawerItem());
         onItemClick(getListView(), null, position, position);
     }
 
@@ -225,7 +231,11 @@ public class LeftNavDrawerFragment extends BaseNavDrawerFragment {
                 NavMenuSection.create(ID_DRAWER_MENU_SECTION_SERVICOS_RMTC,
                         mActivity.getString(R.string.navdrawer_menu_section_rmtc_services)),
 
-                mDefaultNavDrawerItem,
+                NavMenuItem.create(ID_DRAWER_MENU_ITEM_WAP,
+                        mActivity.getString(R.string.navdrawer_menu_item_rmtc_wap),
+                        "ic_drawer_wap", true, mActivity),
+                
+                getDefaultNavDrawerItem(),
 
                 NavMenuItem.create(ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM,
                         mActivity.getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem),

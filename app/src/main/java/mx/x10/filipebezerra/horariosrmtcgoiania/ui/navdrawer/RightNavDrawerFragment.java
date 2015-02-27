@@ -63,7 +63,7 @@ public class RightNavDrawerFragment extends BaseNavDrawerFragment {
                 String.valueOf(favoriteBusStop.getStopCode()));
         
         postDrawerItemSelectionEvent(new NavDrawerItemSelectionEvent(new NavDrawerItemSelectionMessage(
-                LeftNavDrawerFragment.getDrawerItemHorariosViagem(), arguments)));
+                LeftNavDrawerFragment.getDefaultNavDrawerItem(), arguments)));
     }
     
     @Subscribe

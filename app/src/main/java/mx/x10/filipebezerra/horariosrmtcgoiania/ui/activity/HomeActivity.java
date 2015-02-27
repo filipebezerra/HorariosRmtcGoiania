@@ -34,6 +34,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragmen
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WapFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.AbstractNavDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.NavDrawerActivityConfiguration;
@@ -41,14 +42,18 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_WAP;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PONTO_A_PONTO;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_MENU_ITEM_SAC;
 
 /**
+ * .
+ *
  * @author Filipe Bezerra
- * @since 2.0
+ * @version 2.0, 02/27/2015
+ * @since #
  */
 public class HomeActivity extends AbstractNavDrawerActivity {
 
@@ -151,6 +156,9 @@ public class HomeActivity extends AbstractNavDrawerActivity {
             case ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS:
                 openDrawer(Gravity.RIGHT);
                 break;
+            case ID_DRAWER_MENU_ITEM_WAP:
+                fragment = new WapFragment();
+                break;
             case ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM:
                 fragment = HorarioViagemFragment.newInstance(event.getMessage().getParams());
                 break;
@@ -206,7 +214,7 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                                             HorarioViagemFragment.ARG_PARAM_BUS_STOP_NUMBER, query);
 
                                     onDrawerItemSelectionEvent(new NavDrawerItemSelectionEvent(new NavDrawerItemSelectionMessage(
-                                            LeftNavDrawerFragment.getDrawerItemHorariosViagem(),
+                                            LeftNavDrawerFragment.getDefaultNavDrawerItem(),
                                             arguments)));
                                 } else {
                                     SnackBarHelper.show(HomeActivity.this, response.getString("mensagem"));

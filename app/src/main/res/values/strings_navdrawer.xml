@@ -8,6 +8,7 @@
     <string name="navdrawer_menu_section_about">SOBRE</string>
 
     <string name="navdrawer_menu_item_favorite_bus_stops">Pontos Favoritos</string>
+    <string name="navdrawer_menu_item_rmtc_wap">WAP</string>
     <string name="navdrawer_menu_item_rmtc_horarios_viagem">Horário de Viagem</string>
     <string name="navdrawer_menu_item_rmtc_planeje_viagem">Planeje sua Viagem</string>
     <string name="navdrawer_menu_item_rmtc_ponto_a_ponto">Ponto a Ponto</string>
@@ -15,4 +16,20 @@
 
     <string name="navdrawer_fixed_menu_item_help">Ajuda e Feedback</string>
     <string name="navdrawer_fixed_menu_item_configurations">Configurações</string>
+
+    <string name="navdrawer_menu_item_rmtc_wap_description">
+        Horários de viagem pelo nº do ponto
+    </string>
+    <string name="navdrawer_menu_item_rmtc_horarios_viagem_description">
+        Horários de viagem pelo nº do ponto, linha ou logradouro
+    </string>
+    <string name="navdrawer_menu_item_rmtc_planeje_viagem_description">
+        Roteiros, linhas e mapas
+    </string>
+    <string name="navdrawer_menu_item_rmtc_ponto_a_ponto_description">
+        Fluidez do trânsito e transporte
+    </string>
+    <string name="navdrawer_menu_item_rmtc_sac_description">
+        Atendimento ao cliente
+    </string>
 </resources>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="url_rmtc_wap">http://wap.rmtcgoiania.com.br/</string>
     <string name="url_rmtc_horarios_viagem">http://m.rmtcgoiania.com.br/horariodeviagem</string>
-    <string name="resource_visualizar_ponto">/visualizar/ponto/</string>
     <string name="url_rmtc_planeje_viagem">http://m.rmtcgoiania.com.br/planejesuaviagem</string>
     <string name="url_rmtc_ponto_a_ponto">http://m.rmtcgoiania.com.br/pontoaponto</string>
     <string name="url_rmtc_sac">http://m.rmtcgoiania.com.br/sac</string>
+    <string name="resource_visualizar_ponto">/visualizar/ponto/</string>
 </resources>
