@@ -12,7 +12,7 @@
 
         <include
             android:id="@+id/right_drawer_title"
-            layout="@layout/title_left_navdrawer" />
+            layout="@layout/navdrawer_left_title" />
 
         <ListView
             android:id="@android:id/list"

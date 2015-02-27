@@ -4,24 +4,23 @@
     <!-- App / Activities -->
     <string name="app_name">HorariosRmtcGoiania</string>
     <string name="title_activity_main">Horários Rmtc Gyn</string>
+    <string name="title_left_navdrawer">PONTOS FAVORITOS</string>
 
     <!-- Actions -->
     <string name="action_search">Buscar Ponto</string>
+    <string name="action_share">Compartilhar o App</string>
 
     <!-- Search Action -->
     <string name="search_hint">Número do ponto</string>
-    <string name="voicePromptText">Fale o número do ponto.</string>
-    <string name="searchSettingsDescription">Pontos de parada de ônibus</string>
+    <string name="voice_prompt_text">Fale o número do ponto.</string>
+    <string name="search_settings_description">Pontos de parada de ônibus</string>
 
     <string name="desc_list_item_icon">Item Icon</string>
-    <string name="action_mark_as_favorite">Favoritar Ponto</string>
     <string name="empty_favorites">
         Você ainda não tem favoritos!!!\n\n
         Pesquise por um ponto e ao visualizar o botão flutuante com um lindo coração, toque e veja
         seus favoritos ganharem vida.
     </string>
-    <string name="title_left_navdrawer">PONTOS FAVORITOS</string>
-    <string name="action_share">Compartilhar o App</string>
 
     <string name="share_text">
         Faça o download do aplicativo Horários Rmtc Goiânia e fique sabendo dos horários de viagem 
@@ -30,8 +29,6 @@
         https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania
     </string>
     
-    <string name="share_dialog_title">
-        Compartilhe com seus amigos...
-    </string>
+    <string name="share_dialog_title">Compartilhe com seus amigos&#8230;</string>
     
 </resources>

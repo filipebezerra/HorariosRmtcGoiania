@@ -97,7 +97,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
             if (favoriteBusStop != null) {
                 mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
-                        R.drawable.ic_favorite_white_24dp));
+                        R.drawable.ic_drawer_pontos_favoritos));
 
                 suggestions.saveRecentQuery(
                         String.valueOf(favoriteBusStop.getStopCode()),
@@ -105,7 +105,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             } else {
 
                 final ProgressDialog dialog = new ProgressDialog(getActivity(), "Salvando...",
-                        R.color.progressBarBackground);
+                        R.color.progress_bar_background);
                 // TODO : make cancelable
                 dialog.setCancelable(false);
                 dialog.show();
@@ -146,7 +146,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFloatButtonMarkFavorite.setBackgroundColor(getResources().getColor(
-                R.color.floatingActionButtonBackground));
+                R.color.floating_action_button_background));
         mEventBus = EventBusProvider.getInstance().getEventBus();
     }
 
@@ -157,7 +157,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         }
 
         final ProgressDialog dialog = new ProgressDialog(getActivity(), "Pesquisando...",
-                R.color.progressBarBackground);
+                R.color.progress_bar_background);
         // TODO : make cancelable
         dialog.setCancelable(false);
         dialog.show();
@@ -185,7 +185,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             SnackBarHelper.show(getActivity(), "Ponto removido de seus favoritos.");
 
             mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
-                    R.drawable.ic_favorite_outline_white_24dp));
+                    R.drawable.ic_unmark_favorite));
         } else {
             dialog.setTitle("Adicionando...");
             final String currentUrl = getWebView().getUrl();
@@ -212,7 +212,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             SnackBarHelper.show(getActivity(), "Ponto marcado como favorito.");
 
                             mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
-                                    R.drawable.ic_favorite_white_24dp));
+                                    R.drawable.ic_drawer_pontos_favoritos));
                         }
                     },
                     new Response.ErrorListener() {

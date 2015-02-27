@@ -87,45 +87,45 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
 
     private List<NavDrawerItem> getDrawerItems() {
         mNavDrawerItemHorariosViagem = NavMenuItem.create(ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM,
-                mActivity.getString(R.string.drawer_menu_item_rmtc_horarios_viagem),
-                "ic_alarm_white_24dp", true, mActivity);
+                mActivity.getString(R.string.navdrawer_menu_item_rmtc_horarios_viagem),
+                "ic_drawer_horario_viagem", true, mActivity);
         
         return Arrays.asList(
                 NavMenuSection.create(ID_DRAWER_MENU_SECTION_FAVORITES,
-                        mActivity.getString(R.string.drawer_menu_section_favorites)),
+                        mActivity.getString(R.string.navdrawer_menu_section_favorites)),
 
                 NavMenuItem.create(ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS,
-                        mActivity.getString(R.string.drawer_menu_item_favorite_bus_stops),
-                        "ic_favorite_white_24dp", getFavoriteCount(), true, false,
+                        mActivity.getString(R.string.navdrawer_menu_item_favorite_bus_stops),
+                        "ic_drawer_pontos_favoritos", getFavoriteCount(), true, false,
                         mActivity),
 
                 NavMenuSection.create(ID_DRAWER_MENU_SECTION_SERVICOS_RMTC,
-                        mActivity.getString(R.string.drawer_menu_section_rmtc_services)),
+                        mActivity.getString(R.string.navdrawer_menu_section_rmtc_services)),
 
                 mNavDrawerItemHorariosViagem,
 
                 NavMenuItem.create(ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM,
-                        mActivity.getString(R.string.drawer_menu_item_rmtc_planeje_viagem),
-                        "ic_map_white_24dp", true, mActivity),
+                        mActivity.getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem),
+                        "ic_drawer_planeje_sua_viagem", true, mActivity),
 
                 NavMenuItem.create(ID_DRAWER_MENU_ITEM_PONTO_A_PONTO,
-                        mActivity.getString(R.string.drawer_menu_item_rmtc_ponto_a_ponto),
-                        "ic_place_white_24dp", true, mActivity),
+                        mActivity.getString(R.string.navdrawer_menu_item_rmtc_ponto_a_ponto),
+                        "ic_drawer_ponto_a_ponto", true, mActivity),
 
                 NavMenuItem.create(ID_DRAWER_MENU_MENU_ITEM_SAC,
-                        mActivity.getString(R.string.drawer_menu_item_rmtc_sac),
-                        "ic_call_white_24dp", true, mActivity),
+                        mActivity.getString(R.string.navdrawer_menu_item_rmtc_sac),
+                        "ic_drawer_sac", true, mActivity),
 
                 NavMenuSection.create(ID_DRAWER_MENU_SECTION_ABOUT,
-                        mActivity.getString(R.string.drawer_menu_section_about)),
+                        mActivity.getString(R.string.navdrawer_menu_section_about)),
 
                 NavMenuItem.create(ID_DRAWER_FIXED_MENU_ITEM_HELP,
-                        mActivity.getString(R.string.drawer_fixed_menu_item_help),
-                        "ic_help_white_24dp", false, mActivity),
+                        mActivity.getString(R.string.navdrawer_fixed_menu_item_help),
+                        "ic_drawer_help", false, mActivity),
 
                 NavMenuItem.create(ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS,
-                        mActivity.getString(R.string.drawer_fixed_menu_item_configurations),
-                        "ic_settings_white_24dp", false, mActivity)
+                        mActivity.getString(R.string.navdrawer_fixed_menu_item_configurations),
+                        "ic_drawer_settings", false, mActivity)
         );
     }
     

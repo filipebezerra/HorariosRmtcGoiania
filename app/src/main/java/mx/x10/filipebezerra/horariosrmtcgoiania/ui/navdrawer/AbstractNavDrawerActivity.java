@@ -89,7 +89,7 @@ public abstract class AbstractNavDrawerActivity extends BaseActivity {
     }
 
     protected void initDrawerIcon() {
-        setActionBarIcon(R.drawable.ic_menu_white_24dp);
+        setActionBarIcon(R.drawable.ic_drawer_menu);
     }
 
     protected void initDrawerShadow() {

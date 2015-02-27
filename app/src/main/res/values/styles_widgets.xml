@@ -11,7 +11,7 @@
 
     <style name="TextViewRoboto">
         <item name="fontPath">fonts/Roboto-Regular.ttf</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/color_primary</item>
         <item name="android:textStyle">bold</item>
     </style>
 

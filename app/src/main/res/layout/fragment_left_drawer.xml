@@ -6,6 +6,6 @@
           android:choiceMode="singleChoice"
           android:divider="@color/navdrawer_list_divider"
           android:dividerHeight="0.1dp"
-          android:listSelector="@drawable/navdrawer_list_selector"
+          android:listSelector="@drawable/selector_navdrawer_list"
           android:layout_gravity="start"
           android:background="@color/navdrawer_list_background" />

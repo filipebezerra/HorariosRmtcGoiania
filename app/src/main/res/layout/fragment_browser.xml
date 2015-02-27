@@ -24,9 +24,9 @@
         android:layout_marginRight="@dimen/floating_action_button_margin"
         android:layout_marginEnd="@dimen/floating_action_button_margin"
         android:layout_marginBottom="@dimen/floating_action_button_margin"
-        android:background="@color/floatingActionButtonBackground"
+        android:background="@color/floating_action_button_background"
         materialdesign:animate="true"
-        materialdesign:rippleColor="@color/floatingActionButtonRippleColor"
-        materialdesign:iconDrawable="@drawable/ic_favorite_outline_white_24dp" />
+        materialdesign:rippleColor="@color/floating_action_button_ripple_color"
+        materialdesign:iconDrawable="@drawable/ic_unmark_favorite" />
 
 </RelativeLayout>

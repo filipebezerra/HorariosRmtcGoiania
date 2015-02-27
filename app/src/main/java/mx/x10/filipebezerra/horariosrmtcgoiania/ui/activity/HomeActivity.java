@@ -131,8 +131,8 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         NavDrawerActivityConfiguration navDrawerConf = new NavDrawerActivityConfiguration();
         navDrawerConf.setDrawerLayoutId(R.id.drawer_container);
         navDrawerConf.setDrawerShadow(0);
-        navDrawerConf.setDrawerOpenDesc(R.string.drawer_title_opened);
-        navDrawerConf.setDrawerCloseDesc(R.string.drawer_title_closed);
+        navDrawerConf.setDrawerOpenDesc(R.string.navdrawer_title_opened);
+        navDrawerConf.setDrawerCloseDesc(R.string.navdrawer_title_closed);
 
         return navDrawerConf;
     }

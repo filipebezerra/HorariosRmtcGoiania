@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_opened">@string/title_activity_main</string>
-    <string name="drawer_title_closed">@string/title_activity_main</string>
+    <string name="navdrawer_title_opened">@string/title_activity_main</string>
+    <string name="navdrawer_title_closed">@string/title_activity_main</string>
 
-    <string name="drawer_menu_section_favorites">FAVORITOS</string>
-    <string name="drawer_menu_section_rmtc_services">SERVIÇOS RMTC</string>
-    <string name="drawer_menu_section_about">SOBRE</string>
+    <string name="navdrawer_menu_section_favorites">FAVORITOS</string>
+    <string name="navdrawer_menu_section_rmtc_services">SERVIÇOS RMTC</string>
+    <string name="navdrawer_menu_section_about">SOBRE</string>
 
-    <string name="drawer_menu_item_favorite_bus_stops">Pontos Favoritos</string>
-    <string name="drawer_menu_item_rmtc_horarios_viagem">Horário de Viagem</string>
-    <string name="drawer_menu_item_rmtc_planeje_viagem">Planeje sua Viagem</string>
-    <string name="drawer_menu_item_rmtc_ponto_a_ponto">Ponto a Ponto</string>
-    <string name="drawer_menu_item_rmtc_sac">SAC</string>
+    <string name="navdrawer_menu_item_favorite_bus_stops">Pontos Favoritos</string>
+    <string name="navdrawer_menu_item_rmtc_horarios_viagem">Horário de Viagem</string>
+    <string name="navdrawer_menu_item_rmtc_planeje_viagem">Planeje sua Viagem</string>
+    <string name="navdrawer_menu_item_rmtc_ponto_a_ponto">Ponto a Ponto</string>
+    <string name="navdrawer_menu_item_rmtc_sac">SAC</string>
 
-    <string name="drawer_fixed_menu_item_help">Ajuda e Feedback</string>
-    <string name="drawer_fixed_menu_item_configurations">Configurações</string>
+    <string name="navdrawer_fixed_menu_item_help">Ajuda e Feedback</string>
+    <string name="navdrawer_fixed_menu_item_configurations">Configurações</string>
 </resources>

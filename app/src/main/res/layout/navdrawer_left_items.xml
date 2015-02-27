@@ -13,7 +13,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_favorite_white_24dp"/>
+        android:src="@drawable/ic_drawer_pontos_favoritos"/>
 
     <TextView
         android:id="@+id/navdrawer_item_label"
@@ -28,7 +28,7 @@
         android:layout_toStartOf="@+id/navdrawer_item_counter"
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/drawer_menu_item_rmtc_horarios_viagem"/>
+        android:text="@string/navdrawer_menu_item_rmtc_horarios_viagem"/>
 
     <TextView
         android:id="@+id/navdrawer_item_counter"

@@ -3,7 +3,7 @@
     android:shape="rectangle">
     
     <solid
-        android:color="@color/badge_counter_background" />
+        android:color="@color/navdrawer_item_counter_background" />
 
     <corners
         android:bottomRightRadius="2dp"

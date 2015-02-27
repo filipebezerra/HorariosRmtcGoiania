@@ -7,7 +7,7 @@
     android:searchSuggestSelection=" ?"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
     android:voiceLanguageModel="web_search"
-    android:voicePromptText="@string/voicePromptText"
+    android:voicePromptText="@string/voice_prompt_text"
     android:includeInGlobalSearch="true"
-    android:searchSettingsDescription="@string/searchSettingsDescription"
+    android:searchSettingsDescription="@string/search_settings_description"
     />
