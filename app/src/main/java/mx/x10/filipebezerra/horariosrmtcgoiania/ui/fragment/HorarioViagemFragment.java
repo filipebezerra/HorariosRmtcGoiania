@@ -76,8 +76,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     protected void onWebViewPageStarted() {
         super.onWebViewPageStarted();
-        mFloatButtonMarkFavorite.setVisibility(View.GONE);
-        mFloatButtonMarkFavorite.hide();
     }
 
     @Override

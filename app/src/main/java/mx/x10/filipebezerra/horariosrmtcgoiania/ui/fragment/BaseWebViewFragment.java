@@ -54,6 +54,8 @@ public abstract class BaseWebViewFragment extends Fragment {
 
     protected void onWebViewPageStarted() {
         mProgressBar.setVisibility(View.VISIBLE);
+        mFloatButtonMarkFavorite.setVisibility(View.GONE);
+        mFloatButtonMarkFavorite.hide();
     }
 
     protected void onWebViewPageFinished() {
