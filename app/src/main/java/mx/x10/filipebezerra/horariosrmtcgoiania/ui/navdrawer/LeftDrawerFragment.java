@@ -36,6 +36,8 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.NavMenuSection;
  */
 public class LeftDrawerFragment extends BaseDrawerSideFragment {
 
+    private static final String LOG_TAG = LeftDrawerFragment.class.getSimpleName();
+    
     public static final int ID_DRAWER_MENU_SECTION_FAVORITES = 10;
     public static final int ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS = 11;
     public static final int ID_DRAWER_MENU_SECTION_SERVICOS_RMTC = 20;
@@ -46,7 +48,7 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
     public static final int ID_DRAWER_MENU_SECTION_ABOUT = 30;
     public static final int ID_DRAWER_FIXED_MENU_ITEM_HELP = 33;
     public static final int ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS = 34;
-    private static final String LOG_TAG = LeftDrawerFragment.class.getSimpleName();
+    
     private static NavDrawerItem mNavDrawerItemHorariosViagem = null;
 
     private NavDrawerAdapter mListAdapter;
@@ -76,8 +78,8 @@ public class LeftDrawerFragment extends BaseDrawerSideFragment {
         setListAdapter(mListAdapter);
         getListView().setOnItemClickListener(LeftDrawerFragment.this);
 
-        postDrawerItemSelectionEvent(new DrawerItemSelectionEvent(new DrawerItemSelectionMessage(
-                getDrawerItemHorariosViagem(), null)));
+        int position = mListAdapter.getPosition(getDrawerItemHorariosViagem());
+        onItemClick(getListView(), null, position, position);
     }
 
     @Override

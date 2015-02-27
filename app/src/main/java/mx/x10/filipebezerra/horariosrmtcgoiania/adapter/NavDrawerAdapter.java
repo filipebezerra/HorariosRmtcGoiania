@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -108,25 +107,10 @@ public class NavDrawerAdapter extends ArrayAdapter<NavDrawerItem> implements Ser
     public int getItemViewType(int position) {
         return this.getItem(position).getType();
     }
-
+    
     @Override
     public boolean isEnabled(int position) {
         return getItem(position).isEnabled();
-    }
-
-    public List<NavDrawerItem> getAll() {
-        final List<NavDrawerItem> items = new ArrayList<>();
-
-        for (int i = 0; i < getCount(); i++) {
-            items.add(getItem(i));
-        }
-        return items;
-    }
-
-    public void replace(NavDrawerItem item) {
-        int position = getPosition(item);
-        remove(item);
-        insert(item, position);
     }
 
     class NavMenuItemHolder {
