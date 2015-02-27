@@ -14,6 +14,7 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -42,10 +43,10 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_WAP;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PONTO_A_PONTO;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_WAP;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_MENU_ITEM_SAC;
 
 /**
@@ -64,16 +65,14 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO : read Android doc for this method
-        //setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
-        handleIntent(getIntent());
+        handleSearchQuery(getIntent());
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        handleIntent(intent);
+        handleSearchQuery(intent);
     }
 
     @Override
@@ -88,6 +87,29 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int id = item.getItemId();
+        switch (id) {
+            case R.id.action_share:
+                startActivity(Intent.createChooser(createShareIntent(),
+                        getString(R.string.share_dialog_title)));
+                return true;
+            case R.id.action_search:
+                onSearchRequested();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+            return onSearchRequested();
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
     @SuppressWarnings("deprecation")
     private Intent createShareIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -99,18 +121,6 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
         return shareIntent;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case R.id.action_share:
-                startActivity(Intent.createChooser(createShareIntent(), 
-                        getString(R.string.share_dialog_title)));
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -184,13 +194,13 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         }
     }
 
-    private void handleIntent(Intent intent) {
+    private void handleSearchQuery(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            doSearch(intent);
+            onSearch(intent);
         }
     }
 
-    private void doSearch(Intent intent) {
+    private void onSearch(Intent intent) {
         final String query = intent.getStringExtra(SearchManager.QUERY);
 
         if (TextUtils.isDigitsOnly(query)) {
