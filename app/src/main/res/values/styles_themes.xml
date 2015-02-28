@@ -9,4 +9,19 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="AppTheme.Settings" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="toolbarStyle">@style/Widget.Toolbar</item>
+    </style>
+
+    <style name="Widget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <!-- TODO : Toolbar text color is not working -->
+        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="navigationIcon">?attr/homeAsUpIndicator</item>
+    </style>
+
 </resources>

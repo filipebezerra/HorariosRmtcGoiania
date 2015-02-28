@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Dados">
+
+        <Preference
+            android:key="@string/pref_clear_recent_suggestions_key"
+            android:title="Limpar sugestões de pesquisa"
+            android:summary="Remover todas sugestões de pesquisa armazenadas."/>
+
+        <Preference
+            android:key="@string/pref_clear_favorite_bus_stop_data_key"
+            android:title="Limpar pontos favoritos"
+            android:summary="Remover todos seus pontos favoritos armazenados."/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Menu">
+
+        <CheckBoxPreference
+            android:key="@string/pref_navdrawer_open_on_launch_key"
+            android:title="Menu lateral visível ao abrir"
+            android:summary="Abrir o menu lateral sempre que iniciar."
+            android:defaultValue="@bool/pref_navdrawer_open_on_launch_default"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Sobre">
+
+        <Preference
+            android:key="@string/pref_about_info_key"
+            android:title="Sobre" />
+
+        <Preference
+            android:key="@string/pref_open_source_licenses_info_key"
+            android:title="Licenças de código fonte" />
+
+        <Preference
+            android:key="@string/pref_changelog_info_key"
+            android:title="Histórico de mudanças" />
+
+        <Preference
+            android:key="@string/pref_product_tour_key"
+            android:title="Tour do produto" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

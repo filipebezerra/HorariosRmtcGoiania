@@ -1,13 +1,16 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -42,6 +45,8 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.NavDrawerActivityCo
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_FIXED_MENU_ITEM_HELP;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM;
@@ -124,11 +129,35 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         return shareIntent;
     }
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(mConnectionReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
+
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        if (! prefs.contains(getString(R.string.setting_user_learned_navdrawer_key))) {
+            openDrawer(Gravity.LEFT);
+            SharedPreferences.Editor prefsEditor = prefs.edit();
+            prefsEditor.putBoolean(getString(R.string.setting_user_learned_navdrawer_key), true);
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO) {
+                prefsEditor.commit();
+            } else {
+                prefsEditor.apply();
+            }
+        } else {
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(
+                    HomeActivity.this);
+            if (sharedPrefs.contains(getString(R.string.pref_navdrawer_open_on_launch_key))) {
+                boolean openNavDrawer = sharedPrefs.getBoolean(getString(R.string
+                                .pref_navdrawer_open_on_launch_key),
+                        getResources().getBoolean(R.bool.pref_navdrawer_open_on_launch_default));
+
+                if (openNavDrawer)
+                    openDrawer(Gravity.LEFT);
+            }
+        }
     }
 
     @Override
@@ -181,6 +210,11 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                 break;
             case ID_DRAWER_MENU_MENU_ITEM_SAC:
                 fragment = new SacFragment();
+                break;
+            case ID_DRAWER_FIXED_MENU_ITEM_HELP:
+                break;
+            case ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS:
+                startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
                 break;
             default:
                 break;

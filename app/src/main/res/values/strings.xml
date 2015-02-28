@@ -3,6 +3,7 @@
 
     <!-- App / Activities -->
     <string name="app_name">HorariosRmtcGoiania</string>
+    <string name="full_app_name">Horários Rmtc Goiânia</string>
     <string name="title_activity_main">Horários Rmtc Gyn</string>
     <string name="title_left_navdrawer">PONTOS FAVORITOS</string>
 
@@ -30,5 +31,9 @@
     </string>
     
     <string name="share_dialog_title">Compartilhe com seus amigos&#8230;</string>
+    
+    <string name="dialog_message_about_info">
+        Versão: 2.0\n\nDesenvolvedor: Filipe Bezerra
+    </string>
     
 </resources>

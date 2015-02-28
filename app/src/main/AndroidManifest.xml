@@ -38,6 +38,11 @@
                 android:resource="@xml/searchable" />
 
         </activity>
+        
+        <activity 
+            android:name=".ui.activity.SettingsActivity"
+            android:theme="@style/AppTheme.Settings"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
 
         <provider
             android:name="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
