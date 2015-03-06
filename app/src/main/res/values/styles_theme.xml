@@ -1,6 +1,4 @@
-<resources>
-    <style name="Theme.HorariosRmtcGoiania" parent="Theme.HorariosRmtcGoiania.Base"/>
-
+<resources>tyles_w
     <style name="Theme.HorariosRmtcGoiania.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/theme_color_primary</item>
         <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
@@ -8,15 +6,14 @@
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
-    <style name="Theme.HorariosRmtcGoiania.Settings" parent="Theme.AppCompat.Light">
+    <style name="Theme.HorariosRmtcGoiania.Settings.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/theme_color_primary</item>
         <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="toolbarStyle">@style/Widget.Toolbar</item>
+        <item name="searchViewStyle">@style/Widget.SearchView</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
-
-    <style name="Widget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="navigationIcon">?attr/homeAsUpIndicator</item>
-    </style>
+    
+    <style name="Theme.HorariosRmtcGoiania" parent="Theme.HorariosRmtcGoiania.Base"/>
+    
+    <style name="Theme.HorariosRmtcGoiania.Settings" parent="Theme.HorariosRmtcGoiania.Settings.Base"/>
 </resources>

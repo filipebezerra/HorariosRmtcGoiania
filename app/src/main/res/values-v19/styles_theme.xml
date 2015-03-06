@@ -7,4 +7,12 @@
         <item name="colorAccent">@color/theme_color_accent</item>
         <item name="colorControlHighlight">@color/theme_color_highlight</item>
     </style>
+
+    <style name="Theme.HorariosRmtcGoiania.Settings" parent="Theme.HorariosRmtcGoiania.Settings.Base">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorPrimary">@color/theme_color_primary</item>
+        <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
+        <item name="colorAccent">@color/theme_color_accent</item>
+        <item name="colorControlHighlight">@color/theme_color_highlight</item>
+    </style>
 </resources>
