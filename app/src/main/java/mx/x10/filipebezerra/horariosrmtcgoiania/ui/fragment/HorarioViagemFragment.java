@@ -2,6 +2,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -9,7 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringUTF8Request;
 import com.gc.materialdesign.widgets.ProgressDialog;
-import com.google.common.primitives.Ints;
 import com.squareup.otto.Bus;
 
 import butterknife.OnClick;
@@ -32,12 +32,12 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
  * {@link com.gc.materialdesign.views.ButtonFloat} based in Material design.
  *
  * @author Filipe Bezerra
- * @version 2.0, 02/26/2015
- * @since 1.6
+ * @version 2.0, 06/03/2015
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment
+ * @since 1.6
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
 
@@ -233,10 +233,19 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     }
 
     private boolean isPreviewPagePoint() {
-        // TODO : remove usage of Ints from guava lib
-        Integer busStopCode = Ints.tryParse(getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT));
+        Integer busStopCode = parseBusStopCodeFromCurrentUrl();
         Bundle mArguments = getArguments();
         return busStopCode != null || mArguments != null && mArguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER);
+    }
+    
+    private Integer parseBusStopCodeFromCurrentUrl() {
+        String busStopCodeSegment = getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT);
+        
+        try {
+            return TextUtils.isEmpty(busStopCodeSegment) ? null : Integer.parseInt(busStopCodeSegment);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     private Integer getBusStopSearched() {
@@ -244,7 +253,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             return null;
         }
 
-        Integer busStopCode = Ints.tryParse(getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT));
+        Integer busStopCode = parseBusStopCodeFromCurrentUrl();
 
         return busStopCode != null ? busStopCode : Integer.parseInt(getArguments().getString
                 (ARG_PARAM_BUS_STOP_NUMBER));
