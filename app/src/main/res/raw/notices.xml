@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+    <notice>
+        <name>Butter Knife</name>
+        <url>http://jakewharton.github.io/butterknife/</url>
+        <copyright>Copyright 2013 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Calligraphy</name>
+        <url>https://github.com/chrisjenx/Calligraphy</url>
+        <copyright>Copyright 2013 Christopher Jenkins</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>greenDAO</name>
+        <url>http://greendao-orm.com/</url>
+        <copyright>Copyright 2013 greenrobot</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Guava</name>
+        <url>https://github.com/google/guava</url>
+        <copyright>Copyright 2010 Google</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>jsoup</name>
+        <url>http://jsoup.org/</url>
+        <copyright>Copyright 2009 Jonathan Hedley</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>LicensesDialog</name>
+        <url>http://psdev.de/LicensesDialog/</url>
+        <copyright>Copyright 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Material Design Android Library</name>
+        <url>https://github.com/navasmdc/MaterialDesignLibrary</url>
+        <copyright>Copyright 2014 Ivan Navas</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Nine Old Androids</name>
+        <url>http://nineoldandroids.com/</url>
+        <copyright>Copyright 2012 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Otto</name>
+        <url>http://square.github.io/otto/</url>
+        <copyright>Copyright 2012 Square, Inc</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+</notices>

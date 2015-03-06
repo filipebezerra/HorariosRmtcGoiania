@@ -44,7 +44,11 @@ public class ApplicationSingleton extends Application {
      * The default font is Roboto-Regular.
      */
     private void initDefaultFont() {
-        CalligraphyConfig.initDefault("fonts/Roboto-Regular.ttf", R.attr.fontPath);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
     /**
