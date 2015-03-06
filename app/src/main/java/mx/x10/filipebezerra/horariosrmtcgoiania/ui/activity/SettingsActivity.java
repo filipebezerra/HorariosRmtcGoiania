@@ -116,7 +116,7 @@ public class SettingsActivity extends PreferenceActivity
             
             case PREF_OPEN_SOURCE_LICENSES_INFO_KEY:
                 new LicensesDialog.Builder(this).setNotices(R.raw.notices)
-                        .setThemeResourceId(R.style.Theme_Widget_LicensesDialog)
+                        .setThemeResourceId(R.style.Widget_LicensesDialog)
                         .setDividerColorId(R.color.licenses_dialog_divider_color).build().show();
                 return true;
             

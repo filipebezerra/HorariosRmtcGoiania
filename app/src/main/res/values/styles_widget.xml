@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="TextViewRoboto20" parent="TextViewRoboto">
         <item name="android:textSize">20sp</item>
     </style>
@@ -15,4 +14,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Widget.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="layout">@layout/widget_search_view</item>
+    </style>
+    
+    <style name="Widget.LicensesDialog" parent="android:Theme.Dialog">
+        <item name="android:textColor">#FF00DFFF</item>
+    </style>
+
+    <style name="Widget.Toolbar.Popup" parent="style/ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/theme_color_primary</item>
+    </style>
 </resources>
