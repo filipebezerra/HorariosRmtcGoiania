@@ -1,0 +1,34 @@
+<resources>
+    <style name="Theme.HorariosRmtcGoiania" parent="Theme.HorariosRmtcGoiania.Base"/>
+
+    <style name="Theme.HorariosRmtcGoiania.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/theme_color_primary</item>
+        <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
+        <item name="searchViewStyle">@style/CustomSearchViewStyle</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="layout">@layout/widget_search_view</item>
+    </style>
+
+    <style name="Theme.HorariosRmtcGoiania.Settings" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/theme_color_primary</item>
+        <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="toolbarStyle">@style/Widget.Toolbar</item>
+    </style>
+
+    <style name="Widget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="navigationIcon">?attr/homeAsUpIndicator</item>
+    </style>
+
+    <style name="Theme.Widget.LicensesDialog" parent="android:Theme.Dialog">
+        <item name="android:textColor">#FF00DFFF</item>
+    </style>
+
+    <style name="Theme.Widget.Toolbar.Popup" parent="style/ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/theme_color_primary</item>
+    </style>
+</resources>
