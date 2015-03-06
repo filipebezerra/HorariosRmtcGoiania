@@ -9,7 +9,7 @@
 
     <!-- Actions -->
     <string name="action_search">Buscar Ponto</string>
-    <string name="action_share">Compartilhar o App</string>
+    <string name="action_share">Convide seus amigos</string>
 
     <!-- Search Action -->
     <string name="search_hint">Número do ponto</string>
