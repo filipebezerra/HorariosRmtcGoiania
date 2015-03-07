@@ -19,5 +19,4 @@
         android:icon="@drawable/ic_share"
         android:orderInCategory="2"
         support:showAsAction="ifRoom"/>
-
 </menu>

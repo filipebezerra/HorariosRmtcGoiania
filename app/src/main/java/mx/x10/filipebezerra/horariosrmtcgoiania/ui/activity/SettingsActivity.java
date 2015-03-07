@@ -40,13 +40,14 @@ public class SettingsActivity extends PreferenceActivity
         findPreference(PREF_CLEAR_FAVORITE_BUS_STOP_DATA_KEY).setOnPreferenceClickListener(this);
         findPreference(PREF_ABOUT_INFO_KEY).setOnPreferenceClickListener(this);
         findPreference(PREF_OPEN_SOURCE_LICENSES_INFO_KEY).setOnPreferenceClickListener(this);
+        findPreference(PREF_CHANGELOG_INFO_KEY).setOnPreferenceClickListener(this);
+        findPreference(PREF_PRODUCT_TOUR_KEY).setOnPreferenceClickListener(this);
     }
 
     private void setupContentView() {
         setContentView(R.layout.activity_settings);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Configurações");
+        toolbar.setTitle(getString(R.string.section_title_settings));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setNavigationOnClickListener(this);
     }
@@ -117,6 +118,7 @@ public class SettingsActivity extends PreferenceActivity
             case PREF_OPEN_SOURCE_LICENSES_INFO_KEY:
                 new LicensesDialog.Builder(this).setNotices(R.raw.notices)
                         .setThemeResourceId(R.style.Widget_LicensesDialog)
+                        .setTitle(getString(R.string.pref_open_source_licenses_info_key_title))
                         .setDividerColorId(R.color.licenses_dialog_divider_color).build().show();
                 return true;
 

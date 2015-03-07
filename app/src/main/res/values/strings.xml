@@ -9,7 +9,8 @@
 
     <!-- Actions -->
     <string name="action_search">Buscar Ponto</string>
-    <string name="action_share">Convide seus amigos</string>
+    <string name="action_share">Compartilhe com amigos</string>
+    <string name="section_title_settings">Configurações</string>
 
     <!-- Search Action -->
     <string name="search_hint">Número do ponto</string>
@@ -33,7 +34,7 @@
     <string name="share_dialog_title">Compartilhe com seus amigos&#8230;</string>
     
     <string name="dialog_message_about_info">
-        Versão: 2.0\n\nDesenvolvedor: Filipe Bezerra
+        Desenvolvedor: Filipe Bezerra de Sousa\nVersão: 2.0
     </string>
 
 <!-- TODO: Remove or change this placeholder text -->
