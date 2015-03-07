@@ -3,10 +3,6 @@
     <string name="navdrawer_title_opened">@string/title_activity_main</string>
     <string name="navdrawer_title_closed">@string/title_activity_main</string>
 
-    <string name="navdrawer_menu_section_favorites">FAVORITOS</string>
-    <string name="navdrawer_menu_section_rmtc_services">SERVIÇOS RMTC</string>
-    <string name="navdrawer_menu_section_about">SOBRE</string>
-
     <string name="navdrawer_menu_item_favorite_bus_stops">Pontos Favoritos</string>
     <string name="navdrawer_menu_item_rmtc_wap">WAP</string>
     <string name="navdrawer_menu_item_rmtc_horarios_viagem">Horário de Viagem</string>

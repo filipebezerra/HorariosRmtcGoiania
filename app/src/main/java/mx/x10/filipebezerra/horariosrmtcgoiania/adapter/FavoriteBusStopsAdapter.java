@@ -1,57 +1,29 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import java.util.List;
+public class FavoriteBusStopsAdapter extends RecyclerView.Adapter<FavoriteBusStopsAdapter.ViewHolder> {
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
-
-public class FavoriteBusStopsAdapter extends ArrayAdapter<FavoriteBusStop> {
-
-    private int mLayoutResource;
-
-    public FavoriteBusStopsAdapter(Context context, int resource, List<FavoriteBusStop> objects) {
-        super(context, resource, objects);
-        mLayoutResource = resource;
+    @Override
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        return null;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        ViewHolder holder;
-        FavoriteBusStop ponto = getItem(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        if (view == null) {
-            view = LayoutInflater.from(getContext()).inflate(mLayoutResource, parent, false);
-            holder = new ViewHolder(view);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
-        }
-
-        holder.mNumeroPontoTextView.setText(String.valueOf(ponto.getStopCode()));
-        holder.mEnderecoTextView.setText(ponto.getAddress());
-
-        return view;
     }
 
-    class ViewHolder {
-        @InjectView(R.id.numeroPontoItem)
-        public TextView mNumeroPontoTextView;
+    @Override
+    public int getItemCount() {
+        return 0;
+    }
 
-        @InjectView(R.id.enderecoPontoItem)
-        public TextView mEnderecoTextView;
-
-        public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(final View itemView) {
+            super(itemView);
         }
     }
 }

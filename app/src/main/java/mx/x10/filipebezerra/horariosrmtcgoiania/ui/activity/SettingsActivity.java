@@ -44,7 +44,7 @@ public class SettingsActivity extends PreferenceActivity
 
     private void setupContentView() {
         setContentView(R.layout.activity_settings);
-        
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Configurações");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -70,7 +70,7 @@ public class SettingsActivity extends PreferenceActivity
     public boolean onPreferenceClick(final Preference preference) {
         final String key = preference.getKey();
         Dialog dialog;
-        
+
         switch (key) {
             case PREF_CLEAR_RECENT_SUGGESTIONS_KEY:
                 dialog = new Dialog(SettingsActivity.this, preference.getTitle().toString(),
@@ -89,7 +89,7 @@ public class SettingsActivity extends PreferenceActivity
                 dialog.show();
                 dialog.getButtonAccept().setText("OK");
                 return true;
-            
+
             case PREF_CLEAR_FAVORITE_BUS_STOP_DATA_KEY:
                 dialog = new Dialog(SettingsActivity.this, preference.getTitle().toString(),
                         "Todos seus pontos favoritos serão removidos.");
@@ -106,27 +106,27 @@ public class SettingsActivity extends PreferenceActivity
                 dialog.show();
                 dialog.getButtonAccept().setText("OK");
                 return false;
-            
+
             case PREF_ABOUT_INFO_KEY:
                 dialog = new Dialog(SettingsActivity.this, getString(R.string.full_app_name),
                         getString(R.string.dialog_message_about_info));
                 dialog.show();
                 dialog.getButtonAccept().setText("OK");
                 return true;
-            
+
             case PREF_OPEN_SOURCE_LICENSES_INFO_KEY:
                 new LicensesDialog.Builder(this).setNotices(R.raw.notices)
                         .setThemeResourceId(R.style.Widget_LicensesDialog)
                         .setDividerColorId(R.color.licenses_dialog_divider_color).build().show();
                 return true;
-            
+
             case PREF_CHANGELOG_INFO_KEY:
                 return false;
-            
+
             case PREF_PRODUCT_TOUR_KEY:
                 return false;
         }
         return false;
     }
-    
+
 }

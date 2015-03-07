@@ -171,8 +171,15 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             dialog.setTitle("Removendo...");
             dao.delete(favoriteBusStopFound);
 
+            // TODO : handle persistentEvents in the appropriate handler
             mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
                     PersistenceMessage.PersistenceType.DELETION, favoriteBusStopFound)));
+            
+            // TODO : post notificationEvents
+            /**
+            mEventBus.post(new NotificationEvent(new NotificationMessage(
+                    NotificationMessage.NotificationType.DECREMENT)));
+             **/
 
             dialog.hide();
 
@@ -197,9 +204,16 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                             dao.insert(newFavoriteBusStop);
 
+                            // TODO : handle persistentEvents in the appropriate handler
                             mEventBus.post(new PersistenceEvent(new SQLitePersistenceMessage(
                                     PersistenceMessage.PersistenceType.INSERTION,
                                     newFavoriteBusStop)));
+
+                            // TODO : post notificationEvents
+                            /**
+                            mEventBus.post(new NotificationEvent(new NotificationMessage(
+                                    NotificationMessage.NotificationType.INCREMENT)));
+                             **/
 
                             dialog.hide();
 
@@ -258,5 +272,4 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         return busStopCode != null ? busStopCode : Integer.parseInt(getArguments().getString
                 (ARG_PARAM_BUS_STOP_NUMBER));
     }
-
 }

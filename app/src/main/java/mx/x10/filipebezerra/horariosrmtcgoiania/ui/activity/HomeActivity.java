@@ -1,22 +1,17 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
-import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,34 +20,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.NavDrawerItemSelectionMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WapFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.AbstractNavDrawerActivity;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.NavDrawerActivityConfiguration;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_FIXED_MENU_ITEM_HELP;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_PONTO_A_PONTO;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_ITEM_WAP;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawerFragment.ID_DRAWER_MENU_MENU_ITEM_SAC;
 
 /**
  * .
@@ -61,19 +37,13 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.navdrawer.LeftNavDrawe
  * @version 2.0, 02/27/2015
  * @since #
  */
-public class HomeActivity extends AbstractNavDrawerActivity {
+public class HomeActivity extends BaseActivity {
 
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
-    
-    private SearchView mSearchView;
-    
-    private MenuItem mSearchMenuItem;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        handleSearchQuery(getIntent());
-    }
+    private SearchView mSearchView;
+
+    private MenuItem mSearchMenuItem;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -129,35 +99,14 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         return shareIntent;
     }
 
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(mConnectionReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
 
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        if (! prefs.contains(getString(R.string.setting_user_learned_navdrawer_key))) {
-            openDrawer(Gravity.LEFT);
-            SharedPreferences.Editor prefsEditor = prefs.edit();
-            prefsEditor.putBoolean(getString(R.string.setting_user_learned_navdrawer_key), true);
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO) {
-                prefsEditor.commit();
-            } else {
-                prefsEditor.apply();
-            }
-        } else {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(
-                    HomeActivity.this);
-            if (sharedPrefs.contains(getString(R.string.pref_navdrawer_open_on_launch_key))) {
-                boolean openNavDrawer = sharedPrefs.getBoolean(getString(R.string
-                                .pref_navdrawer_open_on_launch_key),
-                        getResources().getBoolean(R.bool.pref_navdrawer_open_on_launch_default));
-
-                if (openNavDrawer)
-                    openDrawer(Gravity.LEFT);
-            }
-        }
+        // TODO : this is the callback handle search (comes from GlobalSearch configuration)
+        handleSearchQuery(getIntent());
     }
 
     @Override
@@ -169,64 +118,6 @@ public class HomeActivity extends AbstractNavDrawerActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    @Override
-    protected NavDrawerActivityConfiguration getNavDrawerConfiguration() {
-        NavDrawerActivityConfiguration navDrawerConf = new NavDrawerActivityConfiguration();
-        navDrawerConf.setDrawerLayoutId(R.id.drawer_container);
-        navDrawerConf.setDrawerShadow(0);
-        navDrawerConf.setDrawerOpenDesc(R.string.navdrawer_title_opened);
-        navDrawerConf.setDrawerCloseDesc(R.string.navdrawer_title_closed);
-
-        return navDrawerConf;
-    }
-
-    @Override
-    protected int getLayoutResource() {
-        return R.layout.activity_home;
-    }
-
-    @Subscribe
-    public void onDrawerItemSelectionEvent(NavDrawerItemSelectionEvent event) {
-        final int position = event.getMessage().getNavDrawerItem().getId();
-        Fragment fragment = null;
-
-        switch (position) {
-            case ID_DRAWER_MENU_ITEM_FAVORITE_BUS_STOPS:
-                openDrawer(Gravity.RIGHT);
-                break;
-            case ID_DRAWER_MENU_ITEM_WAP:
-                fragment = new WapFragment();
-                break;
-            case ID_DRAWER_MENU_ITEM_HORARIOS_VIAGEM:
-                fragment = HorarioViagemFragment.newInstance(event.getMessage().getParams());
-                break;
-            case ID_DRAWER_MENU_ITEM_PLANEJE_VIAGEM:
-                fragment = new PlanejeViagemFragment();
-                break;
-            case ID_DRAWER_MENU_ITEM_PONTO_A_PONTO:
-                fragment = new PontoToPontoFragment();
-                break;
-            case ID_DRAWER_MENU_MENU_ITEM_SAC:
-                fragment = new SacFragment();
-                break;
-            case ID_DRAWER_FIXED_MENU_ITEM_HELP:
-                break;
-            case ID_DRAWER_FIXED_MENU_ITEM_CONFIGURATIONS:
-                startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
-                break;
-            default:
-                break;
-        }
-
-        if (fragment != null) {
-            super.onDrawerItemSelectionEvent(event);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    fragment).commit();
-        } else {
-            Log.d(LOG_TAG, String.format("No fragment found for NavItem %d selected!", position));
-        }
     }
 
     private void handleSearchQuery(Intent intent) {
@@ -258,9 +149,9 @@ public class HomeActivity extends AbstractNavDrawerActivity {
                                     arguments.putString(
                                             HorarioViagemFragment.ARG_PARAM_BUS_STOP_NUMBER, query);
 
-                                    onDrawerItemSelectionEvent(new NavDrawerItemSelectionEvent(new NavDrawerItemSelectionMessage(
-                                            LeftNavDrawerFragment.getDefaultNavDrawerItem(),
-                                            arguments)));
+                                    // TODO : Send query to {@link HorarioViagemFragment}
+                                    getSectionByTitle(getString(
+                                            R.string.navdrawer_menu_item_rmtc_horarios_viagem)).select();
                                 } else {
                                     SnackBarHelper.show(HomeActivity.this, response.getString("mensagem"));
                                 }
@@ -287,4 +178,28 @@ public class HomeActivity extends AbstractNavDrawerActivity {
         }
     }
 
+    // TODO : handle notificationMessage bus event
+    /**
+    @Subscribe
+    public void onNotificationEvent(NotificationMessage message) {
+        MaterialSection section = getSectionByTitle(getString(
+                R.string.navdrawer_menu_item_favorite_bus_stops));
+        int actual = section.getNotifications();
+
+        switch (message.getmNotificationType()) {
+            case START:
+                section.setNotifications(1);
+                break;
+            case INCREMENT:
+                section.setNotifications(actual++);
+                break;
+            case DECREMENT:
+                section.setNotifications(actual--);
+                break;
+            case RESET:
+                section.setNotifications(0);
+                break;
+        }
+    }
+    **/
 }

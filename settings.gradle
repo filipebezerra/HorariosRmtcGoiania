@@ -1,1 +1,1 @@
-include ':app', ':appmodelgenerator'
+include ':app', ':appmodelgenerator', ':MaterialRippleLib', ':MaterialNavigationDrawerLib'
