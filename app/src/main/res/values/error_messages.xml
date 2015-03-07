@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_internet_connectivity">
+        Desculpe, mas você não está conectado à internet!
+    </string>
+    <string name="non_digit_voice_search">
+        Somente é possivel busca pelo numero do ponto!
+    </string>
+    <string name="error_in_network_search_request">
+        Desculpe, não foi possível fazer a busca. Por favor, Tente novamente!
+    </string>
+</resources>

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- App / Activities -->
-    <string name="app_name">HorariosRmtcGoiania</string>
-    <string name="full_app_name">Horários Rmtc Goiânia</string>
-    <string name="title_activity_main">Horários Rmtc Gyn</string>
-    <string name="title_left_navdrawer">PONTOS FAVORITOS</string>
+    <string name="app_name" translatable="false">HorariosRmtcGoiania</string>
+    <string name="full_app_name" translatable="false">Horários Rmtc Goiânia</string>
+    <string name="title_activity_main" translatable="false">Horários Rmtc Gyn</string>
 
     <!-- Actions -->
     <string name="action_search">Buscar Ponto</string>
@@ -17,7 +15,6 @@
     <string name="voice_prompt_text">Fale o número do ponto.</string>
     <string name="search_settings_description">Pontos de parada de ônibus</string>
 
-    <string name="desc_list_item_icon">Item Icon</string>
     <string name="empty_favorites">
         Você ainda não tem favoritos!!!\n\n
         Pesquise por um ponto e ao visualizar o botão flutuante com um lindo coração, toque e veja
@@ -36,8 +33,4 @@
     <string name="dialog_message_about_info">
         Desenvolvedor: Filipe Bezerra de Sousa\nVersão: 2.0
     </string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="json_attr_status_validate_rmtc_horarios_viagem" translatable="false">status</string>
+    <string name="json_attr_success_validate_rmtc_horarios_viagem" translatable="false">sucesso</string>
+    <string name="json_attr_message_validate_rmtc_horarios_viagem" translatable="false">mensagem</string>
+</resources>

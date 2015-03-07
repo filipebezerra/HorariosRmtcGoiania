@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 
+        Error for network requests.
+        Param 1: identify the exception type, ex.: onResponse
+        Param 2: identify the event throwing the exception, ex.: onResponse
+        Param 3: identify the response type, ex: JSON
+        Param 4: identify the query, ex: a URL
+        
+        Result example: 
+            JSONException error in onResponse requesting JSON querying http://www.google.com.br
+    -->
+    <string name="log_error_network_request" translatable="false">
+        %1$s error %2$s %3$s requesting %4$s
+    </string>
+</resources>

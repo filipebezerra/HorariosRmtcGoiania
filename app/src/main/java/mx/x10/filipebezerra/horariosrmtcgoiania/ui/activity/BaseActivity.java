@@ -1,16 +1,36 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
+import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
+import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment;
@@ -18,44 +38,112 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WapFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
 
 /**
+ * Activity base containing based implementation of Navigation Drawer and all application base behavior.
+ *
  * @author Filipe Bezerra
- * @since 2.0
+ * @version 2.0, 07/03/2015
+ * @since #
  */
 public abstract class BaseActivity extends MaterialNavigationDrawer {
 
+    private static final String LOG_TAG = BaseActivity.class.getSimpleName();
+    /**
+     * Search handled over all application.
+     */
+    protected SearchView mSearchView;
+
+    /**
+     * Search menu item reference.
+     *
+     * @see #onCreateOptionsMenu
+     */
+    protected MenuItem mSearchMenuItem;
+
+    /**
+     * Broadcast Receiver to detect and notify internet connection issues.
+     */
+    protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!NetworkUtils.isConnectingToInternet(context)) {
+                SnackBarHelper.show(BaseActivity.this, getString(R.string.no_internet_connectivity));
+            }
+        }
+    };
+
+    /**
+     * The delegation method that initializes the activity. Don't use activity's onCreate method.
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void init(final Bundle savedInstanceState) {
-        MaterialAccount account = new MaterialAccount(getResources(), 
-                "Filipe Bezerra", "filipebzerra@gmail.com",R.drawable.photo, R.drawable.bamboo);
-        addAccount(account);
+        addAccountSections();
 
-        addSection(newSection(getString(R.string.navdrawer_menu_item_favorite_bus_stops), 
+        addPrimarySections();
+
+        addDivisor();
+
+        addSecondarySections();
+
+        addBottomSections();
+    }
+
+    /**
+     * Using single account
+     */
+    private void addAccountSections() {
+        MaterialAccount account = new MaterialAccount(getResources(),
+                "Filipe Bezerra", "filipebzerra@gmail.com", R.drawable.photo, R.drawable.bamboo);
+        addAccount(account);
+    }
+
+    /**
+     * Dynamical sections, according with user preferences
+     */
+    private void addPrimarySections() {
+        addSection(newSection(getString(R.string.navdrawer_menu_item_favorite_bus_stops),
                 R.drawable.ic_drawer_pontos_favoritos, new WapFragment())
                 .setNotifications(getFavoriteCount())
                 .setSectionColor(Color.parseColor("#FF5722"), Color.parseColor("#E64A19")));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_wap), 
+    }
+
+    /**
+     * Statical sections, containing predefined sections
+     */
+    private void addSecondarySections() {
+        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_wap),
                 R.drawable.ic_drawer_wap, new WapFragment())
                 .setSectionColor(Color.parseColor("#9C27B0"), Color.parseColor("#7B1FA2")));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_horarios_viagem), 
+        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_horarios_viagem),
                 R.drawable.ic_drawer_horario_viagem, new HorarioViagemFragment())
                 .setSectionColor(Color.parseColor("#009688"), Color.parseColor("#00796B")));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem), 
+        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem),
                 R.drawable.ic_drawer_planeje_sua_viagem, new PlanejeViagemFragment())
                 .setSectionColor(Color.parseColor("#E91E63"), Color.parseColor("#C2185B")));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_ponto_a_ponto), 
+        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_ponto_a_ponto),
                 R.drawable.ic_drawer_ponto_a_ponto, new PontoToPontoFragment())
                 .setSectionColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F")));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_sac), 
+        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_sac),
                 R.drawable.ic_drawer_sac, new SacFragment())
                 .setSectionColor(Color.parseColor("#4CAF50"), Color.parseColor("#388E3C")));
-        
-        addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_help), 
+    }
+
+    /**
+     * Statical sections, containing specific app definitions and help content
+     */
+    private void addBottomSections() {
+        addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_help),
                 R.drawable.ic_drawer_help, new SacFragment())
                 .setSectionColor(Color.parseColor("#FFC107"), Color.parseColor("#FFA000")));
-        addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_configurations), 
-                R.drawable.ic_drawer_settings, new Intent(this, SettingsActivity.class))
+
+        addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_configurations),
+                R.drawable.ic_drawer_settings, new Intent(BaseActivity.this, SettingsActivity.class))
                 .setSectionColor(Color.parseColor("#795548"), Color.parseColor("#5D4037")));
     }
 
@@ -69,16 +157,110 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     @Override
     protected void onStart() {
         super.onStart();
-        EventBusProvider.getInstance().getEventBus().register(this);
+        EventBusProvider.getInstance().getEventBus().register(BaseActivity.this);
+    }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mConnectionReceiver, new IntentFilter(
+                ConnectivityManager.CONNECTIVITY_ACTION));
+
+        // TODO : this is the callback handle search (comes from GlobalSearch configuration)
+        handleSearchQuery(getIntent());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        EventBusProvider.getInstance().getEventBus().unregister(this);
+        unregisterReceiver(mConnectionReceiver);
+        // TODO : register for bus events
+        //EventBusProvider.getInstance().getEventBus().unregister(BaseActivity.this);
     }
-    */
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleSearchQuery(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.global_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        mSearchMenuItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setIconifiedByDefault(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int id = item.getItemId();
+        switch (id) {
+            case R.id.action_share:
+                startActivity(Intent.createChooser(createShareIntent(),
+                        getString(R.string.share_dialog_title)));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Creates the share intent.
+     *
+     * @return share intent
+     */
+    @SuppressWarnings("deprecation")
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        } else {
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        }
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+        return shareIntent;
+    }
+
+    /**
+     * Inject custom font into {@link Context}.
+     *
+     * @param newBase
+     */
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    /**
+     * Handles search hardware button. Compatibility for old Android devices.
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+            if (MenuItemCompat.expandActionView(mSearchMenuItem)) {
+                mSearchView.requestFocus();
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    /**
+     * Handles the menu hardware button to opening the Navigation Drawer.
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
@@ -92,12 +274,90 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         return super.onKeyDown(keyCode, event);
     }
 
-    protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-        if (!NetworkUtils.isConnectingToInternet(context)) {
-            SnackBarHelper.show(BaseActivity.this, getString(R.string.no_internet_connectivity));
+    /**
+     * Search helper method.
+     *
+     * @param intent search intent
+     */
+    private void handleSearchQuery(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            onSearch(intent);
         }
+    }
+
+    /**
+     * Handles and dispatch the search query intent received from the {@link SearchView}.
+     *
+     * @param intent search intent
+     */
+    private void onSearch(Intent intent) {
+        final String query = intent.getStringExtra(SearchManager.QUERY);
+
+        if (TextUtils.isDigitsOnly(query)) {
+            mSearchView.clearFocus();
+            mSearchView.setQuery(query, false);
+
+            String url = Uri.parse(getString(R.string.url_validate_rmtc_horarios_viagem))
+                    .buildUpon()
+                    .appendQueryParameter(
+                            getString(R.string.query_param_validate_rmtc_horarios_viagem), query)
+                    .build().toString();
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String status = response.getString(getString(
+                                        R.string.json_attr_status_validate_rmtc_horarios_viagem));
+
+                                if (getString(R.string.json_attr_success_validate_rmtc_horarios_viagem)
+                                        .equals(status)) {
+
+                                    MaterialSection horarioViagemSection = getSectionByTitle(getString(
+                                            R.string.navdrawer_menu_item_rmtc_horarios_viagem));
+
+                                    // TODO : This method is being invoked twice. Prevent this
+                                    setFragment(HorarioViagemFragment.newInstance(query),
+                                            horarioViagemSection.getTitle());
+                                    getCurrentSection().unSelect();
+                                    changeToolbarColor(horarioViagemSection);
+                                    horarioViagemSection.select();
+                                } else {
+                                    SnackBarHelper.show(BaseActivity.this, response.getString(
+                                            getString(R.string
+                                                    .json_attr_message_validate_rmtc_horarios_viagem)));
+                                }
+                            } catch (JSONException e) {
+                                LOGE(LOG_TAG, String.format(
+                                                getString(R.string.log_error_network_request),
+                                                e.getClass().toString(), "onResponse", "JSONObject",
+                                                query),
+                                        e);
+
+                                LOGE(LOG_TAG, String.format("Error parsing %s",
+                                        response.toString()), e);
+                                SnackBarHelper.show(BaseActivity.this,
+                                        getString(R.string.error_in_network_search_request));
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            LOGE(LOG_TAG, String.format(
+                                    getString(R.string.log_error_network_request),
+                                    error.getClass().toString(), "onErrorResponse", "JSONObject",
+                                    query), error);
+                            SnackBarHelper.show(BaseActivity.this,
+                                    getString(R.string.error_in_network_search_request));
+                        }
+                    }
+            );
+
+            RequestQueueManager.getInstance(BaseActivity.this).addToRequestQueue(request, LOG_TAG);
+        } else {
+            SnackBarHelper.show(BaseActivity.this, getString(R.string.non_digit_voice_search));
         }
-    };
+    }
 }

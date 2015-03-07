@@ -4,7 +4,7 @@
     <string name="pref_clear_recent_suggestions_title">Limpar histórico de pesquisa</string>
     <string name="pref_clear_recent_suggestions_summary">Remover todo histórico de sugestões de pesquisa.</string>
     
-    <string name="pref_clear_favorite_bus_stop_data_key">clear_favorite_bus_stop_data</string>
+    <string name="pref_clear_favorite_bus_stop_data_key" translatable="false">clear_favorite_bus_stop_data</string>
     <string name="pref_clear_favorite_bus_stop_data_key_title">Limpar pontos favoritos</string>
     <string name="pref_clear_favorite_bus_stop_data_key_summary">Remover todos seus pontos favoritos.</string>
     

@@ -177,6 +177,7 @@ public abstract class BaseWebViewFragment extends Fragment {
 
             isInternetPresent = NetworkUtils.isConnectingToInternet(getActivity());
 
+            // TODO : handle by errorCode
             if (!isInternetPresent) {
                 SnackBarHelper.show(getActivity(), getString(R.string.no_internet_connectivity));
             }
@@ -205,7 +206,6 @@ public abstract class BaseWebViewFragment extends Fragment {
 
         @Override
         public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-            SnackBarHelper.show(getActivity(), consoleMessage.message());
             return true;
         }
 

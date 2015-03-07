@@ -1,7 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -23,8 +22,9 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
-import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
+
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
 
 /**
  * Fragment composed by a {@link android.webkit.WebView}, an animated
@@ -48,11 +48,27 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     private Bus mEventBus;
 
     public HorarioViagemFragment() {
+        setArguments(Bundle.EMPTY);
+        LOGD(LOG_TAG, this.getClass().getSimpleName() + " created1");
     }
 
+    public static HorarioViagemFragment newInstance(final String singleArgument) {
+        HorarioViagemFragment fragment = new HorarioViagemFragment();
+        
+        if (TextUtils.isEmpty(singleArgument)) {
+            fragment.setArguments(Bundle.EMPTY);
+        } else {
+            Bundle arguments = new Bundle(1);
+            arguments.putString(ARG_PARAM_BUS_STOP_NUMBER, singleArgument);
+            fragment.setArguments(arguments);
+        }
+        
+        return fragment;
+    }
+    
     public static HorarioViagemFragment newInstance(final Bundle arguments) {
         HorarioViagemFragment fragment = new HorarioViagemFragment();
-        fragment.setArguments(arguments);
+        fragment.setArguments(arguments == null ? Bundle.EMPTY : arguments);
         return fragment;
     }
 
@@ -61,16 +77,16 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         String busStopNumber = null;
         Bundle arguments = getArguments();
 
-        if (arguments != null) {
+        if (!Bundle.EMPTY.equals(arguments)) {
             if (arguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
                 busStopNumber = arguments.getString(ARG_PARAM_BUS_STOP_NUMBER);
             }
         }
 
         return busStopNumber == null ? getString(R.string.url_rmtc_horarios_viagem) :
-                String.format(getString(R.string.formatted_url_rmtc_horarios_viagem),
+                String.format(getString(R.string.url_formatted_rmtc_horarios_viagem),
                         getString(R.string.url_rmtc_horarios_viagem),
-                        getString(R.string.resource_visualizar_ponto), busStopNumber);
+                        getString(R.string.url_partial_visualizar_ponto), busStopNumber);
     }
 
     @Override
@@ -82,6 +98,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     protected void onWebViewPageFinished() {
         super.onWebViewPageFinished();
 
+        // TODO : fix and improve this. At present raise NullPointerException calling getActivity()
+        /*
         if (isPreviewPagePoint()) {
             mFloatButtonMarkFavorite.setVisibility(View.VISIBLE);
             mFloatButtonMarkFavorite.show();
@@ -138,6 +156,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                         LOG_TAG);
             }
         }
+        */
     }
 
     @Override
