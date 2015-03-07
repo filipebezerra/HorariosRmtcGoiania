@@ -12,8 +12,9 @@
         <item name="colorPrimary">@color/theme_color_primary</item>
         <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
         <item name="colorAccent">@color/theme_color_accent</item>
-        <item name="singleAccount">true</item>
+        <item name="drawerType">@integer/DRAWERTYPE_IMAGE</item>
         <item name="rippleBackport">true</item>
+        <item name="multipaneSupport">true</item>
         <item name="sectionStyle">@style/ThemeSection</item>
     </style>
 

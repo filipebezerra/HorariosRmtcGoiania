@@ -26,7 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
@@ -83,24 +82,28 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @Override
     public void init(final Bundle savedInstanceState) {
-        addAccountSections();
-
+        setUpHeader();
         addPrimarySections();
-
         addDivisor();
-
         addSecondarySections();
-
         addBottomSections();
     }
 
     /**
-     * Using single account
+     *  Setup the drawer header such as the image if drawerType is DRAWERHEADER_IMAGE or
+     *  {@link it.neokree.materialnavigationdrawer.elements.MaterialAccount} if drawerType is
+     *  DRAWERHEADER_ACCOUNTS.
+     */
+    private void setUpHeader() {
+        setDrawerHeaderImage(R.drawable.drawer_header);
+        addAccountSections();
+    }
+
+    /**
+     * Setup the user account
      */
     private void addAccountSections() {
-        MaterialAccount account = new MaterialAccount(getResources(),
-                "Filipe Bezerra", "filipebzerra@gmail.com", R.drawable.photo, R.drawable.bamboo);
-        addAccount(account);
+        // TODO : reserved for future implementation
     }
 
     /**
