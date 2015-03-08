@@ -171,28 +171,26 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         // TODO : Reserved for future implementation - issue #66
         /*
         addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_help),
-                R.drawable.ic_drawer_help, new SacFragment())
-                .setSectionColor(
-                        getColor(R.color.navdrawer_help_section_color),
-                        getColor(R.color.navdrawer_help_section_dark_color)));
+                R.drawable.ic_drawer_help, new SacFragment()));
                 */
 
+        addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
+                Intent.createChooser(createShareIntent(),
+                        getString(R.string.share_dialog_title))));
+
         addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_configurations),
-                R.drawable.ic_drawer_settings, new Intent(BaseActivity.this, SettingsActivity.class))
-                .setSectionColor(
-                        getColor(R.color.navdrawer_settings_section_color),
-                        getColor(R.color.navdrawer_settings_section_dark_color)));
+                R.drawable.ic_drawer_settings,
+                new Intent(BaseActivity.this, SettingsActivity.class)));
     }
 
+    /**
+     * Returns the favorite count retrieve from sqlite.
+     *
+     * @return Favorite count.
+     */
     private int getFavoriteCount() {
         return (int) ApplicationSingleton.getInstance().getDaoSession()
                 .getFavoriteBusStopDao().count();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBusProvider.getInstance().getEventBus().register(BaseActivity.this);
     }
 
     @Override
@@ -200,8 +198,9 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         super.onResume();
         registerReceiver(mConnectionReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
+        EventBusProvider.getInstance().getEventBus().register(BaseActivity.this);
 
-        // TODO : this is the callback handle search (comes from GlobalSearch configuration)
+        // Can come from Global search, refer to searchable.xnml
         handleSearchQuery(getIntent());
     }
 
@@ -228,18 +227,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mSearchView.setIconifiedByDefault(false);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        switch (id) {
-            case R.id.action_share:
-                startActivity(Intent.createChooser(createShareIntent(),
-                        getString(R.string.share_dialog_title)));
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**

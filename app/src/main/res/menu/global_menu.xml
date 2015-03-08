@@ -13,10 +13,12 @@
         support:showAsAction="collapseActionView|always"
         support:actionViewClass="android.support.v7.widget.SearchView"/>
 
+    <!-- TODO : Replace with update action - Issue #46
     <item
         android:id="@+id/action_share"
         android:title="@string/action_share"
         android:icon="@drawable/ic_share"
         android:orderInCategory="2"
         support:showAsAction="ifRoom"/>
+        -->
 </menu>

@@ -28,12 +28,4 @@
 
     <color name="navdrawer_sac_section_color">#4CAF50</color>
     <color name="navdrawer_sac_section_dark_color">#388E3C</color>
-
-    <!-- TODO : Reserved for future implementation - issue #66
-    <color name="navdrawer_help_section_color">#FFC107</color>
-    <color name="navdrawer_help_section_dark_color">#FFA000</color>
-    -->
-
-    <color name="navdrawer_settings_section_color">#795548</color>
-    <color name="navdrawer_settings_section_dark_color">#5D4037</color>
 </resources>
