@@ -7,6 +7,9 @@
         Somente é possivel busca pelo numero do ponto!
     </string>
     <string name="error_in_network_search_request">
-        Desculpe, não foi possível fazer a busca. Por favor, Tente novamente!
+        Desculpe, não foi possível carregar os resultados da busca. Por favor, tente novamente!
+    </string>
+    <string name="error_in_network_search_request_parsing_html_page">
+        Desculpe, não foi possível marcar este ponto como favorito. Por favor, tente novamente!
     </string>
 </resources>

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -300,11 +299,12 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             dialog.hide();
-                            Log.e(LOG_TAG, String.format("Error string request of", currentUrl),
-                                    error);
+                            LOGE(LOG_TAG, String.format(
+                                    getString(R.string.log_error_network_request),
+                                    error.getClass().toString(), "onErrorResponse", "String",
+                                    currentUrl), error);
                             SnackBarHelper.show(mAttachedActivity,
-                                    "Não foi possível carregar os resultados. Por favor, " +
-                                            "Tente novamente!");
+                                    getString(R.string.error_in_network_search_request_parsing_html_page));
                         }
                     }
             );
