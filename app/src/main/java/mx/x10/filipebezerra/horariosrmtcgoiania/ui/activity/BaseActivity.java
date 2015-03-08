@@ -29,7 +29,9 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.FavoritesListFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment;
@@ -111,7 +113,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     private void addPrimarySections() {
         addSection(newSection(getString(R.string.navdrawer_menu_item_favorite_bus_stops),
-                R.drawable.ic_drawer_pontos_favoritos, new WapFragment())
+                R.drawable.ic_drawer_pontos_favoritos, new FavoritesListFragment())
                 .setNotifications(getFavoriteCount())
                 .setSectionColor(Color.parseColor("#FF5722"), Color.parseColor("#E64A19")));
     }
@@ -155,13 +157,11 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 .getFavoriteBusStopDao().count();
     }
 
-    // TODO : register for bus events
-    /*
     @Override
     protected void onStart() {
         super.onStart();
         EventBusProvider.getInstance().getEventBus().register(BaseActivity.this);
-    }*/
+    }
 
     @Override
     protected void onResume() {
@@ -177,8 +177,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mConnectionReceiver);
-        // TODO : register for bus events
-        //EventBusProvider.getInstance().getEventBus().unregister(BaseActivity.this);
+        EventBusProvider.getInstance().getEventBus().unregister(BaseActivity.this);
     }
 
     @Override
@@ -282,7 +281,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      *
      * @param intent search intent
      */
-    private void handleSearchQuery(Intent intent) {
+    public void handleSearchQuery(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             onSearch(intent);
         }
@@ -306,6 +305,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                             getString(R.string.query_param_validate_rmtc_horarios_viagem), query)
                     .build().toString();
 
+            // TODO : Network request here, Show ProgressDialog while requesting...
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -317,19 +317,14 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                                 if (getString(R.string.json_attr_success_validate_rmtc_horarios_viagem)
                                         .equals(status)) {
 
-                                    MaterialSection horarioViagemSection = getSectionByTitle(getString(
-                                            R.string.navdrawer_menu_item_rmtc_horarios_viagem));
+                                    searchStopCode(query);
 
-                                    // TODO : This method is being invoked twice. Prevent this
-                                    setFragment(HorarioViagemFragment.newInstance(query),
-                                            horarioViagemSection.getTitle());
-                                    getCurrentSection().unSelect();
-                                    changeToolbarColor(horarioViagemSection);
-                                    horarioViagemSection.select();
                                 } else {
+
                                     SnackBarHelper.show(BaseActivity.this, response.getString(
                                             getString(R.string
                                                     .json_attr_message_validate_rmtc_horarios_viagem)));
+
                                 }
                             } catch (JSONException e) {
                                 LOGE(LOG_TAG, String.format(
@@ -362,5 +357,19 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         } else {
             SnackBarHelper.show(BaseActivity.this, getString(R.string.non_digit_voice_search));
         }
+    }
+
+    public void searchStopCode(final String stopCode) {
+        MaterialSection horarioViagemSection = getSectionByTitle(getString(
+                R.string.navdrawer_menu_item_rmtc_horarios_viagem));
+
+        // TODO : This method is being invoked twice. Prevent this
+        getCurrentSection().unSelect();
+        setFragment(HorarioViagemFragment.newInstance(stopCode),
+                horarioViagemSection.getTitle());
+
+        // TODO : After programatically selecting, when section Pontos Favoritos selected, this remains selected
+        horarioViagemSection.select();
+        changeToolbarColor(horarioViagemSection);
     }
 }

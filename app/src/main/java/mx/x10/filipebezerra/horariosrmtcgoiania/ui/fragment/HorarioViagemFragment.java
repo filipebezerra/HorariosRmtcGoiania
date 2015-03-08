@@ -1,5 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +26,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
 
 /**
  * Fragment composed by a {@link android.webkit.WebView}, an animated
@@ -46,10 +48,11 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     public static final String ARG_PARAM_BUS_STOP_NUMBER = "BUS_STOP_NUMBER";
 
     private Bus mEventBus;
+    private Activity mAttachedActivity;
 
     public HorarioViagemFragment() {
         setArguments(Bundle.EMPTY);
-        LOGD(LOG_TAG, this.getClass().getSimpleName() + " created1");
+        LOGD(LOG_TAG, this.getClass().getSimpleName() + " created!");
     }
 
     public static HorarioViagemFragment newInstance(final String singleArgument) {
@@ -70,6 +73,20 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         HorarioViagemFragment fragment = new HorarioViagemFragment();
         fragment.setArguments(arguments == null ? Bundle.EMPTY : arguments);
         return fragment;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mFloatButtonMarkFavorite.setBackgroundColor(getResources().getColor(
+                R.color.floating_action_button_background));
+        mEventBus = EventBusProvider.getInstance().getEventBus();
+    }
+
+    @Override
+    public void onAttach(final Activity activity) {
+        super.onAttach(activity);
+        mAttachedActivity = activity;
     }
 
     @Override
@@ -98,14 +115,16 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     protected void onWebViewPageFinished() {
         super.onWebViewPageFinished();
 
-        // TODO : fix and improve this. At present raise NullPointerException calling getActivity()
-        /*
+        // TODO : fix and improve this. At present raise NullPointerException calling mAttachedActivity
+        
         if (isPreviewPagePoint()) {
             mFloatButtonMarkFavorite.setVisibility(View.VISIBLE);
             mFloatButtonMarkFavorite.show();
 
+            /**
             final SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
-                    getActivity(), SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
+                    mAttachedActivity, SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
+             **/
 
             final FavoriteBusStop favoriteBusStop = ApplicationSingleton.getInstance()
                     .getDaoSession().getFavoriteBusStopDao().queryBuilder()
@@ -115,16 +134,20 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                         R.drawable.ic_drawer_pontos_favoritos));
 
+                /**
                 suggestions.saveRecentQuery(
                         String.valueOf(favoriteBusStop.getStopCode()),
                         favoriteBusStop.getAddress());
+                 **/
             } else {
 
-                final ProgressDialog dialog = new ProgressDialog(getActivity(), "Salvando...",
+                /*
+                final ProgressDialog dialog = new ProgressDialog(mAttachedActivity, "Salvando...",
                         R.color.progress_bar_background);
                 // TODO : make cancelable
                 dialog.setCancelable(false);
                 dialog.show();
+                */
 
                 final String currentUrl = getWebView().getUrl();
 
@@ -135,36 +158,33 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 FavoriteBusStop favoriteBusStop = new BusStopHtmlParser()
                                         .parse(result);
 
+                                /*
                                 suggestions.saveRecentQuery(
                                         String.valueOf(favoriteBusStop.getStopCode()),
                                         favoriteBusStop.getAddress());
+                                        */
 
-                                dialog.hide();
+                                //dialog.hide();
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                dialog.hide();
-                                Log.e(LOG_TAG, String.format(
-                                        "Request for url %s", currentUrl), error);
+                                //dialog.hide();
+                                LOGE(LOG_TAG, String.format(
+                                        getString(R.string.log_error_network_request),
+                                        error.getClass().toString(), "onErrorResponse", "String",
+                                        currentUrl), error);
+                                SnackBarHelper.show(mAttachedActivity,
+                                        getString(R.string.error_in_network_search_request));
                             }
                         }
                 );
 
-                RequestQueueManager.getInstance(getActivity()).addToRequestQueue(request,
+                RequestQueueManager.getInstance(mAttachedActivity).addToRequestQueue(request,
                         LOG_TAG);
             }
         }
-        */
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mFloatButtonMarkFavorite.setBackgroundColor(getResources().getColor(
-                R.color.floating_action_button_background));
-        mEventBus = EventBusProvider.getInstance().getEventBus();
     }
 
     @OnClick(R.id.floatButtonMarkFavorite)
@@ -173,7 +193,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             return;
         }
 
-        final ProgressDialog dialog = new ProgressDialog(getActivity(), "Pesquisando...",
+        final ProgressDialog dialog = new ProgressDialog(mAttachedActivity, "Pesquisando...",
                 R.color.progress_bar_background);
         // TODO : make cancelable
         dialog.setCancelable(false);
@@ -206,7 +226,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             //animate(mFloatButtonMarkFavorite).setInterpolator(new BounceInterpolator())
                     //.translationYBy(-34).start();
 
-            SnackBarHelper.show(getActivity(), "Ponto removido de seus favoritos.");
+            SnackBarHelper.show(mAttachedActivity, "Ponto removido de seus favoritos.");
 
             mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                     R.drawable.ic_unmark_favorite));
@@ -240,7 +260,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             //animate(mFloatButtonMarkFavorite).setInterpolator(new BounceInterpolator())
                                     //.translationYBy(-34).start();
 
-                            SnackBarHelper.show(getActivity(), "Ponto marcado como favorito.");
+                            SnackBarHelper.show(mAttachedActivity, "Ponto marcado como favorito.");
 
                             mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                                     R.drawable.ic_drawer_pontos_favoritos));
@@ -252,14 +272,14 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             dialog.hide();
                             Log.e(LOG_TAG, String.format("Error string request of", currentUrl),
                                     error);
-                            SnackBarHelper.show(getActivity(),
+                            SnackBarHelper.show(mAttachedActivity,
                                     "Não foi possível carregar os resultados. Por favor, " +
                                             "Tente novamente!");
                         }
                     }
             );
 
-            RequestQueueManager.getInstance(getActivity()).addToRequestQueue(request,
+            RequestQueueManager.getInstance(mAttachedActivity).addToRequestQueue(request,
                     LOG_TAG);
         }
 

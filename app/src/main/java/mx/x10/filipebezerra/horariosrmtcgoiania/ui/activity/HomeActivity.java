@@ -1,5 +1,9 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
+import com.squareup.otto.Subscribe;
+
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteItemSelectionEvent;
+
 /**
  * .
  *
@@ -10,6 +14,11 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 public class HomeActivity extends BaseActivity {
 
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
+
+    @Subscribe
+    public void onFavoriteItemSelectionEvent(FavoriteItemSelectionEvent event) {
+        searchStopCode(String.valueOf(event.getMessage().getStopCode()));
+    }
 
     // TODO : handle notificationMessage bus event
     /**
