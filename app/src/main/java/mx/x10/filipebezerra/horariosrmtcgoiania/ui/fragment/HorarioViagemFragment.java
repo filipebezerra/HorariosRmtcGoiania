@@ -2,8 +2,12 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.android.volley.Response;
@@ -25,7 +29,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
 
 /**
@@ -52,7 +55,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
     public HorarioViagemFragment() {
         setArguments(Bundle.EMPTY);
-        LOGD(LOG_TAG, this.getClass().getSimpleName() + " created!");
+        setHasOptionsMenu(true);
     }
 
     public static HorarioViagemFragment newInstance(final String singleArgument) {
@@ -68,11 +71,18 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         
         return fragment;
     }
-    
+
+    @SuppressWarnings("unused")
     public static HorarioViagemFragment newInstance(final Bundle arguments) {
         HorarioViagemFragment fragment = new HorarioViagemFragment();
         fragment.setArguments(arguments == null ? Bundle.EMPTY : arguments);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(final Activity activity) {
+        super.onAttach(activity);
+        mAttachedActivity = activity;
     }
 
     @Override
@@ -84,9 +94,22 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     }
 
     @Override
-    public void onAttach(final Activity activity) {
-        super.onAttach(activity);
-        mAttachedActivity = activity;
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_update_bus_travel_times, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.action_refresh: initiateRefresh();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initiateRefresh() {
+        mWebView.reload();
     }
 
     @Override
@@ -100,10 +123,17 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             }
         }
 
-        return busStopNumber == null ? getString(R.string.url_rmtc_horarios_viagem) :
-                String.format(getString(R.string.url_formatted_rmtc_horarios_viagem),
-                        getString(R.string.url_rmtc_horarios_viagem),
-                        getString(R.string.url_partial_visualizar_ponto), busStopNumber);
+        return busStopNumber == null ? getDefaultUrl() : getUrlWithBusStopNumberQuery(busStopNumber);
+    }
+
+    private String getDefaultUrl() {
+        return getString(R.string.url_rmtc_horarios_viagem);
+    }
+
+    private String getUrlWithBusStopNumberQuery(@NonNull String busStopNumber) {
+        return String.format(getString(R.string.url_formatted_rmtc_horarios_viagem),
+                getString(R.string.url_rmtc_horarios_viagem),
+                getString(R.string.url_partial_visualizar_ponto), busStopNumber);
     }
 
     @Override

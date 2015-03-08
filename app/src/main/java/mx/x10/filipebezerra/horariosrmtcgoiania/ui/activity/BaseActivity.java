@@ -220,7 +220,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.global_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_global, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mSearchMenuItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);

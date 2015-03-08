@@ -33,4 +33,5 @@
     <string name="dialog_message_about_info">
         Desenvolvedor: Filipe Bezerra de Sousa\nVersão: 2.0
     </string>
+    <string name="action_refresh">Atualizar horários</string>
 </resources>

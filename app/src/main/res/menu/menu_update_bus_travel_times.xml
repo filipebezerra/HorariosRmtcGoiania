@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:support="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment">
+
+    <item
+        android:id="@+id/action_refresh"
+        android:title="@string/action_refresh"
+        android:icon="@drawable/ic_refresh"
+        android:orderInCategory="100"
+        support:showAsAction="ifRoom"/>
+
+</menu>
