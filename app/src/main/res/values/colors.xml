@@ -5,21 +5,35 @@
     <color name="theme_color_accent">#143A44</color>
     <color name="theme_color_highlight">#B6B6B6</color>
 
-    <color name="navdrawer_section_background">#16a085</color>
-    <color name="navdrawer_list_background">@color/theme_color_primary</color>
-    <color name="navdrawer_list_divider">@android:color/transparent</color>
-    <color name="navdrawer_section_text_color">@color/white</color>
-    <color name="navdrawer_item_counter_background">#E91E63</color>
-
-    <color name="list_item_title">@color/white</color>
-    <color name="list_background_pressed_start">#2ecc71</color>
-    <color name="list_background_pressed_end">#27ae60</color>
-
     <color name="progress_bar_background">#16a085</color>
     <color name="floating_action_button_background">#1abc9c</color>
     <color name="floating_action_button_ripple_color">#16a085</color>
-    
-    <color name="white">#ffffff</color>
 
     <color name="licenses_dialog_divider_color">#1abc9c</color>
+
+    <color name="navdrawer_favorites_section_color">#FF5722</color>
+    <color name="navdrawer_favorites_section_dark_color">#E64A19</color>
+
+    <color name="navdrawer_wap_section_color">#9C27B0</color>
+    <color name="navdrawer_wap_section_dark_color">#7B1FA2</color>
+
+    <color name="navdrawer_horario_viagem_section_color">#009688</color>
+    <color name="navdrawer_horario_viagem_section_dark_color">#00796B</color>
+
+    <color name="navdrawer_planeje_sua_viagem_section_color">#E91E63</color>
+    <color name="navdrawer_planeje_sua_viagem_section_dark_color">#C2185B</color>
+
+    <color name="navdrawer_ponto_a_ponto_section_color">#3F51B5</color>
+    <color name="navdrawer_ponto_a_ponto_section_dark_color">#303F9F</color>
+
+    <color name="navdrawer_sac_section_color">#4CAF50</color>
+    <color name="navdrawer_sac_section_dark_color">#388E3C</color>
+
+    <!-- TODO : Reserved for future implementation - issue #66
+    <color name="navdrawer_help_section_color">#FFC107</color>
+    <color name="navdrawer_help_section_dark_color">#FFA000</color>
+    -->
+
+    <color name="navdrawer_settings_section_color">#795548</color>
+    <color name="navdrawer_settings_section_dark_color">#5D4037</color>
 </resources>

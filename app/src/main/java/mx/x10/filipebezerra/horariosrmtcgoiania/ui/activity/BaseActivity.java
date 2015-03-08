@@ -5,11 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -47,7 +48,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
  * Activity base containing based implementation of Navigation Drawer and all application base behavior.
  *
  * @author Filipe Bezerra
- * @version 2.0, 07/03/2015
+ * @version 2.0, 08/03/2015
  * @since #
  */
 public abstract class BaseActivity extends MaterialNavigationDrawer {
@@ -79,8 +80,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
     /**
      * The delegation method that initializes the activity. Don't use activity's onCreate method.
-     *
-     * @param savedInstanceState
      */
     @Override
     public void init(final Bundle savedInstanceState) {
@@ -111,45 +110,78 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     /**
      * Dynamical sections, according with user preferences
      */
+    @SuppressWarnings("unchecked")
     private void addPrimarySections() {
         addSection(newSection(getString(R.string.navdrawer_menu_item_favorite_bus_stops),
                 R.drawable.ic_drawer_pontos_favoritos, new FavoritesListFragment())
                 .setNotifications(getFavoriteCount())
-                .setSectionColor(Color.parseColor("#FF5722"), Color.parseColor("#E64A19")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_favorites_section_color),
+                        getColor(R.color.navdrawer_favorites_section_dark_color)));
+    }
+
+    /**
+     * Convenient method for return a color integer from the application's package's
+     * default color table.
+     *
+     * @param resId The desired resource identifier, must be a color identifier.
+     * @return Resource id for the color
+     */
+    public final int getColor(@ColorRes int resId) {
+        return getResources().getColor(resId);
     }
 
     /**
      * Statical sections, containing predefined sections
      */
+    @SuppressWarnings("unchecked")
     private void addSecondarySections() {
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_wap),
                 R.drawable.ic_drawer_wap, new WapFragment())
-                .setSectionColor(Color.parseColor("#9C27B0"), Color.parseColor("#7B1FA2")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_wap_section_color),
+                        getColor(R.color.navdrawer_wap_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_horarios_viagem),
                 R.drawable.ic_drawer_horario_viagem, new HorarioViagemFragment())
-                .setSectionColor(Color.parseColor("#009688"), Color.parseColor("#00796B")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_horario_viagem_section_color),
+                        getColor(R.color.navdrawer_horario_viagem_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem),
                 R.drawable.ic_drawer_planeje_sua_viagem, new PlanejeViagemFragment())
-                .setSectionColor(Color.parseColor("#E91E63"), Color.parseColor("#C2185B")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_planeje_sua_viagem_section_color),
+                        getColor(R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_ponto_a_ponto),
                 R.drawable.ic_drawer_ponto_a_ponto, new PontoToPontoFragment())
-                .setSectionColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_ponto_a_ponto_section_color),
+                        getColor(R.color.navdrawer_ponto_a_ponto_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_sac),
                 R.drawable.ic_drawer_sac, new SacFragment())
-                .setSectionColor(Color.parseColor("#4CAF50"), Color.parseColor("#388E3C")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_sac_section_color),
+                        getColor(R.color.navdrawer_sac_section_dark_color)));
     }
 
     /**
      * Statical sections, containing specific app definitions and help content
      */
+    @SuppressWarnings("unchecked")
     private void addBottomSections() {
+        // TODO : Reserved for future implementation - issue #66
+        /*
         addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_help),
                 R.drawable.ic_drawer_help, new SacFragment())
-                .setSectionColor(Color.parseColor("#FFC107"), Color.parseColor("#FFA000")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_help_section_color),
+                        getColor(R.color.navdrawer_help_section_dark_color)));
+                */
 
         addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_configurations),
                 R.drawable.ic_drawer_settings, new Intent(BaseActivity.this, SettingsActivity.class))
-                .setSectionColor(Color.parseColor("#795548"), Color.parseColor("#5D4037")));
+                .setSectionColor(
+                        getColor(R.color.navdrawer_settings_section_color),
+                        getColor(R.color.navdrawer_settings_section_dark_color)));
     }
 
     private int getFavoriteCount() {
@@ -230,8 +262,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
     /**
      * Inject custom font into {@link Context}.
-     *
-     * @param newBase
      */
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -240,13 +270,9 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
     /**
      * Handles search hardware button. Compatibility for old Android devices.
-     *
-     * @param keyCode
-     * @param event
-     * @return
      */
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
+    public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_SEARCH) {
             if (MenuItemCompat.expandActionView(mSearchMenuItem)) {
                 mSearchView.requestFocus();
@@ -258,10 +284,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
     /**
      * Handles the menu hardware button to opening the Navigation Drawer.
-     *
-     * @param keyCode
-     * @param event
-     * @return
      */
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
@@ -359,6 +381,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void searchStopCode(final String stopCode) {
         MaterialSection horarioViagemSection = getSectionByTitle(getString(
                 R.string.navdrawer_menu_item_rmtc_horarios_viagem));
