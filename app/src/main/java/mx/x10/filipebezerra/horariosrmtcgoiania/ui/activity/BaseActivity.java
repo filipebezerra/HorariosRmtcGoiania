@@ -84,6 +84,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         addDivisor();
         addSecondarySections();
         addBottomSections();
+        // Can come from Global search, refer to searchable.xnml
+        handleSearchQuery(getIntent());
     }
 
     /**
@@ -200,9 +202,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         registerReceiver(mConnectionReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
         EventBusProvider.getInstance().getEventBus().register(BaseActivity.this);
-
-        // Can come from Global search, refer to searchable.xnml
-        handleSearchQuery(getIntent());
     }
 
     @Override
@@ -366,8 +365,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     public void searchStopCode(final String stopCode) {
         MaterialSection horarioViagemSection = getSectionByTitle(getString(
                 R.string.navdrawer_menu_item_rmtc_horarios_viagem));
-
-        // TODO : This method is being invoked twice. Prevent this
         getCurrentSection().unSelect();
         setFragment(WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this, stopCode),
                 horarioViagemSection.getTitle());
