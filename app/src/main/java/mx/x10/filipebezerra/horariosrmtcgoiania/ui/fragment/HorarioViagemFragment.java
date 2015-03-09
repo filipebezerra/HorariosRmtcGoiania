@@ -55,7 +55,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
-        return setUpContentView(inflater.inflate(R.layout.fragment_horario_viagem, container, false));
+        return setupContentView(inflater.inflate(R.layout.fragment_horario_viagem, container, false));
     }
 
     @Override
@@ -79,8 +79,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     }
 
     @Override
-    public View setUpContentView(final View fragmentView) {
-        super.setUpContentView(fragmentView);
+    public View setupContentView(final View fragmentView) {
+        super.setupContentView(fragmentView);
         mFloatButtonMarkFavorite.setBackgroundColor(getResources().getColor(
                 R.color.floating_action_button_background));
         return fragmentView;

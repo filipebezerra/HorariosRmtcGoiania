@@ -65,7 +65,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return setUpContentView(inflater.inflate(R.layout.fragment_browser, container, false));
+        return setupContentView(inflater.inflate(R.layout.fragment_browser, container, false));
     }
 
     @Override
@@ -156,7 +156,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
      * Sets up all child views inside this root view.
      */
     @SuppressLint("SetJavaScriptEnabled")
-    protected View setUpContentView(final View fragmentView) {
+    protected View setupContentView(final View fragmentView) {
         if (mWebView != null) {
             mWebView.destroy();
         }
