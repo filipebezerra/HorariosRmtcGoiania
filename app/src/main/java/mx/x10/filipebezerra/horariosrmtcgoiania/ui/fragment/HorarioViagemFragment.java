@@ -16,6 +16,8 @@ import com.gc.materialdesign.views.ButtonFloat;
 import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
+
 /**
  * Fragment composed by a {@link android.webkit.WebView}, an animated
  * {@link com.gc.materialdesign.views.ProgressBarCircularIndeterminate} and a special action
@@ -27,7 +29,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
  * @since 1.6
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
-    private static final String LOG_TAG = HorarioViagemFragment.class.getSimpleName();
+    private static final String LOG_TAG = makeLogTag(HorarioViagemFragment.class);
 
     public static final String ARG_PARAM_BUS_STOP_CODE = BaseWebViewFragment.class.getSimpleName()
             + "ARG_PARAM_BUS_STOP_CODE";
@@ -66,7 +68,11 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.action_refresh:
+                if (mSwipeRefreshLayout != null && ! mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                }
                 initiateReloading();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -127,12 +133,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             return Integer.parseInt(lastPathSegment);
         } catch (NullPointerException | NumberFormatException e) {
             return null;
-        }
-    }
-
-    private void initiateReloading() {
-        if (getView() != null) {
-            getWebView().reload();
         }
     }
 

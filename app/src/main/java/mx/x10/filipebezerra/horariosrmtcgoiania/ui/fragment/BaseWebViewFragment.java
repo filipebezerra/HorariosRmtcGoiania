@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,16 +21,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widget.WebViewCompatSwipeRefreshLayout;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
 
 /**
  * A fragment that displays a WebView.
@@ -42,15 +42,15 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment
  */
-public class BaseWebViewFragment extends Fragment {
-    private static final String LOG_TAG = BaseWebViewFragment.class.getSimpleName();
+public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String LOG_TAG = makeLogTag(BaseWebViewFragment.class);
 
     public static final String ARG_PARAM_URL_PAGE = BaseWebViewFragment.class.getSimpleName()
             + "ARG_PARAM_URL_PAGE";
 
     @InjectView(R.id.webView) protected WebView mWebView;
 
-    @InjectView(R.id.progressBar) protected ProgressBarCircularIndeterminate mProgressBar;
+    @InjectView(R.id.swipe_refresh_layout) protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @NonNull protected Activity mAttachedActivity;
 
@@ -71,7 +71,6 @@ public class BaseWebViewFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //setRetainInstance(true);
     }
 
     /**
@@ -187,6 +186,28 @@ public class BaseWebViewFragment extends Fragment {
         });
         mIsWebViewAvailable = true;
 
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setColorSchemeResources(
+                    R.color.navdrawer_favorites_section_color,
+                    R.color.navdrawer_wap_section_color,
+                    R.color.navdrawer_horario_viagem_section_color,
+                    R.color.navdrawer_planeje_sua_viagem_section_color,
+                    R.color.navdrawer_ponto_a_ponto_section_color,
+                    R.color.navdrawer_sac_section_color);
+            mSwipeRefreshLayout.setOnRefreshListener(this);
+            if (mSwipeRefreshLayout instanceof WebViewCompatSwipeRefreshLayout) {
+                WebViewCompatSwipeRefreshLayout compatSwipe = (WebViewCompatSwipeRefreshLayout)
+                        mSwipeRefreshLayout;
+                compatSwipe.setCanChildScrollUpCallback(
+                        new WebViewCompatSwipeRefreshLayout.CanChildScrollUpCallback() {
+                            @Override
+                            public boolean canSwipeRefreshChildScrollUp() {
+                                return mWebView.getScrollY() > 0;
+                            }
+                        });
+            }
+        }
+
         return fragmentView;
     }
 
@@ -204,8 +225,8 @@ public class BaseWebViewFragment extends Fragment {
      * Callback when webview finishes loading a web page, validate the child views here.
      */
     protected void onWebViewPageFinished() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.GONE);
+        if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -213,11 +234,24 @@ public class BaseWebViewFragment extends Fragment {
      * Callback when webview starts loading a web page, invalidade the child views here.
      */
     protected void onWebViewPageStarted() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.VISIBLE);
-            mProgressBar.setBackgroundColor(((MaterialNavigationDrawer) mAttachedActivity)
-                    .getCurrentSection().getSectionColor());
+        if (mSwipeRefreshLayout != null && ! mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(true);
         }
+    }
+
+    public void initiateReloading() {
+        if (getView() != null) {
+            getWebView().reload();
+        } else {
+            if (mSwipeRefreshLayout.isRefreshing()) {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        initiateReloading();
     }
 
     /**
