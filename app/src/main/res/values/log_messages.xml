@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 
-        Error for network requests.
+<!--
+        Logs event errors for network requests.
+
         Param 1: identify the exception type, ex.: onResponse
         Param 2: identify the event throwing the exception, ex.: onResponse
         Param 3: identify the response type, ex: JSON
         Param 4: identify the query, ex: a URL
         
         Result example: 
-            JSONException error in onResponse requesting JSON querying http://www.google.com.br
-    -->
-    <string name="log_error_network_request" translatable="false">
-        %1$s error %2$s %3$s requesting %4$s
+            JSONException error in event onResponse requesting JSON querying http://www.google.com.br
+-->
+    <string name="log_event_error_network_request" translatable="false">
+        %1$s error in event %2$s requesting %3$s querying %4$s
+    </string>
+
+<!--
+    Logs events with a single message.
+
+    Param 1: identify the event ex.: onResponse
+    Param 3: identify what is being requested, ex: http://www.google.com.br
+    Param 4: identify the message, ex: loaded
+
+    Result example:
+        event onResponse requesting http://www.google.com.br with message loaded
+-->
+    <string name="log_event_debug" translatable="false">
+        event %1$s requesting %2$s with message %3$s
     </string>
 </resources>

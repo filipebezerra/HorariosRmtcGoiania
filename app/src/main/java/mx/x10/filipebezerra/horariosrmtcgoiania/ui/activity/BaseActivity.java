@@ -33,11 +33,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.FavoritesListFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WapFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -137,27 +133,32 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     @SuppressWarnings("unchecked")
     private void addSecondarySections() {
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_wap),
-                R.drawable.ic_drawer_wap, new WapFragment())
+                R.drawable.ic_drawer_wap,
+                WebViewFragmentFactory.newWapPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_wap_section_color),
                         getColor(R.color.navdrawer_wap_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_horarios_viagem),
-                R.drawable.ic_drawer_horario_viagem, new HorarioViagemFragment())
+                R.drawable.ic_drawer_horario_viagem,
+                WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_horario_viagem_section_color),
                         getColor(R.color.navdrawer_horario_viagem_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem),
-                R.drawable.ic_drawer_planeje_sua_viagem, new PlanejeViagemFragment())
+                R.drawable.ic_drawer_planeje_sua_viagem,
+                WebViewFragmentFactory.newPlanejeViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_planeje_sua_viagem_section_color),
                         getColor(R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_ponto_a_ponto),
-                R.drawable.ic_drawer_ponto_a_ponto, new PontoToPontoFragment())
+                R.drawable.ic_drawer_ponto_a_ponto,
+                WebViewFragmentFactory.newPontoaPontoPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_ponto_a_ponto_section_color),
                         getColor(R.color.navdrawer_ponto_a_ponto_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_sac),
-                R.drawable.ic_drawer_sac, new SacFragment())
+                R.drawable.ic_drawer_sac,
+                WebViewFragmentFactory.newSacPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_sac_section_color),
                         getColor(R.color.navdrawer_sac_section_dark_color)));
@@ -171,7 +172,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         // TODO : Reserved for future implementation - issue #66
         /*
         addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_help),
-                R.drawable.ic_drawer_help, new SacFragment()));
+                R.drawable.ic_drawer_help, ...));
                 */
 
         addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
@@ -325,25 +326,18 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
                                 if (getString(R.string.json_attr_success_validate_rmtc_horarios_viagem)
                                         .equals(status)) {
-
                                     searchStopCode(query);
-
                                 } else {
-
                                     SnackBarHelper.show(BaseActivity.this, response.getString(
                                             getString(R.string
                                                     .json_attr_message_validate_rmtc_horarios_viagem)));
-
                                 }
                             } catch (JSONException e) {
                                 LOGE(LOG_TAG, String.format(
-                                                getString(R.string.log_error_network_request),
+                                                getString(R.string.log_event_error_network_request),
                                                 e.getClass().toString(), "onResponse", "JSONObject",
                                                 query),
                                         e);
-
-                                LOGE(LOG_TAG, String.format("Error parsing %s",
-                                        response.toString()), e);
                                 SnackBarHelper.show(BaseActivity.this,
                                         getString(R.string.error_in_network_search_request));
                             }
@@ -353,7 +347,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             LOGE(LOG_TAG, String.format(
-                                    getString(R.string.log_error_network_request),
+                                    getString(R.string.log_event_error_network_request),
                                     error.getClass().toString(), "onErrorResponse", "JSONObject",
                                     query), error);
                             SnackBarHelper.show(BaseActivity.this,
@@ -375,7 +369,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
         // TODO : This method is being invoked twice. Prevent this
         getCurrentSection().unSelect();
-        setFragment(HorarioViagemFragment.newInstance(stopCode),
+        setFragment(WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this, stopCode),
                 horarioViagemSection.getTitle());
 
         // TODO : After programatically selecting, when section Pontos Favoritos selected, this remains selected

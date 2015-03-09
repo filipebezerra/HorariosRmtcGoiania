@@ -3,6 +3,7 @@
 <com.gc.materialdesign.views.ProgressBarCircularIndeterminate xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="56dp"
     android:layout_height="56dp"
-    android:layout_centerInParent="true"
-    android:visibility="invisible"
+    android:layout_marginTop="24dp"
+    android:layout_gravity="center_horizontal"
+    android:visibility="gone"
     android:background="@color/progress_bar_background" />

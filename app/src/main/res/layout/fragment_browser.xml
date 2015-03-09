@@ -1,10 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:id="@+id/web_browser_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment" >
+    tools:context=".ui.fragment.BaseWebViewFragment" >
 
     <include
         android:id="@+id/webView"
@@ -14,19 +15,4 @@
         android:id="@+id/progressBar"
         layout="@layout/include_progress_bar" />
 
-    <com.gc.materialdesign.views.ButtonFloat
-        android:id="@+id/floatButtonMarkFavorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="@dimen/floating_action_button_margin"
-        android:layout_marginEnd="@dimen/floating_action_button_margin"
-        android:layout_marginBottom="@dimen/floating_action_button_margin"
-        android:background="@color/floating_action_button_background"
-        materialdesign:animate="true"
-        materialdesign:rippleColor="@color/floating_action_button_ripple_color"
-        materialdesign:iconDrawable="@drawable/ic_unmark_favorite" />
-
-</RelativeLayout>
+</FrameLayout>

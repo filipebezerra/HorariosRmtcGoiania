@@ -1,34 +1,20 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringUTF8Request;
-import com.gc.materialdesign.widgets.ProgressDialog;
-import com.squareup.otto.Bus;
+import com.gc.materialdesign.views.ButtonFloat;
 
-import butterknife.OnClick;
+import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.PersistenceMessage;
-import mx.x10.filipebezerra.horariosrmtcgoiania.event.SQLitePersistenceMessage;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
-import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
-
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
 
 /**
  * Fragment composed by a {@link android.webkit.WebView}, an animated
@@ -36,60 +22,38 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
  * {@link com.gc.materialdesign.views.ButtonFloat} based in Material design.
  *
  * @author Filipe Bezerra
- * @version 2.0, 06/03/2015
+ * @version 2.0, 09/03/2015
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PlanejeViagemFragment
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.PontoToPontoFragment
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.SacFragment
  * @since 1.6
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
-
     private static final String LOG_TAG = HorarioViagemFragment.class.getSimpleName();
 
-    public static final String ARG_PARAM_BUS_STOP_NUMBER = "BUS_STOP_NUMBER";
+    public static final String ARG_PARAM_BUS_STOP_CODE = BaseWebViewFragment.class.getSimpleName()
+            + "ARG_PARAM_BUS_STOP_CODE";
 
-    private Bus mEventBus;
-    private Activity mAttachedActivity;
+    private boolean mIsViewingBusStopPage = false;
 
-    public HorarioViagemFragment() {
-        setArguments(Bundle.EMPTY);
+    @InjectView(R.id.floatButtonMarkFavorite) protected ButtonFloat mFloatButtonMarkFavorite;
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    public static HorarioViagemFragment newInstance(final String singleArgument) {
-        HorarioViagemFragment fragment = new HorarioViagemFragment();
-        
-        if (TextUtils.isEmpty(singleArgument)) {
-            fragment.setArguments(Bundle.EMPTY);
-        } else {
-            Bundle arguments = new Bundle(1);
-            arguments.putString(ARG_PARAM_BUS_STOP_NUMBER, singleArgument);
-            fragment.setArguments(arguments);
-        }
-        
-        return fragment;
-    }
-
-    @SuppressWarnings("unused")
-    public static HorarioViagemFragment newInstance(final Bundle arguments) {
-        HorarioViagemFragment fragment = new HorarioViagemFragment();
-        fragment.setArguments(arguments == null ? Bundle.EMPTY : arguments);
-        return fragment;
     }
 
     @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);
-        mAttachedActivity = activity;
+        if (getArgBusStopCode() != null) {
+            mIsViewingBusStopPage = true;
+        }
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mFloatButtonMarkFavorite.setBackgroundColor(getResources().getColor(
-                R.color.floating_action_button_background));
-        mEventBus = EventBusProvider.getInstance().getEventBus();
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
+                             @Nullable final Bundle savedInstanceState) {
+        return setUpContentView(inflater.inflate(R.layout.fragment_horario_viagem, container, false));
     }
 
     @Override
@@ -99,47 +63,80 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        final int itemId = item.getItemId();
+        int itemId = item.getItemId();
         switch (itemId) {
-            case R.id.action_refresh: initiateRefresh();
+            case R.id.action_refresh:
+                initiateReloading();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void initiateRefresh() {
-        mWebView.reload();
+    @Override
+    public View setUpContentView(final View fragmentView) {
+        super.setUpContentView(fragmentView);
+        mFloatButtonMarkFavorite.setBackgroundColor(getResources().getColor(
+                R.color.floating_action_button_background));
+        return fragmentView;
     }
 
     @Override
-    protected String getUrlToLoad() {
-        String busStopNumber = null;
-        Bundle arguments = getArguments();
+    public void onWebViewPageStarted() {
+        super.onWebViewPageStarted();
+        if (mFloatButtonMarkFavorite != null) {
+            mFloatButtonMarkFavorite.setVisibility(View.GONE);
+            mFloatButtonMarkFavorite.hide();
+        }
+    }
 
-        if (!Bundle.EMPTY.equals(arguments)) {
-            if (arguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER)) {
-                busStopNumber = arguments.getString(ARG_PARAM_BUS_STOP_NUMBER);
+    @Override
+    public void onWebViewPageFinished() {
+        super.onWebViewPageFinished();
+
+        if (mFloatButtonMarkFavorite != null) {
+            if (!mIsViewingBusStopPage && getBusStopCodeFromCurrentUrl() != null) {
+                mIsViewingBusStopPage = true;
+            }
+
+            if (getWebView() != null) {
+                if (mIsViewingBusStopPage) {
+                    mFloatButtonMarkFavorite.setVisibility(View.VISIBLE);
+                    mFloatButtonMarkFavorite.show();
+                }
             }
         }
-
-        return busStopNumber == null ? getDefaultUrl() : getUrlWithBusStopNumberQuery(busStopNumber);
     }
 
-    private String getDefaultUrl() {
-        return getString(R.string.url_rmtc_horarios_viagem);
+    /**
+     * Returns the bus stop code passed to arguments in the helper constructor.
+     *
+     * @return bus stop code passed to arguments
+     */
+    public String getArgBusStopCode() {
+        if (getArguments() != null) {
+            if (getArguments().containsKey(ARG_PARAM_BUS_STOP_CODE)) {
+                return getArguments().getString(ARG_PARAM_BUS_STOP_CODE);
+            }
+        }
+        return null;
     }
 
-    private String getUrlWithBusStopNumberQuery(@NonNull String busStopNumber) {
-        return String.format(getString(R.string.url_formatted_rmtc_horarios_viagem),
-                getString(R.string.url_rmtc_horarios_viagem),
-                getString(R.string.url_partial_visualizar_ponto), busStopNumber);
+    public Integer getBusStopCodeFromCurrentUrl() {
+        try {
+            final String lastPathSegment = Uri.parse(getWebView().getUrl()).getLastPathSegment();
+            return Integer.parseInt(lastPathSegment);
+        } catch (NullPointerException | NumberFormatException e) {
+            return null;
+        }
     }
 
-    @Override
-    protected void onWebViewPageStarted() {
-        super.onWebViewPageStarted();
+    private void initiateReloading() {
+        if (getView() != null) {
+            getWebView().reload();
+        }
     }
 
+    /*
     @Override
     protected void onWebViewPageFinished() {
         super.onWebViewPageFinished();
@@ -153,7 +150,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             /**
             final SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
                     mAttachedActivity, SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
-             **/
+
 
             final FavoriteBusStop favoriteBusStop = ApplicationSingleton.getInstance()
                     .getDaoSession().getFavoriteBusStopDao().queryBuilder()
@@ -167,7 +164,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 suggestions.saveRecentQuery(
                         String.valueOf(favoriteBusStop.getStopCode()),
                         favoriteBusStop.getAddress());
-                 **/
+
             } else {
 
                 /*
@@ -176,7 +173,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 // TODO : make cancelable
                 dialog.setCancelable(false);
                 dialog.show();
-                */
+
 
                 final String currentUrl = getWebView().getUrl();
 
@@ -191,7 +188,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 suggestions.saveRecentQuery(
                                         String.valueOf(favoriteBusStop.getStopCode()),
                                         favoriteBusStop.getAddress());
-                                        */
+
 
                                 //dialog.hide();
                             }
@@ -247,7 +244,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             /**
             mEventBus.post(new NotificationEvent(new NotificationMessage(
                     NotificationMessage.NotificationType.DECREMENT)));
-             **/
+
 
             dialog.hide();
 
@@ -281,7 +278,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             /**
                             mEventBus.post(new NotificationEvent(new NotificationMessage(
                                     NotificationMessage.NotificationType.INCREMENT)));
-                             **/
+
 
                             dialog.hide();
 
@@ -314,31 +311,5 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         }
 
     }
-
-    private boolean isPreviewPagePoint() {
-        Integer busStopCode = parseBusStopCodeFromCurrentUrl();
-        Bundle mArguments = getArguments();
-        return busStopCode != null || mArguments != null && mArguments.containsKey(ARG_PARAM_BUS_STOP_NUMBER);
-    }
-    
-    private Integer parseBusStopCodeFromCurrentUrl() {
-        String busStopCodeSegment = getUrlPartFromCurrentUrl(UrlPart.LAST_PATH_SEGMENT);
-        
-        try {
-            return TextUtils.isEmpty(busStopCodeSegment) ? null : Integer.parseInt(busStopCodeSegment);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    private Integer getBusStopSearched() {
-        if (!isPreviewPagePoint()) {
-            return null;
-        }
-
-        Integer busStopCode = parseBusStopCodeFromCurrentUrl();
-
-        return busStopCode != null ? busStopCode : Integer.parseInt(getArguments().getString
-                (ARG_PARAM_BUS_STOP_NUMBER));
-    }
+    */
 }

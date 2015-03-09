@@ -5,9 +5,10 @@
     <color name="theme_color_accent">#143A44</color>
     <color name="theme_color_highlight">#B6B6B6</color>
 
-    <color name="progress_bar_background">#16a085</color>
-    <color name="floating_action_button_background">#1abc9c</color>
-    <color name="floating_action_button_ripple_color">#16a085</color>
+    <color name="progress_bar_background">@color/theme_color_primary</color>
+
+    <color name="floating_action_button_background">@color/navdrawer_horario_viagem_section_color</color>
+    <color name="floating_action_button_ripple_color">@color/navdrawer_horario_viagem_section_dark_color</color>
 
     <color name="licenses_dialog_divider_color">#1abc9c</color>
 
