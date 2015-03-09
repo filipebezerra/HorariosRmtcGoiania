@@ -84,6 +84,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         addDivisor();
         addSecondarySections();
         addBottomSections();
+        setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
         // Can come from Global search, refer to searchable.xnml
         handleSearchQuery(getIntent());
     }
