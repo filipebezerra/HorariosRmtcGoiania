@@ -9,7 +9,7 @@ import android.content.SearchRecentSuggestionsProvider;
 public class SuggestionsProvider extends SearchRecentSuggestionsProvider {
 
     public static final String AUTHORITY = SuggestionsProvider.class.getName();
-    public static final int MODE = DATABASE_MODE_QUERIES | DATABASE_MODE_2LINES;
+    public static final int MODE = DATABASE_MODE_QUERIES;
 
     public SuggestionsProvider() {
         setupSuggestions(AUTHORITY, MODE);

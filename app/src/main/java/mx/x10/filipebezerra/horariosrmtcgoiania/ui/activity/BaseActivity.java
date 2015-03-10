@@ -31,10 +31,12 @@ import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.FavoritesListFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -317,6 +319,9 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         final String query = intent.getStringExtra(SearchManager.QUERY);
 
         if (TextUtils.isDigitsOnly(query)) {
+            ProgressDialogHelper.show(BaseActivity.this, "Pesquisando, por favor aguarde...",
+                    getCurrentSection().getSectionColor());
+
             mSearchView.clearFocus();
             mSearchView.setQuery(query, false);
 
@@ -331,12 +336,15 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            ProgressDialogHelper.dismiss();
                             try {
                                 String status = response.getString(getString(
                                         R.string.json_attr_status_validate_rmtc_horarios_viagem));
 
                                 if (getString(R.string.json_attr_success_validate_rmtc_horarios_viagem)
                                         .equals(status)) {
+                                    SuggestionsProviderManager.getInstance(BaseActivity.this)
+                                            .saveQuery(query, null);
                                     searchStopCode(query);
                                 } else {
                                     SnackBarHelper.show(BaseActivity.this, response.getString(
@@ -357,6 +365,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            ProgressDialogHelper.dismiss();
                             LOGE(LOG_TAG, String.format(
                                     getString(R.string.log_event_error_network_request),
                                     error.getClass().toString(), "onErrorResponse", "JSONObject",

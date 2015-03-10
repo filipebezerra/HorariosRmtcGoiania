@@ -148,10 +148,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             mFloatButtonMarkFavorite.show();
 
             /**
-            final SearchRecentSuggestions suggestions = new SearchRecentSuggestions(
-                    mAttachedActivity, SuggestionsProvider.AUTHORITY, SuggestionsProvider.MODE);
-
-
             final FavoriteBusStop favoriteBusStop = ApplicationSingleton.getInstance()
                     .getDaoSession().getFavoriteBusStopDao().queryBuilder()
                     .where(FavoriteBusStopDao.Properties.StopCode.eq(getBusStopSearched())).unique();
@@ -159,12 +155,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             if (favoriteBusStop != null) {
                 mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                         R.drawable.ic_drawer_pontos_favoritos));
-
-                /**
-                suggestions.saveRecentQuery(
-                        String.valueOf(favoriteBusStop.getStopCode()),
-                        favoriteBusStop.getAddress());
-
             } else {
 
                 /*
@@ -183,12 +173,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             public void onResponse(String result) {
                                 FavoriteBusStop favoriteBusStop = new BusStopHtmlParser()
                                         .parse(result);
-
-                                /*
-                                suggestions.saveRecentQuery(
-                                        String.valueOf(favoriteBusStop.getStopCode()),
-                                        favoriteBusStop.getAddress());
-
 
                                 //dialog.hide();
                             }
