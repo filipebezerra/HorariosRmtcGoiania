@@ -20,11 +20,11 @@ public class NotificationMessage {
         this.mNotificationType = mNotificationType;
     }
 
-    public NotificationType getmNotificationType() {
+    public NotificationType getNotificationType() {
         return mNotificationType;
     }
 
-    public void setmNotificationType(NotificationType mNotificationType) {
+    public void setNotificationType(NotificationType mNotificationType) {
         this.mNotificationType = mNotificationType;
     }
     

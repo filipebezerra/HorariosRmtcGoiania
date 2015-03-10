@@ -1,12 +1,11 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.app;
 
 import android.app.Application;
-import android.database.sqlite.SQLiteDatabase;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.DaoMaster;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.DaoSession;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
 
 /**
  * Classe da aplicaçao responsavel por definir configurar globais do aplicativo.
@@ -15,12 +14,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * @since 1.4-m2
  */
 public class ApplicationSingleton extends Application {
-
-    private static final String LOG_TAG = ApplicationSingleton.class.getSimpleName();
+    private static final String LOG_TAG = makeLogTag(ApplicationSingleton.class);
 
     private static ApplicationSingleton mInstance;
-    private DaoSession mDaoSession;
-    private SQLiteDatabase mDatabase;
 
     /**
      * Access the instance of the application Class.
@@ -36,7 +32,6 @@ public class ApplicationSingleton extends Application {
         super.onCreate();
         mInstance = this;
         initDefaultFont();
-        setupDatabaseModule();
     }
 
     /**
@@ -50,27 +45,4 @@ public class ApplicationSingleton extends Application {
                 .build()
         );
     }
-
-    /**
-     * Setups the database of this application. Is executed on (@Link #onCreate).
-     */
-    private void setupDatabaseModule() {
-        DaoMaster.DevOpenHelper openHelper = new DaoMaster.DevOpenHelper(
-                this, getString(R.string.database_name), null);
-        mDatabase = openHelper.getWritableDatabase();
-    }
-
-    /**
-     * Lazy loading Data access object.
-     *
-     * @return Dao session.
-     */
-    public DaoSession getDaoSession() {
-        if (mDaoSession == null) {
-            DaoMaster daoMaster = new DaoMaster(mDatabase);
-            mDaoSession = daoMaster.newSession();
-        }
-        return mDaoSession;
-    }
-
 }

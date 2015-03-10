@@ -14,27 +14,28 @@ import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.adapter.FavoriteBusStopsAdapter;
-import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widget.DividerItemDecoration;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widget.EmptyRecyclerView;
 
 /**
- * .
+ * Favorite bus stop list fragment. Loads the context data from database and displays to
+ * user interaction and then loading the item selected.
  *
  * @author Filipe Bezerra
  * @version 2.0, 08/03/2015
  * @since #
  */
-public class FavoritesListFragment extends Fragment
+public class FavoriteBusStopListFragment extends Fragment
         implements FavoriteBusStopsAdapter.OnItemClickListener {
 
     @NonNull private EmptyRecyclerView mRecyclerView;
     @NonNull private FavoriteBusStopsAdapter mFavoriteBusStopsAdapter;
 
-    public FavoritesListFragment() {
+    public FavoriteBusStopListFragment() {
     }
 
     @Override
@@ -53,16 +54,20 @@ public class FavoritesListFragment extends Fragment
         mRecyclerView.getItemAnimator().setRemoveDuration(1000);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(
                 getResources().getDrawable(R.drawable.abc_list_divider_mtrl_alpha)));
-        mRecyclerView.setAdapter(mFavoriteBusStopsAdapter = new FavoriteBusStopsAdapter(
-                getFavoritesData()));
-        mFavoriteBusStopsAdapter.setOnItemClickListener(this);
 
         return view;
     }
 
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mRecyclerView.setAdapter(mFavoriteBusStopsAdapter = new FavoriteBusStopsAdapter(
+                getFavoritesData()));
+        mFavoriteBusStopsAdapter.setOnItemClickListener(this);
+    }
+
     private List<FavoriteBusStop> getFavoritesData() {
-        return ApplicationSingleton.getInstance()
-                    .getDaoSession().getFavoriteBusStopDao().loadAll();
+        return DaoManager.getInstance(getActivity()).getFavoriteBusStopDao().loadAll();
     }
 
     @Override

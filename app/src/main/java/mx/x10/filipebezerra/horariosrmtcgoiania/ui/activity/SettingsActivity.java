@@ -11,7 +11,7 @@ import com.gc.materialdesign.widgets.Dialog;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SearchRecentSuggestionsHelper;
 
 /**
@@ -98,7 +98,7 @@ public class SettingsActivity extends PreferenceActivity
                 dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ApplicationSingleton.getInstance().getDaoSession().getFavoriteBusStopDao()
+                        DaoManager.getInstance(SettingsActivity.this).getFavoriteBusStopDao()
                                 .deleteAll();
                         preference.setSummary("Os favoritos foram removidos.");
                         preference.setEnabled(false);

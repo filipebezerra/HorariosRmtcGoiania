@@ -84,7 +84,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
         if (savedInstanceState == null) {
             mWebView.loadUrl(getArgUrlPage());
             LOGD(LOG_TAG, String.format(
-                    getString(R.string.log_event_debug), "onViewCreated", mWebView.getUrl(),
+                    getString(R.string.log_event_debug), "onViewCreated", getArgUrlPage(),
                     "web page loaded from arguments"));
         } else {
             mWebView.restoreState(savedInstanceState);

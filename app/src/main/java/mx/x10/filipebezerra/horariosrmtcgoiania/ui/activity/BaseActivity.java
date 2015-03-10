@@ -29,11 +29,11 @@ import org.json.JSONObject;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.app.ApplicationSingleton;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.FavoritesListFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.FavoriteBusStopListFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ProgressDialogHelper;
@@ -120,7 +120,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     private void addPrimarySections() {
         addSection(newSection(
                 getString(R.string.navdrawer_section_favorite_bus_stops),
-                R.drawable.ic_drawer_pontos_favoritos, new FavoritesListFragment())
+                R.drawable.ic_drawer_pontos_favoritos, new FavoriteBusStopListFragment())
                 .setNotifications(getFavoriteCount())
                 .setSectionColor(
                         getColor(R.color.navdrawer_favorites_section_color),
@@ -206,8 +206,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      * @return Favorite count.
      */
     private int getFavoriteCount() {
-        return (int) ApplicationSingleton.getInstance().getDaoSession()
-                .getFavoriteBusStopDao().count();
+        return (int) DaoManager.getInstance(BaseActivity.this).getFavoriteBusStopDao().count();
     }
 
     @Override
