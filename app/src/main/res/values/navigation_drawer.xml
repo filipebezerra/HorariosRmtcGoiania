@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="navdrawer_title_opened">@string/title_activity_main</string>
-    <string name="navdrawer_title_closed">@string/title_activity_main</string>
+    <string name="navdrawer_section_favorite_bus_stops">Pontos Favoritos</string>
 
-    <string name="navdrawer_menu_item_favorite_bus_stops">Pontos Favoritos</string>
-    <string name="navdrawer_menu_item_rmtc_wap">WAP</string>
-    <string name="navdrawer_menu_item_rmtc_horarios_viagem">Horário de Viagem</string>
-    <string name="navdrawer_menu_item_rmtc_planeje_viagem">Planeje sua Viagem</string>
-    <string name="navdrawer_menu_item_rmtc_ponto_a_ponto">Ponto a Ponto</string>
-    <string name="navdrawer_menu_item_rmtc_sac">SAC</string>
+    <string name="navdrawer_sub_section_horario_viagem">Horário de Viagem</string>
+    <string name="navdrawer_section_rmtc_wap">Consulta Rápida</string>
+    <string name="navdrawer_section_rmtc_horario_viagem">Mais Opções de Consulta</string>
 
-    <string name="navdrawer_fixed_menu_item_help">Ajuda e Feedback</string>
-    <string name="navdrawer_fixed_menu_item_configurations">Configurações</string>
+    <string name="navdrawer_section_rmtc_planeje_viagem">Planeje sua Viagem</string>
+    <string name="navdrawer_section_rmtc_ponto_a_ponto">Ponto a Ponto</string>
+    <string name="navdrawer_section_rmtc_sac">Atendimento Rmtc</string>
+
+    <string name="navdrawer_bottom_section_help">Ajuda e Feedback</string>
+    <string name="navdrawer_bottom_section_configurations">Configurações</string>
 </resources>
