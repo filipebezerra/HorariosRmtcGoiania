@@ -4,7 +4,7 @@
 
     <string name="navdrawer_sub_section_horario_viagem">Horário de Viagem</string>
     <string name="navdrawer_section_rmtc_wap">Consulta Rápida</string>
-    <string name="navdrawer_section_rmtc_horario_viagem">Mais Opções de Consulta</string>
+    <string name="navdrawer_section_rmtc_horario_viagem">Consulta por Endereço</string>
 
     <string name="navdrawer_section_rmtc_planeje_viagem">Planeje sua Viagem</string>
     <string name="navdrawer_section_rmtc_ponto_a_ponto">Ponto a Ponto</string>

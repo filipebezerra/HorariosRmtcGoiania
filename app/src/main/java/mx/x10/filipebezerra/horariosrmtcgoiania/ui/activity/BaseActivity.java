@@ -75,24 +75,29 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     };
 
     /**
+     * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment}
+     * used in {@link #searchStopCode} to perform user search requests.
+     */
+    private MaterialSection horarioViagemSection;
+
+    /**
      * The delegation method that initializes the activity. Don't use activity's onCreate method.
      */
     @Override
     public void init(final Bundle savedInstanceState) {
         setUpHeader();
         addPrimarySections();
-        addDivisor();
         addSecondarySections();
         addBottomSections();
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
-        // Can come from Global search, refer to searchable.xnml
+        // Can come from Global search, refer to searchable.xml
         handleSearchQuery(getIntent());
     }
 
     /**
-     *  Setup the drawer header such as the image if drawerType is DRAWERHEADER_IMAGE or
-     *  {@link it.neokree.materialnavigationdrawer.elements.MaterialAccount} if drawerType is
-     *  DRAWERHEADER_ACCOUNTS.
+     * Setup the drawer header such as the image if drawerType is DRAWERHEADER_IMAGE or
+     * {@link it.neokree.materialnavigationdrawer.elements.MaterialAccount} if drawerType is
+     * DRAWERHEADER_ACCOUNTS.
      */
     private void setUpHeader() {
         setDrawerHeaderImage(R.drawable.drawer_header);
@@ -111,7 +116,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     private void addPrimarySections() {
-        addSection(newSection(getString(R.string.navdrawer_menu_item_favorite_bus_stops),
+        addSection(newSection(
+                getString(R.string.navdrawer_section_favorite_bus_stops),
                 R.drawable.ic_drawer_pontos_favoritos, new FavoritesListFragment())
                 .setNotifications(getFavoriteCount())
                 .setSectionColor(
@@ -135,31 +141,36 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     private void addSecondarySections() {
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_wap),
+        addSubheader(getString(R.string.navdrawer_sub_section_horario_viagem));
+        addSection(newSection(getString(R.string.navdrawer_section_rmtc_wap),
                 R.drawable.ic_drawer_wap,
                 WebViewFragmentFactory.newWapPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_wap_section_color),
                         getColor(R.color.navdrawer_wap_section_dark_color)));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_horarios_viagem),
+        addSection(horarioViagemSection = newSection(
+                getString(R.string.navdrawer_section_rmtc_horario_viagem),
                 R.drawable.ic_drawer_horario_viagem,
                 WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_horario_viagem_section_color),
                         getColor(R.color.navdrawer_horario_viagem_section_dark_color)));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_planeje_viagem),
+
+        addDivisor();
+
+        addSection(newSection(getString(R.string.navdrawer_section_rmtc_planeje_viagem),
                 R.drawable.ic_drawer_planeje_sua_viagem,
                 WebViewFragmentFactory.newPlanejeViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_planeje_sua_viagem_section_color),
                         getColor(R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_ponto_a_ponto),
+        addSection(newSection(getString(R.string.navdrawer_section_rmtc_ponto_a_ponto),
                 R.drawable.ic_drawer_ponto_a_ponto,
                 WebViewFragmentFactory.newPontoaPontoPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_ponto_a_ponto_section_color),
                         getColor(R.color.navdrawer_ponto_a_ponto_section_dark_color)));
-        addSection(newSection(getString(R.string.navdrawer_menu_item_rmtc_sac),
+        addSection(newSection(getString(R.string.navdrawer_section_rmtc_sac),
                 R.drawable.ic_drawer_sac,
                 WebViewFragmentFactory.newSacPageFragment(BaseActivity.this))
                 .setSectionColor(
@@ -182,7 +193,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 Intent.createChooser(createShareIntent(),
                         getString(R.string.share_dialog_title))));
 
-        addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_configurations),
+        addBottomSection(newSection(getString(R.string.navdrawer_bottom_section_configurations),
                 R.drawable.ic_drawer_settings,
                 new Intent(BaseActivity.this, SettingsActivity.class)));
     }
@@ -362,16 +373,22 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         }
     }
 
+    /**
+     * Performs search in the fragment {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment}
+     *
+     * @param stopCode bus stop number retrieved from {@link SearchManager#QUERY}
+     */
     @SuppressWarnings("unchecked")
     public void searchStopCode(final String stopCode) {
-        MaterialSection horarioViagemSection = getSectionByTitle(getString(
-                R.string.navdrawer_menu_item_rmtc_horarios_viagem));
-        getCurrentSection().unSelect();
+        MaterialSection currentSection = getCurrentSection();
+        if (currentSection != horarioViagemSection) {
+            currentSection.unSelect();
+            horarioViagemSection.select();
+            changeToolbarColor(horarioViagemSection);
+        }
+
         setFragment(WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this, stopCode),
                 horarioViagemSection.getTitle());
-
-        // TODO : After programatically selecting, when section Pontos Favoritos selected, this remains selected
-        horarioViagemSection.select();
-        changeToolbarColor(horarioViagemSection);
+        setSection(horarioViagemSection);
     }
 }
