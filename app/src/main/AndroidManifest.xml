@@ -46,7 +46,8 @@
 
         <provider
             android:name="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
-            android:authorities="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"/>
+            android:authorities="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
+            android:exported="false"/>
 
     </application>
 
