@@ -964,6 +964,12 @@ public abstract class MaterialNavigationDrawer<Fragment> extends ActionBarActivi
         setDrawerTouchable(true);
     }
 
+    // TODO : temporary solution, this method don't exists officially
+    public void setFragmentSection(Fragment fragment, String title, MaterialSection section) {
+        setFragment(fragment, title);
+        syncSectionsState(section);
+    }
+
     /**
      * Set the fragment to the activity content.<br />
      * N.B. If you want to support the master/child flow, please consider to use setFragmentChild instead
