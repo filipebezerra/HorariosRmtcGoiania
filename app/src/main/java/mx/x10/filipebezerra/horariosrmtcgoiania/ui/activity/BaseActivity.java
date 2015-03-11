@@ -80,7 +80,12 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment}
      * used in {@link #searchStopCode} to perform user search requests.
      */
-    private MaterialSection horarioViagemSection;
+    protected MaterialSection horarioViagemSection;
+
+    /**
+     * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.FavoriteBusStopListFragment}.
+     */
+    protected MaterialSection favoriteBusStopSection;
 
     /**
      * The delegation method that initializes the activity. Don't use activity's onCreate method.
@@ -118,7 +123,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     private void addPrimarySections() {
-        addSection(newSection(
+        addSection(favoriteBusStopSection = newSection(
                 getString(R.string.navdrawer_section_favorite_bus_stops),
                 R.drawable.ic_drawer_pontos_favoritos, new FavoriteBusStopListFragment())
                 .setNotifications(getFavoriteCount())

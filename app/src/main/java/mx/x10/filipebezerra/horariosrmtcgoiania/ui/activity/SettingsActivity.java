@@ -7,41 +7,46 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.gc.materialdesign.widgets.Dialog;
-
 import de.psdev.licensesdialog.LicensesDialog;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.DialogBuilder;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SearchRecentSuggestionsHelper;
 
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_ABOUT_INFO;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_CHANGELOG_INFO;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_CLEAR_FAVORITE_BUS_STOP_DATA;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_CLEAR_RECENT_SUGGESTIONS;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_OPEN_SOURCE_LICENSES_INFO;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_PRODUCT_TOUR;
+
 /**
- * Settings activity.
+ * Preference screen for app preferences.
  *
  * @author Filipe Bezerra
- * @version 2.0, 06/03/2015
+ * @version 2.0, 10/03/2015
  * @since #
  */
 public class SettingsActivity extends PreferenceActivity
         implements View.OnClickListener, Preference.OnPreferenceClickListener {
-
-    private static final String PREF_CLEAR_RECENT_SUGGESTIONS_KEY = "clear_recent_suggestions";
-    private static final String PREF_CLEAR_FAVORITE_BUS_STOP_DATA_KEY = "clear_favorite_bus_stop_data";
-    private static final String PREF_ABOUT_INFO_KEY = "about_info";
-    private static final String PREF_OPEN_SOURCE_LICENSES_INFO_KEY = "open_source_licenses_info";
-    private static final String PREF_CHANGELOG_INFO_KEY = "changelog_info";
-    private static final String PREF_PRODUCT_TOUR_KEY = "product_tour";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupContentView();
-        addPreferencesFromResource(R.xml.settings);
-        findPreference(PREF_CLEAR_RECENT_SUGGESTIONS_KEY).setOnPreferenceClickListener(this);
-        findPreference(PREF_CLEAR_FAVORITE_BUS_STOP_DATA_KEY).setOnPreferenceClickListener(this);
-        findPreference(PREF_ABOUT_INFO_KEY).setOnPreferenceClickListener(this);
-        findPreference(PREF_OPEN_SOURCE_LICENSES_INFO_KEY).setOnPreferenceClickListener(this);
-        findPreference(PREF_CHANGELOG_INFO_KEY).setOnPreferenceClickListener(this);
-        findPreference(PREF_PRODUCT_TOUR_KEY).setOnPreferenceClickListener(this);
+        setupPreferenceVIew();
+    }
+
+    private void setupPreferenceVIew() {
+        addPreferencesFromResource(R.xml.preferences);
+        findPreference(PREF_CLEAR_RECENT_SUGGESTIONS).setOnPreferenceClickListener(this);
+        findPreference(PREF_CLEAR_FAVORITE_BUS_STOP_DATA).setOnPreferenceClickListener(this);
+        findPreference(PREF_ABOUT_INFO).setOnPreferenceClickListener(this);
+        findPreference(PREF_OPEN_SOURCE_LICENSES_INFO).setOnPreferenceClickListener(this);
+        findPreference(PREF_CHANGELOG_INFO).setOnPreferenceClickListener(this);
+        findPreference(PREF_PRODUCT_TOUR).setOnPreferenceClickListener(this);
     }
 
     private void setupContentView() {
@@ -70,65 +75,65 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public boolean onPreferenceClick(final Preference preference) {
         final String key = preference.getKey();
-        Dialog dialog;
 
         switch (key) {
-            case PREF_CLEAR_RECENT_SUGGESTIONS_KEY:
-                dialog = new Dialog(SettingsActivity.this, preference.getTitle().toString(),
-                        "Todas sugestões de pesquisa serão removidas.");
-                dialog.addCancelButton("CANCELAR");
-
-                dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SearchRecentSuggestionsHelper.getInstance(SettingsActivity.this)
-                                .clearHistory();
-                        preference.setSummary("As sugestões foram removidas.");
-                        preference.setEnabled(false);
-                    }
-                });
-                dialog.show();
-                dialog.getButtonAccept().setText("OK");
+            case PREF_CLEAR_RECENT_SUGGESTIONS:
+                new DialogBuilder(SettingsActivity.this, preference.getTitle().toString(),
+                        getString(R.string.prompt_user_pref_clear_recent_suggestions))
+                        .addAcceptButtonClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                SearchRecentSuggestionsHelper.getInstance(SettingsActivity.this)
+                                        .clearHistory();
+                                preference.setSummary(getString(R.string
+                                        .pref_clear_recent_suggestions_summary_edited));
+                                preference.setEnabled(false);
+                            }
+                        })
+                        .addCancelButton()
+                        .buildAndShow();
                 return true;
 
-            case PREF_CLEAR_FAVORITE_BUS_STOP_DATA_KEY:
-                dialog = new Dialog(SettingsActivity.this, preference.getTitle().toString(),
-                        "Todos seus pontos favoritos serão removidos.");
-                dialog.addCancelButton("CANCELAR");
-                dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DaoManager.getInstance(SettingsActivity.this).getFavoriteBusStopDao()
-                                .deleteAll();
-                        preference.setSummary("Os favoritos foram removidos.");
-                        preference.setEnabled(false);
-                    }
-                });
-                dialog.show();
-                dialog.getButtonAccept().setText("OK");
+            case PREF_CLEAR_FAVORITE_BUS_STOP_DATA:
+                new DialogBuilder(SettingsActivity.this, preference.getTitle().toString(),
+                        getString(R.string.prompt_user_pref_clear_favorite_bus_stop_data))
+                        .addAcceptButtonClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                DaoManager.getInstance(SettingsActivity.this).getFavoriteBusStopDao()
+                                        .deleteAll();
+                                preference.setSummary(getString(R.string
+                                        .pref_clear_favorite_bus_stop_data_summary_edited));
+                                preference.setEnabled(false);
+
+                                EventBusProvider.getInstance().getEventBus().post(
+                                        new NotificationEvent(new NotificationMessage(
+                                                NotificationMessage.NotificationType.RESET)));
+                            }
+                        })
+                        .addCancelButton()
+                        .buildAndShow();
                 return false;
 
-            case PREF_ABOUT_INFO_KEY:
-                dialog = new Dialog(SettingsActivity.this, getString(R.string.full_app_name),
-                        getString(R.string.dialog_message_about_info));
-                dialog.show();
-                dialog.getButtonAccept().setText("OK");
+            case PREF_ABOUT_INFO:
+                new DialogBuilder(SettingsActivity.this, getString(R.string.full_app_name),
+                        getString(R.string.dialog_message_about_info))
+                        .buildAndShow();
                 return true;
 
-            case PREF_OPEN_SOURCE_LICENSES_INFO_KEY:
+            case PREF_OPEN_SOURCE_LICENSES_INFO:
                 new LicensesDialog.Builder(this).setNotices(R.raw.notices)
                         .setThemeResourceId(R.style.Widget_LicensesDialog)
                         .setTitle(getString(R.string.pref_open_source_licenses_info_key_title))
                         .setDividerColorId(R.color.licenses_dialog_divider_color).build().show();
                 return true;
 
-            case PREF_CHANGELOG_INFO_KEY:
+            case PREF_CHANGELOG_INFO:
                 return false;
 
-            case PREF_PRODUCT_TOUR_KEY:
+            case PREF_PRODUCT_TOUR:
                 return false;
         }
         return false;
     }
-
 }
