@@ -400,8 +400,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
             changeToolbarColor(horarioViagemSection);
         }
 
-        setFragment(WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this, stopCode),
-                horarioViagemSection.getTitle());
-        setSection(horarioViagemSection);
+        setFragmentSection(WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this, stopCode),
+                horarioViagemSection.getTitle(), horarioViagemSection);
     }
 }
