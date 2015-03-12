@@ -1693,7 +1693,8 @@ public abstract class MaterialNavigationDrawer<Fragment> extends ActionBarActivi
     }
 
     public void closeDrawer() {
-        layout.closeDrawer(drawer);
+        if (!deviceSupportMultiPane())
+            layout.closeDrawer(drawer);
     }
 
     public boolean isDrawerOpen() {
