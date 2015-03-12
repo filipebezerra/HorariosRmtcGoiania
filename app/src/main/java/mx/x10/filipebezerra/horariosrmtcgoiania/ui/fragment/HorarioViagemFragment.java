@@ -33,6 +33,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 
+import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
 
@@ -132,6 +133,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         if (mFloatButtonMarkFavorite != null) {
             mFloatButtonMarkFavorite.setVisibility(View.GONE);
             mFloatButtonMarkFavorite.hide();
+            mFloatButtonMarkFavorite.setEnabled(false);
         }
     }
 
@@ -152,8 +154,13 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 if (mIsViewingBusStopPage) {
                     mFloatButtonMarkFavorite.setVisibility(View.VISIBLE);
                     mFloatButtonMarkFavorite.show();
+                    mFloatButtonMarkFavorite.setEnabled(true);
 
                     mPersistedFavoriteBusStop = getPersistedFavoriteBusStop();
+                    LOGD(LOG_TAG, String.format(getString(R.string.log_event_debug),
+                            "onWebViewPageFinished", "persisted favorite bus stop",
+                            mPersistedFavoriteBusStop == null ? "but it\'s not" :
+                                    "is persisted with id: "+mPersistedFavoriteBusStop.getId()));
 
                     if (mPersistedFavoriteBusStop != null) {
                         mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
@@ -229,8 +236,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 mFavoriteBusStopDao.insert(newFavoriteBusStop);
                                 mPersistedFavoriteBusStop = newFavoriteBusStop;
 
-                                // TODO : need trigger persistence event ?
-
                                 mEventBus.post(new NotificationEvent(new NotificationMessage(
                                         NotificationMessage.NotificationType.INCREMENT)));
 
@@ -267,8 +272,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                     ((MaterialNavigationDrawer) mAttachedActivity).getCurrentSection()
                             .getSectionColor());
             mFavoriteBusStopDao.delete(mPersistedFavoriteBusStop);
-
-            // TODO : need trigger persistence event ?
+            mPersistedFavoriteBusStop = null;
 
             mEventBus.post(new NotificationEvent(new NotificationMessage(
                     NotificationMessage.NotificationType.DECREMENT)));
