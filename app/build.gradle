@@ -7,7 +7,6 @@ android {
     defaultConfig {
         applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
         minSdkVersion 8
-        maxSdkVersion 21
         targetSdkVersion 21
         versionCode 8
         versionName "2.0"
@@ -20,7 +19,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
