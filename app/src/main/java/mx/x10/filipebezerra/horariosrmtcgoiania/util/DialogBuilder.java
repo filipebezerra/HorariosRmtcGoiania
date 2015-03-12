@@ -21,6 +21,7 @@ public class DialogBuilder {
     private View.OnClickListener mAcceptButtonClickListener;
     private String mAcceptButtonText = "OK";
     private String mCancelButtonText = "CANCELAR";
+    private View mContentView;
 
     public DialogBuilder(Context context, String title, String message) {
         mContext = context;
@@ -43,6 +44,11 @@ public class DialogBuilder {
         return this;
     }
 
+    public DialogBuilder addContentView(View contentView) {
+        mContentView = contentView;
+        return this;
+    }
+
     public void buildAndShow() {
         Dialog dialog = new Dialog(mContext, mTitle, mMesssage);
         if (mHasCancelButton) {
@@ -51,6 +57,10 @@ public class DialogBuilder {
 
         if (mAcceptButtonClickListener != null) {
             dialog.setOnAcceptButtonClickListener(mAcceptButtonClickListener);
+        }
+
+        if (mContentView != null) {
+            dialog.setContentView(mContentView);
         }
 
         dialog.show();

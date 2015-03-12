@@ -1,13 +1,17 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import de.psdev.licensesdialog.LicensesDialog;
+import it.gmariotti.changelibs.library.view.ChangeLogListView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationEvent;
@@ -129,7 +133,14 @@ public class SettingsActivity extends PreferenceActivity
                 return true;
 
             case PREF_CHANGELOG_INFO:
-                return false;
+                LayoutInflater layoutInflater = (LayoutInflater) getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                ChangeLogListView changeLogListView=(ChangeLogListView)layoutInflater.inflate(
+                        R.layout.view_changelog, null);
+
+                new AlertDialog.Builder(SettingsActivity.this).setView(changeLogListView)
+                        .create().show();
+                return true;
 
             case PREF_PRODUCT_TOUR:
                 return false;

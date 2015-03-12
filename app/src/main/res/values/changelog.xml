@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="changelog_row_prefix_improvement">[b]Novo:[/b]</string>
+    <string name="changelog_row_prefix_bug">[b]Correção:[/b]</string>
+    <string name="changelog_header_version">"Versão "</string>
+</resources>
