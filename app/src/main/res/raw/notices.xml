@@ -19,12 +19,6 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>Guava</name>
-        <url>https://github.com/google/guava</url>
-        <copyright>Copyright 2010 Google</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
         <name>jsoup</name>
         <url>http://jsoup.org/</url>
         <copyright>Copyright 2009 Jonathan Hedley</copyright>
@@ -40,6 +34,12 @@
         <name>Material Design Android Library</name>
         <url>https://github.com/navasmdc/MaterialDesignLibrary</url>
         <copyright>Copyright 2014 Ivan Navas</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>MaterialNavigationDrawer</name>
+        <url>https://github.com/neokree/MaterialNavigationDrawer</url>
+        <copyright>Copyright 2014 Fabio Biola</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
