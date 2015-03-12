@@ -13,6 +13,12 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
+        <name>ChangeLog</name>
+        <url>https://github.com/gabrielemariotti/changeloglib</url>
+        <copyright>Copyright 2013-2014 Gabriele Mariotti</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
         <name>greenDAO</name>
         <url>http://greendao-orm.com/</url>
         <copyright>Copyright 2013 greenrobot</copyright>
