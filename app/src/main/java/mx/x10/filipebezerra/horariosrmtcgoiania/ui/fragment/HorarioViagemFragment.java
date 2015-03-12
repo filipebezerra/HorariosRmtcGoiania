@@ -135,6 +135,10 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
         }
     }
 
+    public boolean isViewingBusStopPage() {
+        return mIsViewingBusStopPage;
+    }
+
     @Override
     public void onWebViewPageFinished() {
         super.onWebViewPageFinished();
@@ -184,6 +188,19 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             return Integer.parseInt(lastPathSegment);
         } catch (NullPointerException | NumberFormatException e) {
             return null;
+        }
+    }
+
+    public void reloadPageFromArguments(@Nullable final Bundle newPageArgs) {
+        WebView webView = getWebView();
+
+        if (webView == null)
+            return;
+
+        if (newPageArgs == null) {
+            webView.loadUrl(getArguments().getString(ARG_PARAM_URL_PAGE));
+        } else {
+            webView.loadUrl(newPageArgs.getString(ARG_PARAM_URL_PAGE));
         }
     }
 

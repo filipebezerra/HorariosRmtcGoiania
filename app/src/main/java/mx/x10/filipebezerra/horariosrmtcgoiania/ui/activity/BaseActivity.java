@@ -34,12 +34,20 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.FavoriteBusStopListFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.buildFinalUrl;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.buildHorarioViagemUrl;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newHorarioViagemPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newPlanejeViagemPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newPontoaPontoPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newSacPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newWapPageFragment;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
 
 /**
@@ -151,14 +159,14 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         addSubheader(getString(R.string.navdrawer_sub_section_horario_viagem));
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_wap),
                 R.drawable.ic_drawer_wap,
-                WebViewFragmentFactory.newWapPageFragment(BaseActivity.this))
+                newWapPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_wap_section_color),
                         getColor(R.color.navdrawer_wap_section_dark_color)));
         addSection(horarioViagemSection = newSection(
                 getString(R.string.navdrawer_section_rmtc_horario_viagem),
                 R.drawable.ic_drawer_horario_viagem,
-                WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this))
+                newHorarioViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_horario_viagem_section_color),
                         getColor(R.color.navdrawer_horario_viagem_section_dark_color)));
@@ -167,19 +175,19 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_planeje_viagem),
                 R.drawable.ic_drawer_planeje_sua_viagem,
-                WebViewFragmentFactory.newPlanejeViagemPageFragment(BaseActivity.this))
+                newPlanejeViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_planeje_sua_viagem_section_color),
                         getColor(R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_ponto_a_ponto),
                 R.drawable.ic_drawer_ponto_a_ponto,
-                WebViewFragmentFactory.newPontoaPontoPageFragment(BaseActivity.this))
+                newPontoaPontoPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_ponto_a_ponto_section_color),
                         getColor(R.color.navdrawer_ponto_a_ponto_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_sac),
                 R.drawable.ic_drawer_sac,
-                WebViewFragmentFactory.newSacPageFragment(BaseActivity.this))
+                newSacPageFragment(BaseActivity.this))
                 .setSectionColor(
                         getColor(R.color.navdrawer_sac_section_color),
                         getColor(R.color.navdrawer_sac_section_dark_color)));
@@ -188,28 +196,29 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     /**
      * Statical sections, containing specific app definitions and help content
      */
-    @SuppressWarnings("unchecked")
-    private void addBottomSections() {
-        // TODO : Reserved for future implementation - issue #66
+        @SuppressWarnings("unchecked")
+        private void addBottomSections () {
+            // TODO : Reserved for future implementation - issue #66
         /*
         addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_help),
                 R.drawable.ic_drawer_help, ...));
                 */
 
-        addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
-                Intent.createChooser(createShareIntent(),
-                        getString(R.string.share_dialog_title))));
+            addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
+                    Intent.createChooser(createShareIntent(),
+                            getString(R.string.share_dialog_title))));
 
-        addBottomSection(newSection(getString(R.string.navdrawer_bottom_section_configurations),
-                R.drawable.ic_drawer_settings,
-                new Intent(BaseActivity.this, SettingsActivity.class)));
-    }
+            addBottomSection(newSection(getString(R.string.navdrawer_bottom_section_configurations),
+                    R.drawable.ic_drawer_settings,
+                    new Intent(BaseActivity.this, SettingsActivity.class)));
+        }
 
-    /**
-     * Returns the favorite count retrieve from sqlite.
-     *
-     * @return Favorite count.
-     */
+        /**
+         * Returns the favorite count retrieve from sqlite.
+         *
+         * @return Favorite count.
+         */
+
     private int getFavoriteCount() {
         return (int) DaoManager.getInstance(BaseActivity.this).getFavoriteBusStopDao().count();
     }
@@ -386,6 +395,22 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         }
     }
 
+    @Override
+    public void onClick(final MaterialSection section) {
+        if (section == horarioViagemSection) {
+            HorarioViagemFragment fragment = (HorarioViagemFragment) section.getTargetFragment();
+
+            if (fragment.isViewingBusStopPage()) {
+                fragment.reloadPageFromArguments(buildFinalUrl(getString(
+                        R.string.url_rmtc_horario_viagem)));
+                return;
+            } else {
+                section.setTarget(newHorarioViagemPageFragment(BaseActivity.this));
+            }
+        }
+        super.onClick(section);
+    }
+
     /**
      * Performs search in the fragment {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment}
      *
@@ -393,14 +418,23 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     public void searchStopCode(final String stopCode) {
-        MaterialSection currentSection = getCurrentSection();
-        if (currentSection != horarioViagemSection) {
-            currentSection.unSelect();
-            horarioViagemSection.select();
-            changeToolbarColor(horarioViagemSection);
-        }
+        HorarioViagemFragment fragment = (HorarioViagemFragment) horarioViagemSection
+                .getTargetFragment();
 
-        setFragmentSection(WebViewFragmentFactory.newHorarioViagemPageFragment(BaseActivity.this, stopCode),
-                horarioViagemSection.getTitle(), horarioViagemSection);
+        if (fragment.isViewingBusStopPage()) {
+            Bundle arguments = buildHorarioViagemUrl(BaseActivity.this, stopCode);
+            fragment.reloadPageFromArguments(arguments);
+        } else {
+            MaterialSection currentSection = getCurrentSection();
+
+            if (horarioViagemSection != currentSection) {
+                currentSection.unSelect();
+                horarioViagemSection.select();
+                changeToolbarColor(horarioViagemSection);
+            }
+            setFragment(WebViewFragmentFactory.newHorarioViagemPageFragment(
+                    BaseActivity.this, stopCode), horarioViagemSection.getTitle());
+            setSection(horarioViagemSection);
+        }
     }
 }

@@ -95,10 +95,22 @@ public class WebViewFragmentFactory {
     public static HorarioViagemFragment newHorarioViagemPageFragment(Context context,
                                                                      String busStopCode) {
         HorarioViagemFragment horarioViagemFragment = new HorarioViagemFragment();
+        Bundle arguments = buildHorarioViagemUrl(context, busStopCode);
+        horarioViagemFragment.setArguments(arguments);
+        return horarioViagemFragment;
+    }
+
+    /**
+     * Helper method to build argumens to {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment}.
+     *
+     * @param context context
+     * @param busStopCode the bus stop code argument
+     * @return collection with the url page argument.
+     */
+    public static Bundle buildHorarioViagemUrl(final Context context, final String busStopCode) {
         Bundle arguments = buildFinalUrl(context.getString(R.string.url_rmtc_horario_viagem),
                 context.getString(R.string.url_path_visualizar_ponto), busStopCode);
         arguments.putString(HorarioViagemFragment.ARG_PARAM_BUS_STOP_CODE, busStopCode);
-        horarioViagemFragment.setArguments(arguments);
-        return horarioViagemFragment;
+        return arguments;
     }
 }
