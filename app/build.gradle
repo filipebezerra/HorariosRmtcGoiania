@@ -7,13 +7,13 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
+
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
-
 
 android {
     compileSdkVersion 21
@@ -88,4 +88,5 @@ dependencies {
         transitive = true;
     }
     compile 'com.jakewharton.timber:timber:2.7.1'
+    compile 'com.nispok:snackbar:2.10.5'
 }

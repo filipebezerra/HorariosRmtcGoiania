@@ -239,7 +239,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 // TODO : Animate to avoid SnackBar blocking the Floating Button
                                 //animate(mFloatButtonMarkFavorite).setInterpolator(new BounceInterpolator()).translationYBy(-34).start();
 
-                                SnackBarHelper.show(mAttachedActivity, "Ponto marcado como favorito.");
+                                SnackBarHelper.showSingleLine(mAttachedActivity,
+                                        getString(R.string.info_stop_bus_added_to_favorites));
 
                                 mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                                         R.drawable.ic_drawer_pontos_favoritos));
@@ -254,7 +255,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                         error.getClass().toString(), "onErrorResponse", "String",
                                         currentUrl), error);
                                 SnackBarHelper.show(mAttachedActivity,
-                                        getString(R.string.error_in_network_search_request_parsing_html_page));
+                                        getString(
+                                                R.string.error_in_network_search_request_parsing_html_page));
                             }
                         }
                 );
@@ -276,7 +278,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             // TODO : Animate to avoid SnackBar blocking the Floating Button
             //animate(mFloatButtonMarkFavorite).setInterpolator(new BounceInterpolator()).translationYBy(-34).start();
 
-            SnackBarHelper.show(mAttachedActivity, "Ponto removido de seus favoritos.");
+            SnackBarHelper.showSingleLine(mAttachedActivity,
+                    getString(R.string.info_stop_bus_removed_from_favorites));
             mFloatButtonMarkFavorite.setDrawableIcon(getResources().getDrawable(
                     R.drawable.ic_unmark_favorite));
         }

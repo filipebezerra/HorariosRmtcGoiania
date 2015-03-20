@@ -12,4 +12,11 @@
     <string name="error_in_network_search_request_parsing_html_page">
         Desculpe, não foi possível marcar este ponto como favorito. Por favor, tente novamente!
     </string>
+    
+    <string name="info_stop_bus_added_to_favorites">
+        Ponto adicionado aos favoritos!
+    </string>
+        <string name="info_stop_bus_removed_from_favorites">
+        Ponto removido dos favoritos!
+    </string>
 </resources>

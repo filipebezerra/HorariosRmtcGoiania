@@ -48,7 +48,8 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragme
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newWapPageFragment;
 
 /**
- * Activity base containing based implementation of Navigation Drawer and all application base behavior.
+ * Activity base containing based implementation of Navigation Drawer and all application base
+ * behavior.
  *
  * @author Filipe Bezerra
  * @version 2.0, 08/03/2015
@@ -76,7 +77,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (!NetworkUtils.isConnectingToInternet(context)) {
-                SnackBarHelper.show(BaseActivity.this, getString(R.string.no_internet_connectivity));
+                SnackBarHelper.showSingleLine(BaseActivity.this,
+                        getString(R.string.no_internet_connectivity));
             }
         }
     };
@@ -107,8 +109,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     }
 
     /**
-     * Setup the drawer header such as the image if drawerType is DRAWERHEADER_IMAGE or
-     * {@link it.neokree.materialnavigationdrawer.elements.MaterialAccount} if drawerType is
+     * Setup the drawer header such as the image if drawerType is DRAWERHEADER_IMAGE or {@link
+     * it.neokree.materialnavigationdrawer.elements.MaterialAccount} if drawerType is
      * DRAWERHEADER_ACCOUNTS.
      */
     private void setUpHeader() {
@@ -138,8 +140,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     }
 
     /**
-     * Convenient method for return a color integer from the application's package's
-     * default color table.
+     * Convenient method for return a color integer from the application's package's default color
+     * table.
      *
      * @param resId The desired resource identifier, must be a color identifier.
      * @return Resource id for the color
@@ -193,28 +195,28 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     /**
      * Statical sections, containing specific app definitions and help content
      */
-        @SuppressWarnings("unchecked")
-        private void addBottomSections () {
-            // TODO : Reserved for future implementation - issue #66
+    @SuppressWarnings("unchecked")
+    private void addBottomSections() {
+        // TODO : Reserved for future implementation - issue #66
         /*
         addBottomSection(newSection(getString(R.string.navdrawer_fixed_menu_item_help),
                 R.drawable.ic_drawer_help, ...));
                 */
 
-            addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
-                    Intent.createChooser(createShareIntent(),
-                            getString(R.string.share_dialog_title))));
+        addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
+                Intent.createChooser(createShareIntent(),
+                        getString(R.string.share_dialog_title))));
 
-            addBottomSection(newSection(getString(R.string.navdrawer_bottom_section_configurations),
-                    R.drawable.ic_drawer_settings,
-                    new Intent(BaseActivity.this, SettingsActivity.class)));
-        }
+        addBottomSection(newSection(getString(R.string.navdrawer_bottom_section_configurations),
+                R.drawable.ic_drawer_settings,
+                new Intent(BaseActivity.this, SettingsActivity.class)));
+    }
 
-        /**
-         * Returns the favorite count retrieve from sqlite.
-         *
-         * @return Favorite count.
-         */
+    /**
+     * Returns the favorite count retrieve from sqlite.
+     *
+     * @return Favorite count.
+     */
 
     private int getFavoriteCount() {
         return (int) DaoManager.getInstance(BaseActivity.this).getFavoriteBusStopDao().count();
@@ -351,7 +353,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                                 String status = response.getString(getString(
                                         R.string.json_attr_status_validate_rmtc_horarios_viagem));
 
-                                if (getString(R.string.json_attr_success_validate_rmtc_horarios_viagem)
+                                if (getString(
+                                        R.string.json_attr_success_validate_rmtc_horarios_viagem)
                                         .equals(status)) {
                                     SuggestionsProviderManager.getInstance(BaseActivity.this)
                                             .saveQuery(query, null);
@@ -388,7 +391,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
             RequestQueueManager.getInstance(BaseActivity.this).addToRequestQueue(request, TAG);
         } else {
-            SnackBarHelper.show(BaseActivity.this, getString(R.string.non_digit_voice_search));
+            SnackBarHelper.showSingleLine(BaseActivity.this, getString(
+                    R.string.non_digit_voice_search));
         }
     }
 
