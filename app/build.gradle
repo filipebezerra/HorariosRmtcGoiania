@@ -89,4 +89,5 @@ dependencies {
     }
     compile 'com.jakewharton.timber:timber:2.7.1'
     compile 'com.nispok:snackbar:2.10.5'
+    compile 'net.i2p.android.ext:floatingactionbutton:1.8.0'
 }

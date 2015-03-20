@@ -16,7 +16,13 @@
     <string name="info_stop_bus_added_to_favorites">
         Ponto adicionado aos favoritos!
     </string>
-        <string name="info_stop_bus_removed_from_favorites">
+    <string name="info_stop_bus_removed_from_favorites">
         Ponto removido dos favoritos!
+    </string>
+    <string name="info_adding_stop_bus_to_favorites">
+        Adicionando, por favor aguarde&#8230;
+    </string>
+    <string name="info_removing_stop_bus_from_favorites">
+        Removendo, por favor aguarde&#8230;
     </string>
 </resources>

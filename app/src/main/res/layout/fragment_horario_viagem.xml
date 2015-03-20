@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.HorarioViagemFragment">
+    tools:context=".ui.fragment.HorarioViagemFragment"
+    >
 
-    <include
-        layout="@layout/fragment_browser"/>
+    <include layout="@layout/fragment_browser" />
 
-    <com.gc.materialdesign.views.ButtonFloat
+    <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatButtonMarkFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/floating_action_button_margin"
         android:layout_marginEnd="@dimen/floating_action_button_margin"
         android:layout_marginBottom="@dimen/floating_action_button_margin"
-        android:background="@color/floating_action_button_background"
-        android:visibility="invisible"
-        materialdesign:animate="false"
-        materialdesign:rippleColor="@color/floating_action_button_ripple_color"
-        materialdesign:iconDrawable="@drawable/ic_unmark_favorite"/>
+        android:visibility="gone"
+        fab:fab_icon="@drawable/ic_unmark_favorite"
+        fab:fab_colorNormal="@color/floating_action_button_background"
+        fab:fab_colorPressed="@color/floating_action_button_ripple_color"
+        />
 </RelativeLayout>
