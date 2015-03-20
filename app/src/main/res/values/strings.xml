@@ -4,11 +4,12 @@
     <string name="app_name" translatable="false">HorariosRmtcGoiania</string>
     <string name="full_app_name" translatable="false">Horários Rmtc Goiânia</string>
     <string name="title_activity_main" translatable="false">Horários Rmtc Gyn</string>
+    <string name="title_activity_settings">Configurações</string>
 
     <!-- Actions -->
     <string name="action_search">Buscar Ponto</string>
     <string name="action_share">Compartilhe com amigos</string>
-    <string name="section_title_settings">Configurações</string>
+    <string name="action_refresh">Atualizar horários</string>
 
     <!-- Search Action -->
     <string name="search_hint">Número do ponto</string>
@@ -31,7 +32,12 @@
     <string name="share_dialog_title">Compartilhe com seus amigos</string>
     
     <string name="dialog_message_about_info">
-        Desenvolvedor: Filipe Bezerra de Sousa\nVersão: 2.0
+        Desenvolvedor: Filipe Bezerra
+        \nEmail: filipebzerra@gmail.com
+        \nSite: http://filipebezerra.github.io
     </string>
-    <string name="action_refresh">Atualizar horários</string>
+
+    <string name="ok_button">OK</string>
+    <string name="erase_button">APAGAR</string>
+    <string name="cancel_button">CANCELAR</string>
 </resources>

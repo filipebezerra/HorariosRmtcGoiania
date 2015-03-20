@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -331,8 +332,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         final String query = intent.getStringExtra(SearchManager.QUERY);
 
         if (TextUtils.isDigitsOnly(query)) {
-            ProgressDialogHelper.show(BaseActivity.this, "Pesquisando, por favor aguarde...",
-                    getCurrentSection().getSectionColor());
+            final MaterialDialog dialog = ProgressDialogHelper.show(BaseActivity.this,
+                    R.string.info_title_searching, R.string.info_content_please_wait);
 
             mSearchView.clearFocus();
             mSearchView.setQuery(query, false);
@@ -348,7 +349,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            ProgressDialogHelper.dismiss();
+                            dialog.dismiss();
                             try {
                                 String status = response.getString(getString(
                                         R.string.json_attr_status_validate_rmtc_horarios_viagem));
@@ -378,7 +379,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            ProgressDialogHelper.dismiss();
+                            dialog.dismiss();
                             Timber.e(String.format(
                                     getString(R.string.log_event_error_network_request),
                                     error.getClass().toString(), "onErrorResponse", "JSONObject",

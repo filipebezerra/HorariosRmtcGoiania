@@ -1,39 +1,50 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.util;
 
 import android.content.Context;
-
-import com.gc.materialdesign.widgets.ProgressDialog;
+import android.support.annotation.StringRes;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
- * Helper class for showing {@link com.gc.materialdesign.widgets.ProgressDialog} in Material
- * Design fashion.
+ * Helper class for showing or building {@link com.afollestad.materialdialogs.MaterialDialog}
+ * as a ProgressDialog in Material Design fashion.
  *
  * @author Filipe Bezerra
- * @version 2.0, 10/03/2015
- * @since #
+ * @version 2.1, 20/03/2015
+ * @since 2.0
  */
 public class ProgressDialogHelper {
-    private static ProgressDialog mProgressDialog;
+    public static final boolean INDETERMINATE = true;
+    public static final int MAX_ZERO = 0;
 
     /**
-     * Shows the progress dialog. Use {@link #dismiss()} to hides this.
+     * Shows a basic indeterminate progress dialog within a title and a message.
      *
-     * @param context the context.
-     * @param progressTitle title to show in this dialog.
-     * @param progressColor progress color to show in this dialog.
+     * @param context context to show the progress dialog.
+     * @param title resource id to progress dialog title.
+     * @param message resource id to progress dialog content message.
      */
-    public static void show(final Context context, final String progressTitle, final int progressColor) {
-        mProgressDialog = new ProgressDialog(context, progressTitle, progressColor);
-        mProgressDialog.show();
-        mProgressDialog.getTitleTextView().setTextSize(16);
+    public static MaterialDialog show(final Context context, @StringRes final int title,
+            @StringRes final int message) {
+        MaterialDialog dialog = build(context, title, message);
+        dialog.show();
+        return dialog;
     }
 
     /**
-     * Hides the current dialog if is showing.
+     * Creates a basic indeterminate progress dialog within a title and a message and returns to the
+     * caller to add callbacks and listeners.
+     *
+     * @param context context to show the progress dialog.
+     * @param title resource id to progress dialog title.
+     * @param message resource id to progress dialog content message.
+     * @return progress dialog instance.
      */
-    public static void dismiss() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+    public static MaterialDialog build(final Context context, @StringRes final int title,
+            @StringRes final int message) {
+        return new MaterialDialog.Builder(context)
+                .title(title)
+                .content(message)
+                .progress(INDETERMINATE, MAX_ZERO)
+                .build();
     }
 }

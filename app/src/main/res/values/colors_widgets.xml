@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="theme_color_primary">#009688</color>
-    <color name="theme_color_primary_dark">#00796B</color>
-    <color name="theme_color_accent">#143A44</color>
+    <color name="theme_color_primary">@color/teal_500</color>
+    <color name="theme_color_primary_dark">@color/teal_700</color>
+    <color name="theme_color_accent">@color/deep_orange_500</color>
     <color name="theme_color_highlight">#B6B6B6</color>
 
     <color name="progress_bar_background">@color/theme_color_primary</color>

@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.EventListener;
 import com.squareup.otto.Bus;
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationEvent;
@@ -37,11 +37,11 @@ import timber.log.Timber;
 
 /**
  * Fragment composed by a {@link android.webkit.WebView}, an animated
- * {@link com.gc.materialdesign.views.ProgressBarCircularIndeterminate} and a special action
- * {@link com.gc.materialdesign.views.ButtonFloat} based in Material design.
+ * {@link com.afollestad.materialdialogs.MaterialDialog} and a special action
+ * {@link net.i2p.android.ext.floatingactionbutton.FloatingActionButton} based in Material design.
  *
  * @author Filipe Bezerra
- * @version 2.0, 10/03/2015
+ * @version 2.1, 20/03/2015
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.BaseWebViewFragment
  * @since 1.6
  */
@@ -211,10 +211,9 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 if (webView != null) {
                     final String currentUrl = webView.getUrl();
 
-                    ProgressDialogHelper.show(mAttachedActivity,
-                            getString(R.string.info_adding_stop_bus_to_favorites),
-                            ((MaterialNavigationDrawer) mAttachedActivity).getCurrentSection()
-                                    .getSectionColor());
+                    final MaterialDialog dialog = ProgressDialogHelper.show(mAttachedActivity,
+                            R.string.info_title_adding,
+                            R.string.info_content_please_wait);
 
                     StringRequest request = new StringRequest(currentUrl,
                             new Response.Listener<String>() {
@@ -229,7 +228,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                     mEventBus.post(new NotificationEvent(new NotificationMessage(
                                             NotificationMessage.NotificationType.INCREMENT)));
 
-                                    ProgressDialogHelper.dismiss();
+                                    dialog.dismiss();
 
                                     Snackbar snackbar = SnackBarHelper.build(mAttachedActivity,
                                             getString(R.string.info_stop_bus_added_to_favorites),
@@ -261,7 +260,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    ProgressDialogHelper.dismiss();
+                                    dialog.dismiss();
                                     Timber.e(TAG, String.format(
                                             getString(R.string.log_event_error_network_request),
                                             error.getClass().toString(), "onErrorResponse",
@@ -278,10 +277,9 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             TAG);
                 }
             } else {
-                ProgressDialogHelper.show(mAttachedActivity,
-                        getString(R.string.info_removing_stop_bus_from_favorites),
-                        ((MaterialNavigationDrawer) mAttachedActivity).getCurrentSection()
-                                .getSectionColor());
+                final MaterialDialog dialog = ProgressDialogHelper.show(mAttachedActivity,
+                        R.string.info_title_removing,
+                        R.string.info_content_please_wait);
 
                 mFavoriteBusStopDao.delete(mPersistedFavoriteBusStop);
                 mPersistedFavoriteBusStop = null;
@@ -289,7 +287,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 mEventBus.post(new NotificationEvent(new NotificationMessage(
                         NotificationMessage.NotificationType.DECREMENT)));
 
-                ProgressDialogHelper.dismiss();
+                dialog.dismiss();
 
                 Snackbar snackbar = SnackBarHelper.build(mAttachedActivity,
                         getString(R.string.info_stop_bus_removed_from_favorites), true);

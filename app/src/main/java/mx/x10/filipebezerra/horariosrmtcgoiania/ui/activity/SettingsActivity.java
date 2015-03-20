@@ -1,23 +1,19 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-
+import com.afollestad.materialdialogs.MaterialDialog;
 import de.psdev.licensesdialog.LicensesDialog;
-import it.gmariotti.changelibs.library.view.ChangeLogListView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.DialogBuilder;
+import mx.x10.filipebezerra.horariosrmtcgoiania.util.DialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SearchRecentSuggestionsHelper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_ABOUT_INFO;
@@ -31,8 +27,8 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.util.PrefUtils.PREF_PRODU
  * Preference screen for app preferences.
  *
  * @author Filipe Bezerra
- * @version 2.0, 10/03/2015
- * @since #
+ * @version 2.1, 20/03/2015
+ * @since 2.0
  */
 public class SettingsActivity extends PreferenceActivity
         implements View.OnClickListener, Preference.OnPreferenceClickListener {
@@ -56,7 +52,7 @@ public class SettingsActivity extends PreferenceActivity
     private void setupContentView() {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.section_title_settings));
+        toolbar.setTitle(getString(R.string.title_activity_settings));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setNavigationOnClickListener(this);
     }
@@ -79,50 +75,56 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public boolean onPreferenceClick(final Preference preference) {
         final String key = preference.getKey();
+        MaterialDialog.Builder dialogBuilder;
 
         switch (key) {
             case PREF_CLEAR_RECENT_SUGGESTIONS:
-                new DialogBuilder(SettingsActivity.this, preference.getTitle().toString(),
-                        getString(R.string.prompt_user_pref_clear_recent_suggestions))
-                        .addAcceptButtonClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                SearchRecentSuggestionsHelper.getInstance(SettingsActivity.this)
-                                        .clearHistory();
-                                preference.setSummary(getString(R.string
-                                        .pref_clear_recent_suggestions_summary_edited));
-                                preference.setEnabled(false);
-                            }
-                        })
-                        .addCancelButton()
-                        .buildAndShow();
+                dialogBuilder = DialogHelper.build(SettingsActivity.this,
+                        R.string.pref_clear_recent_suggestions_title,
+                        R.string.prompt_user_pref_clear_recent_suggestions,
+                        R.string.erase_button,
+                        R.string.cancel_button);
+                dialogBuilder.callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        SearchRecentSuggestionsHelper.getInstance(SettingsActivity.this)
+                                .clearHistory();
+                        preference.setSummary(getString(R.string
+                                .pref_clear_recent_suggestions_summary_edited));
+                        preference.setEnabled(false);
+                    }
+                });
+                dialogBuilder.show();
                 return true;
 
             case PREF_CLEAR_FAVORITE_BUS_STOP_DATA:
-                new DialogBuilder(SettingsActivity.this, preference.getTitle().toString(),
-                        getString(R.string.prompt_user_pref_clear_favorite_bus_stop_data))
-                        .addAcceptButtonClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                DaoManager.getInstance(SettingsActivity.this).getFavoriteBusStopDao()
-                                        .deleteAll();
-                                preference.setSummary(getString(R.string
-                                        .pref_clear_favorite_bus_stop_data_summary_edited));
-                                preference.setEnabled(false);
+                dialogBuilder = DialogHelper.build(SettingsActivity.this,
+                        R.string.pref_clear_favorite_bus_stop_data_title,
+                        R.string.prompt_user_pref_clear_favorite_bus_stop_data,
+                        R.string.erase_button,
+                        R.string.cancel_button);
+                dialogBuilder.callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        DaoManager.getInstance(SettingsActivity.this).getFavoriteBusStopDao()
+                                .deleteAll();
+                        preference.setSummary(getString(R.string
+                                .pref_clear_favorite_bus_stop_data_summary_edited));
+                        preference.setEnabled(false);
 
-                                EventBusProvider.getInstance().getEventBus().post(
-                                        new NotificationEvent(new NotificationMessage(
-                                                NotificationMessage.NotificationType.RESET)));
-                            }
-                        })
-                        .addCancelButton()
-                        .buildAndShow();
-                return false;
+                        EventBusProvider.getInstance().getEventBus().post(
+                                new NotificationEvent(new NotificationMessage(
+                                        NotificationMessage.NotificationType.RESET)));
+                    }
+                });
+                dialogBuilder.show();
+                return true;
 
             case PREF_ABOUT_INFO:
-                new DialogBuilder(SettingsActivity.this, getString(R.string.full_app_name),
-                        getString(R.string.dialog_message_about_info))
-                        .buildAndShow();
+                DialogHelper.build(SettingsActivity.this,
+                        R.string.pref_about_info_key_title,
+                        R.string.dialog_message_about_info,
+                        R.string.ok_button).show();
                 return true;
 
             case PREF_OPEN_SOURCE_LICENSES_INFO:
@@ -133,13 +135,11 @@ public class SettingsActivity extends PreferenceActivity
                 return true;
 
             case PREF_CHANGELOG_INFO:
-                LayoutInflater layoutInflater = (LayoutInflater) getSystemService(
-                        Context.LAYOUT_INFLATER_SERVICE);
-                ChangeLogListView changeLogListView=(ChangeLogListView)layoutInflater.inflate(
-                        R.layout.view_changelog, null);
-
-                new AlertDialog.Builder(SettingsActivity.this).setView(changeLogListView)
-                        .create().show();
+                dialogBuilder = DialogHelper.build(SettingsActivity.this,
+                        R.string.pref_changelog_info_title,
+                        R.string.dialog_message_about_info,
+                        R.string.ok_button);
+                dialogBuilder.customView(R.layout.view_changelog, false).show();
                 return true;
 
             case PREF_PRODUCT_TOUR:
