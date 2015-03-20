@@ -237,6 +237,9 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                     snackbar.eventListener(new EventListener() {
                                         @Override
                                         public void onShow(Snackbar snackbar) {
+                                            mFloatButtonMarkFavorite.setIconDrawable(
+                                                    getResources().getDrawable(
+                                                            R.drawable.ic_drawer_pontos_favoritos));
                                             AnimationUtils.moveUp(mFloatButtonMarkFavorite,
                                                     snackbar.getHeight());
                                         }
@@ -245,9 +248,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                         public void onDismissed(Snackbar snackbar) {
                                             AnimationUtils.moveDown(mFloatButtonMarkFavorite,
                                                     snackbar.getHeight());
-                                            mFloatButtonMarkFavorite.setIconDrawable(
-                                                    getResources().getDrawable(
-                                                            R.drawable.ic_drawer_pontos_favoritos));
                                         }
 
                                         public void onShowByReplace(Snackbar snackbar) {}
@@ -296,6 +296,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 snackbar.eventListener(new EventListener() {
                     @Override
                     public void onShow(Snackbar snackbar) {
+                        mFloatButtonMarkFavorite.setIconDrawable(getResources().getDrawable(
+                                R.drawable.ic_unmark_favorite));
                         AnimationUtils.moveUp(mFloatButtonMarkFavorite,
                                 snackbar.getHeight());
                     }
@@ -304,8 +306,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                     public void onDismissed(Snackbar snackbar) {
                         AnimationUtils.moveDown(mFloatButtonMarkFavorite,
                                 snackbar.getHeight());
-                        mFloatButtonMarkFavorite.setIconDrawable(getResources().getDrawable(
-                                R.drawable.ic_unmark_favorite));
                     }
 
                     public void onShowByReplace(Snackbar snackbar) {}
