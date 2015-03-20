@@ -11,15 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-
+import butterknife.InjectView;
+import butterknife.OnClick;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringUTF8Request;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.squareup.otto.Bus;
-
-import butterknife.InjectView;
-import butterknife.OnClick;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.EventBusProvider;
@@ -32,10 +30,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.network.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.parser.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
-
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
+import timber.log.Timber;
 
 /**
  * Fragment composed by a {@link android.webkit.WebView}, an animated
@@ -48,7 +43,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
  * @since 1.6
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {
-    private static final String LOG_TAG = makeLogTag(HorarioViagemFragment.class);
+    private static final String TAG = HorarioViagemFragment.class.getSimpleName();
 
     public static final String ARG_PARAM_BUS_STOP_CODE = BaseWebViewFragment.class.getSimpleName()
             + "ARG_PARAM_BUS_STOP_CODE";
@@ -157,7 +152,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                     mFloatButtonMarkFavorite.setEnabled(true);
 
                     mPersistedFavoriteBusStop = getPersistedFavoriteBusStop();
-                    LOGD(LOG_TAG, String.format(getString(R.string.log_event_debug),
+                    Timber.d(String.format(getString(R.string.log_event_debug),
                             "onWebViewPageFinished", "persisted favorite bus stop",
                             mPersistedFavoriteBusStop == null ? "but it\'s not" :
                                     "is persisted with id: "+mPersistedFavoriteBusStop.getId()));
@@ -254,7 +249,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 ProgressDialogHelper.dismiss();
-                                LOGE(LOG_TAG, String.format(
+                                Timber.e(TAG, String.format(
                                         getString(R.string.log_event_error_network_request),
                                         error.getClass().toString(), "onErrorResponse", "String",
                                         currentUrl), error);
@@ -265,7 +260,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 );
 
                 RequestQueueManager.getInstance(mAttachedActivity).addToRequestQueue(request,
-                        LOG_TAG);
+                        TAG);
             }
         } else {
             ProgressDialogHelper.show(mAttachedActivity, "Removendo, por favor aguarde...",

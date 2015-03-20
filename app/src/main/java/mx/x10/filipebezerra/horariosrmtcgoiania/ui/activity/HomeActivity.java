@@ -1,31 +1,28 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activity;
 
 import com.squareup.otto.Subscribe;
-
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.FavoriteItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.event.NotificationMessage;
-
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
+import timber.log.Timber;
 
 /**
- * .
+ * Main activity which hosts the Navigation Drawer.
  *
  * @author Filipe Bezerra
- * @version 2.0, 10/03/2015
- * @since #
+ * @version 2.1, 20/03/2015
+ * @since 2.0
  */
 public class HomeActivity extends BaseActivity {
 
-    private static final String LOG_TAG = makeLogTag(HomeActivity.class);
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
     @Subscribe
     public void onFavoriteItemSelectionEvent(FavoriteItemSelectionEvent event) {
         int stopCode = event.getMessage().getStopCode();
 
-        LOGD(LOG_TAG, String.format(getString(R.string.log_event_debug),
+        Timber.d(String.format(getString(R.string.log_event_debug),
                 "onFavoriteItemSelectionEvent", "bus stop: "+stopCode, " load stop bus"));
 
         searchStopCode(String.valueOf(stopCode));
@@ -37,7 +34,7 @@ public class HomeActivity extends BaseActivity {
         NotificationMessage.NotificationType notificationType = event.getMessage()
                 .getNotificationType();
 
-        LOGD(LOG_TAG, String.format(getString(R.string.log_event_debug),
+        Timber.d(String.format(getString(R.string.log_event_debug),
                 "onNotificationEvent", notificationType, "update the notification"));
 
         switch (notificationType) {

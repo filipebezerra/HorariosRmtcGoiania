@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.HorariosRmtcGoiania"
-        android:name=".app.ApplicationSingleton">
+        android:name=".app.HorariosRmtcGoianiaApplication">
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -49,6 +49,10 @@
             android:name="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
             android:authorities="mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider"
             android:exported="false"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="4e4eacdeaab81891701a925ab9c1f84c3d512398" />
 
     </application>
 

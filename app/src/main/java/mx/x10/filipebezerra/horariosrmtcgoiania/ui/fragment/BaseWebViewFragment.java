@@ -25,11 +25,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widget.WebViewCompatSwipeRefreshLayout;
-import mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
-
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGD;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
+import timber.log.Timber;
 
 /**
  * A fragment that displays a WebView.
@@ -43,7 +40,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.makeLogTag;
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.HorarioViagemFragment
  */
 public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private static final String LOG_TAG = makeLogTag(BaseWebViewFragment.class);
+    private static final String TAG = BaseWebViewFragment.class.getSimpleName();
 
     public static final String ARG_PARAM_URL_PAGE = BaseWebViewFragment.class.getSimpleName()
             + "ARG_PARAM_URL_PAGE";
@@ -83,12 +80,12 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
 
         if (savedInstanceState == null) {
             mWebView.loadUrl(getArgUrlPage());
-            LOGD(LOG_TAG, String.format(
+            Timber.d(String.format(
                     getString(R.string.log_event_debug), "onViewCreated", getArgUrlPage(),
                     "web page loaded from arguments"));
         } else {
             mWebView.restoreState(savedInstanceState);
-            LOGD(LOG_TAG, String.format(
+            Timber.d(String.format(
                     getString(R.string.log_event_debug), "onViewCreated", savedInstanceState.toString(),
                     "web page loaded from WebView saved state"));
         }
@@ -259,12 +256,17 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
      * loading each page.
      */
     private class CustomWebViewClient extends WebViewClient {
+
+        private CustomWebViewClient() {
+            Timber.tag(CustomWebChromeClient.class.getSimpleName());
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (isRmtcWebSite(url)) {
                 return false;
             }
-            LOGD(LOG_TAG, String.format(
+            Timber.e(String.format(
                     getString(R.string.log_event_debug), "shouldOverrideUrlLoading", url,
                     "loading a non RMTC web site"));
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -285,9 +287,9 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
         @Override
         public void onReceivedError(final WebView view, final int errorCode,
                                     final String description, final String failingUrl) {
-            LogUtils.LOGE(LOG_TAG, String.format(
+            Timber.e(String.format(
                     getString(R.string.log_event_error_network_request),
-                    errorCode+": "+description, "onReceivedError", mWebView.getOriginalUrl(),
+                    errorCode + ": " + description, "onReceivedError", mWebView.getOriginalUrl(),
                     failingUrl));
         }
 
@@ -317,7 +319,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
          */
         @Override
         public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            LOGD(LOG_TAG, String.format(
+            Timber.d(String.format(
                     getString(R.string.log_event_debug), "onResponse", url, message));
             SnackBarHelper.show(mAttachedActivity, message);
             result.confirm();

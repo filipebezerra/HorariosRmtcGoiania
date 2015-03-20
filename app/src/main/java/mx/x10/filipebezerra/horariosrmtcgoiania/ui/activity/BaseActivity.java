@@ -17,15 +17,10 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
@@ -39,6 +34,9 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFacto
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.util.SnackBarHelper;
+import org.json.JSONException;
+import org.json.JSONObject;
+import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.buildFinalUrl;
@@ -48,7 +46,6 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragme
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newPontoaPontoPageFragment;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newSacPageFragment;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragment.WebViewFragmentFactory.newWapPageFragment;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
 
 /**
  * Activity base containing based implementation of Navigation Drawer and all application base behavior.
@@ -59,7 +56,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.util.LogUtils.LOGE;
  */
 public abstract class BaseActivity extends MaterialNavigationDrawer {
 
-    private static final String LOG_TAG = BaseActivity.class.getSimpleName();
+    private static final String TAG = BaseActivity.class.getSimpleName();
     /**
      * Search handled over all application.
      */
@@ -365,7 +362,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                                                     .json_attr_message_validate_rmtc_horarios_viagem)));
                                 }
                             } catch (JSONException e) {
-                                LOGE(LOG_TAG, String.format(
+                                Timber.e(String.format(
                                                 getString(R.string.log_event_error_network_request),
                                                 e.getClass().toString(), "onResponse", "JSONObject",
                                                 query),
@@ -379,7 +376,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             ProgressDialogHelper.dismiss();
-                            LOGE(LOG_TAG, String.format(
+                            Timber.e(String.format(
                                     getString(R.string.log_event_error_network_request),
                                     error.getClass().toString(), "onErrorResponse", "JSONObject",
                                     query), error);
@@ -389,7 +386,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                     }
             );
 
-            RequestQueueManager.getInstance(BaseActivity.this).addToRequestQueue(request, LOG_TAG);
+            RequestQueueManager.getInstance(BaseActivity.this).addToRequestQueue(request, TAG);
         } else {
             SnackBarHelper.show(BaseActivity.this, getString(R.string.non_digit_voice_search));
         }
