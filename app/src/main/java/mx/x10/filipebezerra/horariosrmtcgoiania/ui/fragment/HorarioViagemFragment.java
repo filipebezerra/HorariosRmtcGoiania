@@ -15,7 +15,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringUTF8Request;
+import com.android.volley.toolbox.StringRequest;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.EventListener;
 import com.squareup.otto.Bus;
@@ -216,7 +216,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                             ((MaterialNavigationDrawer) mAttachedActivity).getCurrentSection()
                                     .getSectionColor());
 
-                    StringUTF8Request request = new StringUTF8Request(currentUrl,
+                    StringRequest request = new StringRequest(currentUrl,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String result) {
