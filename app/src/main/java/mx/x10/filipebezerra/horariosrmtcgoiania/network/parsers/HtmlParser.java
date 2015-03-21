@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.parsers;
+package mx.x10.filipebezerra.horariosrmtcgoiania.network.parsers;
 
 /**
  * @author Filipe Bezerra

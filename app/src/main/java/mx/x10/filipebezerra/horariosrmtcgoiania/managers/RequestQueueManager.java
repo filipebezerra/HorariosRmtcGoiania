@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.network;
+package mx.x10.filipebezerra.horariosrmtcgoiania.managers;
 
 import android.content.Context;
 import android.text.TextUtils;

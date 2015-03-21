@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.events;
+package mx.x10.filipebezerra.horariosrmtcgoiania.ui.events;
 
 /**
  * Event message for {@link NotificationEvent}.

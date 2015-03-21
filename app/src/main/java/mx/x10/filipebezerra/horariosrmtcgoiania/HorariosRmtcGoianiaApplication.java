@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.app;
+package mx.x10.filipebezerra.horariosrmtcgoiania;
 
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;

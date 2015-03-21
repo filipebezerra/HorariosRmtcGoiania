@@ -2,9 +2,9 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activities;
 
 import com.squareup.otto.Subscribe;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.events.FavoriteItemSelectionEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.events.NotificationEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.events.NotificationMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.FavoriteItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.NotificationEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.NotificationMessage;
 import timber.log.Timber;
 
 /**

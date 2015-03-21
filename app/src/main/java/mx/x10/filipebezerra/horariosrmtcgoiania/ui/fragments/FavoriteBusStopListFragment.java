@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.adapters.FavoriteBusStopsAdapter;
-import mx.x10.filipebezerra.horariosrmtcgoiania.events.EventBusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.events.FavoriteItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.adapters.FavoriteBusStopsAdapter;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.FavoriteItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widgets.DividerItemDecoration;
