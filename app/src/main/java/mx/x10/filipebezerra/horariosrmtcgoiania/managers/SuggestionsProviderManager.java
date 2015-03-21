@@ -3,7 +3,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.managers;
 import android.content.Context;
 import android.provider.SearchRecentSuggestions;
 
-import mx.x10.filipebezerra.horariosrmtcgoiania.provider.SuggestionsProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.providers.SuggestionsProvider;
 
 /**
  * .

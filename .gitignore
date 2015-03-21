@@ -83,3 +83,6 @@ out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+
+# Crash Analytics API secret
+crashlytics.properties
