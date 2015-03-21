@@ -1,8 +1,8 @@
 <resources>
     <style name="ThemeSection">
-        <item name="sectionColorIcon">#181818</item>
-        <item name="sectionColorText">#909090</item>
-        <item name="sectionColorNotification">#FF5722</item>
+        <item name="sectionColorIcon">@color/very_dark_gray</item>
+        <item name="sectionColorText">@color/dark_gray</item>
+        <item name="sectionColorNotification">@color/material_deep_orange_500</item>
         <item name="sectionBackgroundColorPressed">#160000FF</item>
         <item name="sectionBackgroundColorSelected">#0A0000FF</item>
         <item name="sectionBackgroundColor">#000000FF</item>
