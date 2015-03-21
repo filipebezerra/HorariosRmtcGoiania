@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments;
+package mx.x10.filipebezerra.horariosrmtcgoiania.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.adapters.FavoriteBusStopsAdapter;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.EventBusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.FavoriteItemSelectionEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.adapters.FavoriteBusStopsAdapter;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.FavoriteItemSelectionEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widgets.DividerItemDecoration;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widgets.EmptyRecyclerView;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.DividerItemDecoration;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.EmptyRecyclerView;
 
 /**
  * Favorite bus stop list fragment. Loads the context data from database and displays to

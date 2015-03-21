@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.adapters;
+package mx.x10.filipebezerra.horariosrmtcgoiania.views.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

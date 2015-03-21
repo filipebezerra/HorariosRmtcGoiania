@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.utils;
+package mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers;
 
 import android.content.Context;
 import android.support.annotation.StringRes;

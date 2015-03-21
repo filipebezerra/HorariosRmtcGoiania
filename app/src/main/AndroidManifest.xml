@@ -15,10 +15,10 @@
 
         <meta-data
             android:name="android.app.default_searchable"
-            android:value="mx.x10.filipebezerra.horariosrmtcgoiania.ui.activities.HomeActivity"/>
+            android:value="mx.x10.filipebezerra.horariosrmtcgoiania.activities.HomeActivity"/>
 
         <activity
-            android:name=".ui.activities.HomeActivity"
+            android:name=".activities.HomeActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -41,7 +41,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activities.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:theme="@style/Theme.HorariosRmtcGoiania.Settings"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
 

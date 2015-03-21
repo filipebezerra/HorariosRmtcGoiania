@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.events;
+package mx.x10.filipebezerra.horariosrmtcgoiania.views.events;
 
 /**
  * Event notification dispatched to badge views with a internal counter.

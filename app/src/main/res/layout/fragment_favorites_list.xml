@@ -6,7 +6,7 @@
     android:padding="@dimen/spacing_small"
     tools:context=".ui.fragments.FavoriteBusStopListFragment">
 
-    <mx.x10.filipebezerra.horariosrmtcgoiania.ui.widgets.EmptyRecyclerView
+    <mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.EmptyRecyclerView
         android:id="@+id/favorite_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

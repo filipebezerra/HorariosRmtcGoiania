@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.widgets;
+package mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets;
 
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;

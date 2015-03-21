@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments;
+package mx.x10.filipebezerra.horariosrmtcgoiania.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -21,17 +21,17 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.EventListener;
 import com.squareup.otto.Bus;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.EventBusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.NotificationEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.NotificationMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.parsers.BusStopHtmlParser;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AnimationUtils;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.ProgressDialogHelper;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.SnackBarHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
 import timber.log.Timber;
 
@@ -42,7 +42,7 @@ import timber.log.Timber;
  *
  * @author Filipe Bezerra
  * @version 2.1, 20/03/2015
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.BaseWebViewFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.BaseWebViewFragment
  * @since 1.6
  */
 public class HorarioViagemFragment extends BaseWebViewFragment {

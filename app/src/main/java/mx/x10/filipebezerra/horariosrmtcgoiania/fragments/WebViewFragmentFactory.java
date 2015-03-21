@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments;
+package mx.x10.filipebezerra.horariosrmtcgoiania.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -101,7 +101,7 @@ public class WebViewFragmentFactory {
     }
 
     /**
-     * Helper method to build argumens to {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.HorarioViagemFragment}.
+     * Helper method to build argumens to {@link mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment}.
      *
      * @param context context
      * @param busStopCode the bus stop code argument

@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activities;
+package mx.x10.filipebezerra.horariosrmtcgoiania.activities;
 
 import android.os.Bundle;
 import android.preference.Preference;
@@ -9,12 +9,12 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 import de.psdev.licensesdialog.LicensesDialog;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.EventBusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.NotificationEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.NotificationMessage;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.DialogHelper;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.SearchRecentSuggestionsHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.DialogHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SearchRecentSuggestionsHelper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils.PREF_ABOUT_INFO;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils.PREF_CHANGELOG_INFO;

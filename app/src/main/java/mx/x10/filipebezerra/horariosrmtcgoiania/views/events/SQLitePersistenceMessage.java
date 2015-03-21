@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.events;
+package mx.x10.filipebezerra.horariosrmtcgoiania.views.events;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 

@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments;
+package mx.x10.filipebezerra.horariosrmtcgoiania.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,8 +24,8 @@ import android.webkit.WebViewClient;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.widgets.WebViewCompatSwipeRefreshLayout;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.SnackBarHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.WebViewCompatSwipeRefreshLayout;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 import timber.log.Timber;
 
 /**
@@ -36,8 +36,8 @@ import timber.log.Timber;
  * @author Filipe Bezerra
  * @version 2.0, 08/03/2015
  * @since 1.6
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory
- * @see mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.HorarioViagemFragment
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory
+ * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment
  */
 public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = BaseWebViewFragment.class.getSimpleName();

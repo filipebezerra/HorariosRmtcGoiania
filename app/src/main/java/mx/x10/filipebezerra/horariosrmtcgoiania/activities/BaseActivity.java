@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.ui.activities;
+package mx.x10.filipebezerra.horariosrmtcgoiania.activities;
 
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
@@ -25,28 +25,28 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.events.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.FavoriteBusStopListFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.HorarioViagemFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory;
+import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.FavoriteBusStopListFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.ProgressDialogHelper;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.SnackBarHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory.buildFinalUrl;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory.buildHorarioViagemUrl;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory.newHorarioViagemPageFragment;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory.newPlanejeViagemPageFragment;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory.newPontoaPontoPageFragment;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory.newSacPageFragment;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.WebViewFragmentFactory.newWapPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.buildFinalUrl;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.buildHorarioViagemUrl;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.newHorarioViagemPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.newPlanejeViagemPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.newPontoaPontoPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.newSacPageFragment;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.newWapPageFragment;
 
 /**
  * Activity base containing based implementation of Navigation Drawer and all application base
@@ -85,13 +85,13 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     };
 
     /**
-     * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.HorarioViagemFragment}
+     * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment}
      * used in {@link #searchStopCode} to perform user search requests.
      */
     protected MaterialSection horarioViagemSection;
 
     /**
-     * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.FavoriteBusStopListFragment}.
+     * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.fragments.FavoriteBusStopListFragment}.
      */
     protected MaterialSection favoriteBusStopSection;
 
@@ -414,7 +414,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     }
 
     /**
-     * Performs search in the fragment {@link mx.x10.filipebezerra.horariosrmtcgoiania.ui.fragments.HorarioViagemFragment}
+     * Performs search in the fragment {@link mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment}
      *
      * @param stopCode bus stop number retrieved from {@link SearchManager#QUERY}
      */
