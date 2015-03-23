@@ -20,12 +20,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.WebViewCompatSwipeRefreshLayout;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.WebViewCompatSwipeRefreshLayout;
 import timber.log.Timber;
 
 /**
@@ -77,6 +77,9 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (NetworkUtils.checkAndNotifyNetworkState(getActivity()))
+            return;
 
         if (savedInstanceState == null) {
             mWebView.loadUrl(getArgUrlPage());
@@ -263,9 +266,9 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (isRmtcWebSite(url)) {
+            if (isRmtcWebSite(url))
                 return false;
-            }
+
             Timber.e(String.format(
                     getString(R.string.log_event_debug), "shouldOverrideUrlLoading", url,
                     "loading a non RMTC web site"));

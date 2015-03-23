@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.adapters.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.FavoriteItemSelectionEvent;
@@ -72,6 +73,8 @@ public class FavoriteBusStopListFragment extends Fragment
 
     @Override
     public void onItemClick(final FavoriteBusStop favoriteBusStop) {
+        if (NetworkUtils.checkAndNotifyNetworkState(getActivity())) return;
+
         EventBusProvider.getInstance().getEventBus().post(
                 new FavoriteItemSelectionEvent(favoriteBusStop));
     }

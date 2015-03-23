@@ -25,14 +25,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.FavoriteBusStopListFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 import org.json.JSONException;
@@ -77,10 +78,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (!NetworkUtils.isConnectingToInternet(context)) {
-                SnackBarHelper.showSingleLine(BaseActivity.this,
-                        getString(R.string.no_internet_connectivity));
-            }
+            NetworkUtils.checkAndNotifyNetworkState(context);
         }
     };
 
@@ -105,6 +103,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         addSecondarySections();
         addBottomSections();
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+
         // Can come from Global search, refer to searchable.xml
         handleSearchQuery(getIntent());
     }
@@ -252,7 +251,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mSearchMenuItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setIconifiedByDefault(false);
         return true;
     }
 
@@ -331,12 +329,19 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     private void onSearch(Intent intent) {
         final String query = intent.getStringExtra(SearchManager.QUERY);
 
+        if (!AndroidUtils.isWifiConnected(BaseActivity.this) &&
+                !AndroidUtils.isNetworkConnected(BaseActivity.this)) {
+            if (mSearchView.requestFocus()) {
+                mSearchView.setQuery(query, false);
+            }
+            return;
+        }
+
         if (TextUtils.isDigitsOnly(query)) {
             final MaterialDialog dialog = ProgressDialogHelper.show(BaseActivity.this,
                     R.string.info_title_searching, R.string.info_content_please_wait);
 
             mSearchView.clearFocus();
-            mSearchView.setQuery(query, false);
 
             String url = Uri.parse(getString(R.string.url_validate_rmtc_horarios_viagem))
                     .buildUpon()
@@ -344,7 +349,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                             getString(R.string.query_param_validate_rmtc_horarios_viagem), query)
                     .build().toString();
 
-            // TODO : Network request here, Show ProgressDialog while requesting...
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
