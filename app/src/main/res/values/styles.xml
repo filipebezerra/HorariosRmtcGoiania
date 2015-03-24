@@ -8,7 +8,8 @@
         <item name="sectionBackgroundColor">#000000FF</item>
     </style>
 
-    <style name="Theme.HorariosRmtcGoiania" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar.TranslucentKitKatStatusBar">
+    <style name="Theme.HorariosRmtcGoiania"
+        parent="MaterialNavigationDrawerTheme.Light.DarkActionBar.TranslucentKitKatStatusBar">
         <item name="colorPrimary">@color/theme_color_primary</item>
         <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
         <item name="colorAccent">@color/theme_color_accent</item>
@@ -19,8 +20,9 @@
     </style>
 
     <style name="Theme.HorariosRmtcGoiania.Settings.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/theme_color_primary</item>
-        <item name="colorPrimaryDark">@color/theme_color_primary_dark</item>
+        <item name="colorPrimary">@color/material_indigo_500</item>
+        <item name="colorPrimaryDark">@color/material_indigo_700</item>
+        <item name="colorAccent">@color/theme_color_accent</item>
         <item name="searchViewStyle">@style/Widget.SearchView</item>
         <item name="android:windowBackground">@android:color/white</item>
     </style>

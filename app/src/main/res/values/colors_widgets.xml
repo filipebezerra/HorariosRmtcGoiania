@@ -2,7 +2,7 @@
 <resources>
     <color name="theme_color_primary">@color/material_deep_teal_500</color>
     <color name="theme_color_primary_dark">@color/material_deep_teal_700</color>
-    <color name="theme_color_accent">@color/material_deep_orange_500</color>
+    <color name="theme_color_accent">@color/material_pink_500</color>
     <color name="theme_color_highlight">#160000FF</color>
 
     <color name="progress_bar_background">@color/material_deep_teal_500</color>
