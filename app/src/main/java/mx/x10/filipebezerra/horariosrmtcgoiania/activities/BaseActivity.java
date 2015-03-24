@@ -33,6 +33,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
@@ -103,6 +104,11 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         addSecondarySections();
         addBottomSections();
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+        if (PrefUtils.isWelcomeDone(BaseActivity.this)) {
+            disableLearningPattern();
+        } else {
+            PrefUtils.markWelcomeDone(BaseActivity.this);
+        }
 
         // Can come from Global search, refer to searchable.xml
         handleSearchQuery(getIntent());
@@ -203,6 +209,10 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 R.drawable.ic_drawer_help, ...));
                 */
 
+        // TODO : checkAndNotifyNetworkState e
+        // if (sendIntent.resolveActivity(getPackageManager()) != null) {
+        //    startActivity(chooser);
+        //}
         addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
                 Intent.createChooser(createShareIntent(),
                         getString(R.string.share_dialog_title))));

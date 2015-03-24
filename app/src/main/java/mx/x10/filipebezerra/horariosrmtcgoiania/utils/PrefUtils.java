@@ -1,5 +1,9 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 /**
  * Utilities and constants related to app preferences..
  *
@@ -7,7 +11,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.utils;
  * @version 2, 10/03/2015
  * @since #
  */
-public class PrefUtils {
+public final class PrefUtils {
     /**
      * Preference that triggers onClick listener to clear recent search suggestions from provider.
      */
@@ -37,4 +41,19 @@ public class PrefUtils {
      * Preference that triggers onClick listener to show product tour guide.
      */
     public static final String PREF_PRODUCT_TOUR = "pref_product_tour";
+
+    /**
+     * Boolean indicating whether we performed the (one-time) welcome flow.
+     */
+    public static final String PREF_WELCOME_DONE = "pref_welcome_done";
+
+    public static boolean isWelcomeDone(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_WELCOME_DONE, false);
+    }
+
+    public static void markWelcomeDone(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_WELCOME_DONE, true).commit();
+    }
 }
