@@ -17,13 +17,15 @@ sobre todos os efeitos, transições, animações, fontes e cores, mas acredite 
 ### Funcionalidades e Recursos
 Com este aplicativo você pode:
 
-1. Busca dos horários de um determinado ponto de parada. É possível fazer busca textual ou por voz;
-2. Favoritar seus pontos mais utilizados para busca do horário automática;
-3. Pesquisa pelo seu ponto de parada pela rua ou bairro;
-4. Planejamento de sua viagem a partir do endereço de origem e do destino;
-5. Visualizar o itinerário da sua linha ou de outra qualquer;
-6. Saber da fluidez do trânsito nos corredores da grande Goiânia;
-7. Se comunicar com a central da RMTC por meio do envio de mensagem.
+1. Consultar por voz pelo número do ponto, acessível por todo o app.
+2. Consultar pelo endereço ou simplesmente pelo número do ponto.
+3. Salvar seus pontos favoritos pois eles poderão ser acessados facilmente para consulta rápida com apenas um toque.
+5. Consultar pelas sugestões de pesquisa baseado nas suas consultas anteriores
+6. Mapear e planejar a rota de suas viagens;
+7. Visualizar todos os pontos de uma determinada linha.
+8. Obter informações sobre o fluxo dos corredores de ônibus evitando congestionamentos.
+9. Contato direto com o atendimento da Rmtc para reclamações.
+10. Indicar seu aplicativo para seus amigos nas redes sociais.
 
 ### Download
 <a href="https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania">
@@ -37,9 +39,17 @@ Com este aplicativo você pode:
 
 ### Versões/Mudanças
 * 2.0
+    1. Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia
+    2. Consulta por voz pelo número do ponto, acessível por todo o app.
+    3. Salve seus pontos favoritos pois eles poderão ser acessados facilmente para consulta rápida com apenas um toque.
+    4. Sugestões de pesquisa baseado nas suas consultas anteriores
+    5. Atualize os horários de viagem simplesmente deslizando o dedo para baixo quando estiver na Consulta por Endereço
+    6. Remova seus dados das sugestões de pesquisa e favoritos na guia de configurações
+    7. Indique seu aplicativo para seus amigos nas redes sociais
+    8. Várias correções de erros reportados por usuários
 
 ### Direitos Autorais
-    Copyright 2014 Filipe Bezerra All rights reserved.
+    Copyright 2015 Filipe Bezerra All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
