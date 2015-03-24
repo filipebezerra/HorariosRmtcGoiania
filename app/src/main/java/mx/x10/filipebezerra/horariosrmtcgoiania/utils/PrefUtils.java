@@ -1,5 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -47,13 +48,38 @@ public final class PrefUtils {
      */
     public static final String PREF_WELCOME_DONE = "pref_welcome_done";
 
+    /**
+     * Boolean indicating whether the user learned how the feature save favorites
+     */
+    public static final String PREF_FAVORITES_LEARNED = "pref_favorites_learned";
+
     public static boolean isWelcomeDone(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getBoolean(PREF_WELCOME_DONE, false);
     }
 
+    @SuppressLint("NewApi")
     public static void markWelcomeDone(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_WELCOME_DONE, true).commit();
+        if (AndroidUtils.isGingerbreadOrHigher()) {
+            sp.edit().putBoolean(PREF_WELCOME_DONE, true).apply();
+        } else {
+            sp.edit().putBoolean(PREF_WELCOME_DONE, true).commit();
+        }
+    }
+
+    public static boolean isFavoriteLearned(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_FAVORITES_LEARNED, false);
+    }
+
+    @SuppressLint("NewApi")
+    public static void markFavoriteLearned(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        if (AndroidUtils.isGingerbreadOrHigher()) {
+            sp.edit().putBoolean(PREF_FAVORITES_LEARNED, true).apply();
+        } else {
+            sp.edit().putBoolean(PREF_FAVORITES_LEARNED, true).commit();
+        }
     }
 }

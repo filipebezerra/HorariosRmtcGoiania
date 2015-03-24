@@ -21,6 +21,7 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.EventListener;
 import com.squareup.otto.Bus;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationMessage;
@@ -224,6 +225,10 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                                     mFavoriteBusStopDao.insert(newFavoriteBusStop);
                                     mPersistedFavoriteBusStop = newFavoriteBusStop;
+
+                                    if (!PrefUtils.isFavoriteLearned(getActivity())) {
+                                        PrefUtils.markFavoriteLearned(getActivity());
+                                    }
 
                                     mEventBus.post(new NotificationEvent(new NotificationMessage(
                                             NotificationMessage.NotificationType.INCREMENT)));

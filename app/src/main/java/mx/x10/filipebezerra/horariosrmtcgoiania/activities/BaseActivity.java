@@ -136,10 +136,18 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     private void addPrimarySections() {
-        addSection(favoriteBusStopSection = newSection(
+        final int favoriteCount = getFavoriteCount();
+
+        favoriteBusStopSection = newSection(
                 getString(R.string.navdrawer_section_favorite_bus_stops),
-                R.drawable.ic_drawer_pontos_favoritos, new FavoriteBusStopListFragment())
-                .setNotifications(getFavoriteCount())
+                R.drawable.ic_drawer_pontos_favoritos, new FavoriteBusStopListFragment());
+
+        if (favoriteCount == 0 && ! PrefUtils.isFavoriteLearned(BaseActivity.this))
+            favoriteBusStopSection.setNotificationsText("New!");
+        else
+            favoriteBusStopSection.setNotifications(favoriteCount);
+
+        addSection(favoriteBusStopSection
                 .setSectionColor(
                         getColor(R.color.navdrawer_favorites_section_color),
                         getColor(R.color.navdrawer_favorites_section_dark_color)));
