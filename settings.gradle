@@ -1,1 +1,4 @@
-include ':app', ':appmodelgenerator', ':MaterialRippleLib', ':MaterialNavigationDrawerLib'
+include ':HorariosRmtcGoianiaApp'
+include ':HorariosRmtcGoianiaModelGenerator'
+include ':MaterialRippleLib'
+include ':MaterialNavigationDrawerLib'
