@@ -7,9 +7,6 @@
 
     <color name="progress_bar_background">@color/material_deep_teal_500</color>
 
-    <color name="floating_action_button_background">@color/material_deep_teal_500</color>
-    <color name="floating_action_button_ripple_color">@color/material_deep_teal_700</color>
-
     <color name="licenses_dialog_divider_color">@color/material_deep_teal_500</color>
 
     <color name="navdrawer_favorites_section_color">@color/material_deep_orange_500</color>

@@ -21,7 +21,7 @@
         android:layout_marginBottom="@dimen/floating_action_button_margin"
         android:visibility="gone"
         fab:fab_icon="@drawable/ic_unmark_favorite"
-        fab:fab_colorNormal="@color/floating_action_button_background"
-        fab:fab_colorPressed="@color/floating_action_button_ripple_color"
+        fab:fab_colorNormal="@color/material_pink_500"
+        fab:fab_colorPressed="@color/material_pink_700"
         />
 </RelativeLayout>
