@@ -22,7 +22,7 @@
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|navigation"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
@@ -44,7 +44,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:theme="@style/Theme.HorariosRmtcGoiania.Settings"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|navigation"/>
 
         <provider
             android:name="mx.x10.filipebezerra.horariosrmtcgoiania.providers.SuggestionsProvider"

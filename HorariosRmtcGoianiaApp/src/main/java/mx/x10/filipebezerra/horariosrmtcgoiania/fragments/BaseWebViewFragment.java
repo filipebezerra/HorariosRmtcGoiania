@@ -23,7 +23,7 @@ import android.webkit.WebViewClient;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.CommonUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.WebViewCompatSwipeRefreshLayout;
 import timber.log.Timber;
@@ -54,6 +54,12 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     private boolean mIsWebViewAvailable;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Timber.tag(TAG);
+    }
+
+    @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);
         mAttachedActivity = activity;
@@ -78,7 +84,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (NetworkUtils.checkAndNotifyNetworkState(getActivity()))
+        if (CommonUtils.checkAndNotifyNetworkState(getActivity()))
             return;
 
         if (savedInstanceState == null) {
@@ -225,27 +231,32 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
      * Callback when webview finishes loading a web page, validate the child views here.
      */
     protected void onWebViewPageFinished() {
-        if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
+        setSwipeRefreshing(false);
     }
 
     /**
      * Callback when webview starts loading a web page, invalidade the child views here.
      */
     protected void onWebViewPageStarted() {
-        if (mSwipeRefreshLayout != null && ! mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(true);
+        setSwipeRefreshing(true);
+    }
+
+    public void setSwipeRefreshing(final boolean refreshing) {
+        if (mSwipeRefreshLayout != null ) {
+            mSwipeRefreshLayout.setRefreshing(refreshing);
         }
     }
 
     public void initiateReloading() {
+        if (CommonUtils.checkAndNotifyNetworkState(getActivity())) {
+            setSwipeRefreshing(false);
+            return;
+        }
+
         if (getView() != null) {
             getWebView().reload();
         } else {
-            if (mSwipeRefreshLayout.isRefreshing()) {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
+            setSwipeRefreshing(false);
         }
     }
 
@@ -259,9 +270,10 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
      * loading each page.
      */
     private class CustomWebViewClient extends WebViewClient {
+        private final String TAG = CustomWebChromeClient.class.getSimpleName();
 
         private CustomWebViewClient() {
-            Timber.tag(CustomWebChromeClient.class.getSimpleName());
+            Timber.tag(TAG);
         }
 
         @Override
@@ -316,6 +328,12 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
      * Handles and presents to the user Javascript alerts fired in the host web page.
      */
     private class CustomWebChromeClient extends WebChromeClient {
+        private final String TAG = CustomWebChromeClient.class.getSimpleName();
+
+        private CustomWebChromeClient() {
+            Timber.tag(TAG);
+        }
+
         /**
          * Displays the alerts to the user when something is wrong, i.e., a field value is
          * required, the typed value is not valid or is not recognized.

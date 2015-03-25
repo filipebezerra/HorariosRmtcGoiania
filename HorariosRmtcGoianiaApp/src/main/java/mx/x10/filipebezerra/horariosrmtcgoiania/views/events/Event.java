@@ -9,6 +9,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.views.events;
  * @since #
  */
 public interface Event<T> {
+    public static final String INTERNET_CONNECTION_DISCONNECTED = "INTERNET_CONNECTION_DISCONNECTED";
 
     /**
      * @return

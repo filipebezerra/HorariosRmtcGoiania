@@ -32,7 +32,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.CommonUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
@@ -79,7 +79,11 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            NetworkUtils.checkAndNotifyNetworkState(context);
+            if (CommonUtils.checkAndNotifyNetworkState(context)) {
+                Timber.d(String.format(
+                        getString(R.string.log_event_debug), "onReceive",
+                        intent.getAction(), "no internet connectivity"));
+            }
         }
     };
 
@@ -112,6 +116,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
         // Can come from Global search, refer to searchable.xml
         handleSearchQuery(getIntent());
+
+        Timber.tag(TAG);
     }
 
     /**

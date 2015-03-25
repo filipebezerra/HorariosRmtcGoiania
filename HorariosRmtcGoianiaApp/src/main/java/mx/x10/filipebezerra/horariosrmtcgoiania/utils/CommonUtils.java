@@ -5,13 +5,13 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 
 /**
- * Network utilities class.
+ * Common utility methods.
  *
  * @author Filipe Bezerra
- * @version 2.1, 23/03/2015
+ * @version 2.1, 25/03/2015
  * @since 1.4-m1
  */
-public final class NetworkUtils {
+public final class CommonUtils {
     /**
      * Checks the network and the wifi state and notifies with a toast to the user.
      *
