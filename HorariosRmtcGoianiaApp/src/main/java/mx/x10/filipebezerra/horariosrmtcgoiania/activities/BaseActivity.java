@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -113,10 +114,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         } else {
             PrefUtils.markWelcomeDone(BaseActivity.this);
         }
-
-        // Can come from Global search, refer to searchable.xml
-        handleSearchQuery(getIntent());
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Timber.tag(TAG);
     }
 
