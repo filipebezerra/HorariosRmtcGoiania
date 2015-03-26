@@ -10,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.TextView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.CommonUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.adapters.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.FavoriteItemSelectionEvent;
@@ -27,26 +30,26 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.EmptyRecyclerView;
  * user interaction and then loading the item selected.
  *
  * @author Filipe Bezerra
- * @version 2.0, 08/03/2015
- * @since #
+ * @version 2.1, 25/03/2015
+ * @since 2.0
  */
 public class FavoriteBusStopListFragment extends Fragment
         implements FavoriteBusStopsAdapter.OnItemClickListener {
 
-    @NonNull private EmptyRecyclerView mRecyclerView;
-    @NonNull private FavoriteBusStopsAdapter mFavoriteBusStopsAdapter;
+    @InjectView(R.id.favorite_list) protected EmptyRecyclerView mRecyclerView;
 
-    public FavoriteBusStopListFragment() {
-    }
+    @InjectView(R.id.empty_view) protected TextView mEmptyView;
+
+    @NonNull private FavoriteBusStopsAdapter mFavoriteBusStopsAdapter;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
+        ButterKnife.inject(this, view);
 
-        mRecyclerView = (EmptyRecyclerView) view.findViewById(R.id.favorite_list);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setEmptyView(view.findViewById(R.id.empty_view));
+        mRecyclerView.setEmptyView(mEmptyView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.getItemAnimator().setAddDuration(1000);
@@ -67,15 +70,21 @@ public class FavoriteBusStopListFragment extends Fragment
         mFavoriteBusStopsAdapter.setOnItemClickListener(this);
     }
 
-    private List<FavoriteBusStop> getFavoritesData() {
-        return DaoManager.getInstance(getActivity()).getFavoriteBusStopDao().loadAll();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     @Override
     public void onItemClick(final FavoriteBusStop favoriteBusStop) {
-        if (NetworkUtils.checkAndNotifyNetworkState(getActivity())) return;
+        if (CommonUtils.checkAndNotifyNetworkState(getActivity())) return;
 
         EventBusProvider.getInstance().getEventBus().post(
                 new FavoriteItemSelectionEvent(favoriteBusStop));
+    }
+
+    private List<FavoriteBusStop> getFavoritesData() {
+        return DaoManager.getInstance(getActivity()).getFavoriteBusStopDao().loadAll();
     }
 }

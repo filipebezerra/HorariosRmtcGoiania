@@ -1,7 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -34,7 +33,7 @@ import timber.log.Timber;
  * The WebView is automically paused or resumed when the Fragment is paused or resumed.
  *
  * @author Filipe Bezerra
- * @version 2.0, 08/03/2015
+ * @version 2.1, 25/03/2015
  * @since 1.6
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment
@@ -42,16 +41,107 @@ import timber.log.Timber;
 public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = BaseWebViewFragment.class.getSimpleName();
 
-    public static final String ARG_PARAM_URL_PAGE = BaseWebViewFragment.class.getSimpleName()
-            + "ARG_PARAM_URL_PAGE";
+    private static final String FILE_ASSET_OFFLINE_HTML = "file:///android_asset/www/offline.html";
+
+    private boolean mHasInternetConnection = true;
+
+    private boolean mIsWebViewAvailable;
 
     @InjectView(R.id.webView) protected WebView mWebView;
 
     @InjectView(R.id.swipe_refresh_layout) protected SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @NonNull protected Activity mAttachedActivity;
+    public static final String ARG_PARAM_URL_PAGE = BaseWebViewFragment.class.getSimpleName()
+            + ".ARG_PARAM_URL_PAGE";
 
-    private boolean mIsWebViewAvailable;
+    /**
+     * Handles the user interation with the page, errors and fire callbacks to pre and pos
+     * loading each page.
+     */
+    private class CustomWebViewClient extends WebViewClient {
+        private final String TAG = CustomWebChromeClient.class.getSimpleName();
+
+        private CustomWebViewClient() {
+            Timber.tag(TAG);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (isRmtcWebSite(url))
+                return false;
+
+            Timber.e(String.format(
+                    getString(R.string.log_event_debug), "shouldOverrideUrlLoading", url,
+                    "loading a non RMTC web site"));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            return true;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            if (isInternetConnectionAvailable()) {
+                onWebViewPageStarted();
+            }
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            if (mHasInternetConnection) {
+                onWebViewPageFinished();
+            } else {
+                onWebViewOfflinePageLoaded();
+            }
+        }
+
+        @Override
+        public void onReceivedError(final WebView view, final int errorCode,
+                final String description, final String failingUrl) {
+            Timber.e(String.format(
+                    getString(R.string.log_event_error_network_request),
+                    errorCode + ": " + description, "onReceivedError", mWebView.getOriginalUrl(),
+                    failingUrl));
+        }
+
+        /**
+         * Checks if the url loading in the #mWebView is a rmtc web site.
+         *
+         * @param url url loading.
+         * @return if the loading url is a rmtc web site.
+         */
+        private boolean isRmtcWebSite(@NonNull final String url) {
+            String loadingHost = Uri.parse(url).getHost();
+
+            String rmtcWapHost = Uri.parse(getString(R.string.url_rmtc_wap)).getHost();
+            String rmtcMobileHost = Uri.parse(getString(R.string.url_rmtc_horario_viagem)).getHost();
+
+            return rmtcWapHost.equals(loadingHost) || rmtcMobileHost.equals(loadingHost);
+        }
+    }
+
+    /**
+     * Handles and presents to the user Javascript alerts fired in the host web page.
+     */
+    private class CustomWebChromeClient extends WebChromeClient {
+        private final String TAG = CustomWebChromeClient.class.getSimpleName();
+
+        private CustomWebChromeClient() {
+            Timber.tag(TAG);
+        }
+
+        /**
+         * Displays the alerts to the user when something is wrong, i.e., a field value is
+         * required, the typed value is not valid or is not recognized.
+         */
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            Timber.d(String.format(
+                    getString(R.string.log_event_debug), "onResponse", url, message));
+            SnackBarHelper.show(getActivity(), message);
+            result.confirm();
+            return true;
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,20 +150,9 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onAttach(final Activity activity) {
-        super.onAttach(activity);
-        mAttachedActivity = activity;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return setupContentView(inflater.inflate(R.layout.fragment_browser, container, false));
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     /**
@@ -84,19 +163,19 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (CommonUtils.checkAndNotifyNetworkState(getActivity()))
-            return;
-
-        if (savedInstanceState == null) {
-            mWebView.loadUrl(getArgUrlPage());
-            Timber.d(String.format(
-                    getString(R.string.log_event_debug), "onViewCreated", getArgUrlPage(),
-                    "web page loaded from arguments"));
-        } else {
-            mWebView.restoreState(savedInstanceState);
-            Timber.d(String.format(
-                    getString(R.string.log_event_debug), "onViewCreated", savedInstanceState.toString(),
-                    "web page loaded from WebView saved state"));
+        if (isInternetConnectionAvailable()) {
+            if (savedInstanceState == null) {
+                mWebView.loadUrl(getArgUrlPage());
+                Timber.d(String.format(
+                        getString(R.string.log_event_debug), "onViewCreated", getArgUrlPage(),
+                        "web page loaded from arguments"));
+            } else {
+                mWebView.restoreState(savedInstanceState);
+                Timber.d(String.format(
+                        getString(R.string.log_event_debug), "onViewCreated",
+                        savedInstanceState.toString(),
+                        "web page loaded from WebView saved state"));
+            }
         }
     }
 
@@ -151,11 +230,9 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
         super.onDestroy();
     }
 
-    /**
-     * Gets the WebView.
-     */
-    public WebView getWebView() {
-        return mIsWebViewAvailable ? mWebView : null;
+    @Override
+    public void onRefresh() {
+        initiateReloading();
     }
 
     /**
@@ -218,16 +295,6 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     /**
-     * Returns the url page passed to arguments in the helper constructor.
-     *
-     * @return url page passed to arguments
-     */
-    @NonNull
-    public String getArgUrlPage() {
-        return getArguments().getString(ARG_PARAM_URL_PAGE);
-    }
-
-    /**
      * Callback when webview finishes loading a web page, validate the child views here.
      */
     protected void onWebViewPageFinished() {
@@ -241,110 +308,62 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
         setSwipeRefreshing(true);
     }
 
-    public void setSwipeRefreshing(final boolean refreshing) {
+    protected void onWebViewOfflinePageLoaded() {
+        setSwipeRefreshing(false);
+    }
+
+    /**
+     * Returns the url page passed to arguments in the helper constructor.
+     *
+     * @return url page passed to arguments
+     */
+    @NonNull
+    protected String getArgUrlPage() {
+        return getArguments().getString(ARG_PARAM_URL_PAGE);
+    }
+
+    protected void setSwipeRefreshing(final boolean refreshing) {
         if (mSwipeRefreshLayout != null ) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
         }
     }
 
-    public void initiateReloading() {
-        if (CommonUtils.checkAndNotifyNetworkState(getActivity())) {
+    protected void initiateReloading() {
+        if (!isInternetConnectionAvailable()) {
             setSwipeRefreshing(false);
-            return;
-        }
-
-        if (getView() != null) {
-            getWebView().reload();
         } else {
-            setSwipeRefreshing(false);
+            if (FILE_ASSET_OFFLINE_HTML.equals(mWebView.getUrl()))
+                mWebView.loadUrl(getArgUrlPage());
+            else
+                mWebView.reload();
         }
     }
 
-    @Override
-    public void onRefresh() {
-        initiateReloading();
+    protected void loadOfflinePage() {
+        if (! FILE_ASSET_OFFLINE_HTML.equals(mWebView.getUrl()))
+            mWebView.loadUrl(FILE_ASSET_OFFLINE_HTML);
+
+        onWebViewOfflinePageLoaded();
     }
 
-    /**
-     * Handles the user interation with the page, errors and fire callbacks to pre and pos
-     * loading each page.
-     */
-    private class CustomWebViewClient extends WebViewClient {
-        private final String TAG = CustomWebChromeClient.class.getSimpleName();
-
-        private CustomWebViewClient() {
-            Timber.tag(TAG);
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (isRmtcWebSite(url))
-                return false;
-
-            Timber.e(String.format(
-                    getString(R.string.log_event_debug), "shouldOverrideUrlLoading", url,
-                    "loading a non RMTC web site"));
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            onWebViewPageStarted();
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            onWebViewPageFinished();
-        }
-
-        @Override
-        public void onReceivedError(final WebView view, final int errorCode,
-                                    final String description, final String failingUrl) {
-            Timber.e(String.format(
-                    getString(R.string.log_event_error_network_request),
-                    errorCode + ": " + description, "onReceivedError", mWebView.getOriginalUrl(),
-                    failingUrl));
-        }
-
-        /**
-         * Checks if the url loading in the #mWebView is a rmtc web site.
-         *
-         * @param url url loading.
-         * @return if the loading url is a rmtc web site.
-         */
-        private boolean isRmtcWebSite(@NonNull final String url) {
-            String loadingHost = Uri.parse(url).getHost();
-
-            String rmtcWapHost = Uri.parse(getString(R.string.url_rmtc_wap)).getHost();
-            String rmtcMobileHost = Uri.parse(getString(R.string.url_rmtc_horario_viagem)).getHost();
-
-            return rmtcWapHost.equals(loadingHost) || rmtcMobileHost.equals(loadingHost);
-        }
-    }
-
-    /**
-     * Handles and presents to the user Javascript alerts fired in the host web page.
-     */
-    private class CustomWebChromeClient extends WebChromeClient {
-        private final String TAG = CustomWebChromeClient.class.getSimpleName();
-
-        private CustomWebChromeClient() {
-            Timber.tag(TAG);
-        }
-
-        /**
-         * Displays the alerts to the user when something is wrong, i.e., a field value is
-         * required, the typed value is not valid or is not recognized.
-         */
-        @Override
-        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+    protected boolean isInternetConnectionAvailable() {
+        if (CommonUtils.checkAndNotifyNetworkState(getActivity())) {
             Timber.d(String.format(
-                    getString(R.string.log_event_debug), "onResponse", url, message));
-            SnackBarHelper.show(mAttachedActivity, message);
-            result.confirm();
+                    getString(R.string.log_event_debug), "isInternetConnectionAvailable",
+                    mWebView.getUrl(), "no internet connectivity available"));
+            mHasInternetConnection = false;
+            loadOfflinePage();
+            return false;
+        } else {
+            mHasInternetConnection = true;
             return true;
         }
+    }
+
+    /**
+     * Gets the WebView.
+     */
+    public WebView getWebView() {
+        return mIsWebViewAvailable ? mWebView : null;
     }
 }
