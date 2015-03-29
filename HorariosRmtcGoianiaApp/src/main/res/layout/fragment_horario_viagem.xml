@@ -10,7 +10,7 @@
     <include layout="@layout/fragment_browser" />
 
     <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatButtonMarkFavorite"
+        android:id="@+id/fab_bookmark_stop_bus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -22,6 +22,8 @@
         android:visibility="gone"
         fab:fab_icon="@drawable/ic_unmark_favorite"
         fab:fab_colorNormal="@color/material_pink_500"
-        fab:fab_colorPressed="@color/material_pink_700"
+        fab:fab_colorPressed="@color/material_pink_900"
+        fab:fab_title="@string/fab_bookmark_stop_bus"
+        fab:fab_labelStyle="@style/FloatingActionLabel"
         />
 </RelativeLayout>

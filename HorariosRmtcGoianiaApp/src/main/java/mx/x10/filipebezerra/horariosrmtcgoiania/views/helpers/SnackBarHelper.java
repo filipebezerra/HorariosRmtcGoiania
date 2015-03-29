@@ -49,14 +49,18 @@ public class SnackBarHelper {
             snackbar.eventListener(new EventListener() {
                 @Override
                 public void onShow(Snackbar snackbar) {
-                    for (View view : animateViews)
-                        AnimationUtils.moveUp(view, snackbar.getHeight());
+                    for (View view : animateViews) {
+                        if (view != null)
+                            AnimationUtils.moveUp(view, snackbar.getHeight());
+                    }
                 }
 
                 @Override
                 public void onDismissed(Snackbar snackbar) {
-                    for (View view : animateViews)
-                        AnimationUtils.moveDown(view, snackbar.getHeight());
+                    for (View view : animateViews) {
+                        if (view != null)
+                            AnimationUtils.moveDown(view, snackbar.getHeight());
+                    }
                 }
 
                 public void onShowByReplace(Snackbar snackbar) {}

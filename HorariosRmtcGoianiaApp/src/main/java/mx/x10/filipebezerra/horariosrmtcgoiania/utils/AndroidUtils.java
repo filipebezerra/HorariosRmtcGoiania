@@ -18,13 +18,20 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.utils;
 
 import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.speech.RecognizerIntent;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import java.io.File;
@@ -34,7 +41,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.util.List;
 import java.util.Locale;
+import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 
 public class AndroidUtils {
 
@@ -181,4 +191,92 @@ public class AndroidUtils {
         }
     }
 
+    public static void openAppRating(@NonNull Context context) {
+        Intent rateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                "market://details?id=" + context.getPackageName()));
+        boolean marketFound = false;
+
+        // find all applications able to handle our rateIntent
+        final List<ResolveInfo> otherApps = context.getPackageManager().queryIntentActivities(rateIntent, 0);
+        for (ResolveInfo otherApp: otherApps) {
+            // look for Google Play application
+            if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
+
+                ActivityInfo otherAppActivity = otherApp.activityInfo;
+                ComponentName componentName = new ComponentName(
+                        otherAppActivity.applicationInfo.packageName,
+                        otherAppActivity.name
+                );
+                rateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                rateIntent.setComponent(componentName);
+                context.startActivity(rateIntent);
+                marketFound = true;
+                break;
+
+            }
+        }
+
+        // if GP not present on device, open web browser
+        if (!marketFound) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                    "https://play.google.com/store/apps/details?id=" + context.getPackageName()));
+            context.startActivity(webIntent);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Intent createShareIntent(@NonNull Context context) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        } else {
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        }
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_text));
+
+        if (!resolveActivity(shareIntent, context)) {
+            return null;
+        }
+
+        return Intent.createChooser(shareIntent, context.getString(R.string.share_dialog_title));
+    }
+
+    public static Intent createSpeechInputIntent(@NonNull Context context) {
+        Intent speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.ACTION_WEB_SEARCH);
+        speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        speechIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(
+                R.string.voice_prompt_text));
+
+        if (!resolveActivity(speechIntent, context)) {
+            return null;
+        }
+
+        return speechIntent;
+    }
+
+    public static boolean resolveActivity(@NonNull Intent intent, @NonNull Context context) {
+        return intent.resolveActivity(context.getPackageManager()) != null;
+    }
+
+    /**
+     * Checks the network and the wifi state and notifies with a toast to the user.
+     *
+     * @param context application context.
+     * @param animateViews
+     * @return if was notified
+     */
+    public static boolean checkAndNotifyNetworkState(@NonNull Context context,
+            View... animateViews) {
+        if (!isWifiConnected(context) &&
+                !isNetworkConnected(context)) {
+            SnackBarHelper.show(context,
+                    context.getString(R.string.no_internet_connectivity), animateViews);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

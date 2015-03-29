@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -16,7 +17,8 @@ import butterknife.InjectView;
 import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.CommonUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.activities.BaseActivity;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.adapters.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.FavoriteItemSelectionEvent;
@@ -68,6 +70,7 @@ public class FavoriteBusStopListFragment extends Fragment
         mRecyclerView.setAdapter(mFavoriteBusStopsAdapter = new FavoriteBusStopsAdapter(
                 getFavoritesData()));
         mFavoriteBusStopsAdapter.setOnItemClickListener(this);
+        ((BaseActivity)getActivity()).showFabMenu();
     }
 
     @Override
@@ -78,7 +81,9 @@ public class FavoriteBusStopListFragment extends Fragment
 
     @Override
     public void onItemClick(final FavoriteBusStop favoriteBusStop) {
-        if (CommonUtils.checkAndNotifyNetworkState(getActivity())) return;
+        FragmentActivity drawerActivity = getActivity();
+        if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity,
+                ((BaseActivity) drawerActivity).getFabMenu())) return;
 
         EventBusProvider.getInstance().getEventBus().post(
                 new FavoriteItemSelectionEvent(favoriteBusStop));

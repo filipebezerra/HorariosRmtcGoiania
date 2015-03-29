@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="ThemeSection">
         <item name="sectionColorIcon">@color/very_dark_gray</item>
         <item name="sectionColorText">@color/dark_gray</item>
@@ -49,5 +49,19 @@
 
     <style name="Widget.LicensesDialog" parent="android:Theme.Dialog">
         <item name="android:textColor">#FF00DFFF</item>
+    </style>
+
+    <style name="FloatingActionLabel">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="FloatingActionMenuStyle">
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentEnd" tools:ignore="NewApi">true</item>
+        <item name="android:layout_marginBottom">@dimen/floating_action_button_margin</item>
+        <item name="android:layout_marginRight">@dimen/floating_action_button_margin</item>
+        <item name="android:layout_marginEnd" tools:ignore="NewApi">@dimen/floating_action_button_margin</item>
     </style>
 </resources>

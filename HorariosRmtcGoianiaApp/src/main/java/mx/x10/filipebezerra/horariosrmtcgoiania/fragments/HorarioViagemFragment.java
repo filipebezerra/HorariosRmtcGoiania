@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.otto.Bus;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.activities.BaseActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
@@ -33,6 +34,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationMessage
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
+import net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu;
 import timber.log.Timber;
 
 /**
@@ -62,7 +64,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
     @NonNull private Bus mEventBus;
 
-    @InjectView(R.id.floatButtonMarkFavorite) protected FloatingActionButton mFloatButtonMarkFavorite;
+    @InjectView(R.id.fab_bookmark_stop_bus) FloatingActionButton mFabBookmarkStopBus;
 
     public static final String ARG_PARAM_BUS_STOP_CODE = BaseWebViewFragment.class.getSimpleName()
             + ".ARG_PARAM_BUS_STOP_CODE";
@@ -125,8 +127,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     }
 
     private void invalidateViews() {
-        if (mFloatButtonMarkFavorite != null) {
-            mFloatButtonMarkFavorite.setVisibility(View.GONE);
+        if (mFabBookmarkStopBus != null) {
+            mFabBookmarkStopBus.setVisibility(View.GONE);
         }
     }
 
@@ -146,13 +148,17 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     public void onWebViewPageFinished() {
         super.onWebViewPageFinished();
 
-        if (mFloatButtonMarkFavorite != null) {
+        if (mFabBookmarkStopBus != null) {
             if (!mIsViewingBusStopPage && getBusStopCodeFromCurrentUrl() != null) {
                 mIsViewingBusStopPage = true;
             }
 
             if (mIsViewingBusStopPage) {
-                mFloatButtonMarkFavorite.setVisibility(View.VISIBLE);
+                FloatingActionsMenu fabMenu = ((BaseActivity) getActivity()).getFabMenu();
+                if (fabMenu != null) {
+                    fabMenu.setVisibility(View.GONE);
+                }
+                mFabBookmarkStopBus.setVisibility(View.VISIBLE);
 
                 mPersistedFavoriteBusStop = getPersistedFavoriteBusStop();
                 Timber.d(String.format(getString(R.string.log_event_debug),
@@ -161,14 +167,14 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 "is persisted with id: "+mPersistedFavoriteBusStop.getId()));
 
                 if (mPersistedFavoriteBusStop != null) {
-                    mFloatButtonMarkFavorite.setIconDrawable(getResources().getDrawable(
+                    mFabBookmarkStopBus.setIconDrawable(getResources().getDrawable(
                             R.drawable.ic_drawer_pontos_favoritos));
                 }
             }
         }
     }
 
-    @OnClick(R.id.floatButtonMarkFavorite)
+    @OnClick(R.id.fab_bookmark_stop_bus)
     protected void updateFavoriteStopBus() {
         if (mIsViewingBusStopPage) {
             if (mPersistedFavoriteBusStop == null) {
@@ -199,8 +205,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                                 SnackBarHelper.showSingleLine(getActivity(),
                                         getString(R.string.info_stop_bus_added_to_favorites),
-                                        mFloatButtonMarkFavorite);
-                                mFloatButtonMarkFavorite.setIconDrawable(
+                                        mFabBookmarkStopBus);
+                                mFabBookmarkStopBus.setIconDrawable(
                                         getResources().getDrawable(
                                                 R.drawable.ic_drawer_pontos_favoritos));
                             }
@@ -216,7 +222,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                         currentUrl), error);
                                 SnackBarHelper.show(getActivity(), getString(
                                         R.string.error_in_network_search_request_parsing_html_page),
-                                        mFloatButtonMarkFavorite);
+                                        mFabBookmarkStopBus);
                             }
                         }
                 );
@@ -237,8 +243,8 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                 SnackBarHelper.showSingleLine(getActivity(),
                         getString(R.string.info_stop_bus_removed_from_favorites),
-                        mFloatButtonMarkFavorite);
-                mFloatButtonMarkFavorite.setIconDrawable(getResources().getDrawable(
+                        mFabBookmarkStopBus);
+                mFabBookmarkStopBus.setIconDrawable(getResources().getDrawable(
                         R.drawable.ic_unmark_favorite));
             }
         }

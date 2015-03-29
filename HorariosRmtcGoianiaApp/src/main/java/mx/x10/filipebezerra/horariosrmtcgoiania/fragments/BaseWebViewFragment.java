@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,7 +23,8 @@ import android.webkit.WebViewClient;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.CommonUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.activities.BaseActivity;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.WebViewCompatSwipeRefreshLayout;
 import timber.log.Timber;
@@ -347,7 +349,9 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     protected boolean isInternetConnectionAvailable() {
-        if (CommonUtils.checkAndNotifyNetworkState(getActivity())) {
+        FragmentActivity drawerActivity = getActivity();
+        if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity,
+                ((BaseActivity) drawerActivity).getFabMenu())) {
             Timber.d(String.format(
                     getString(R.string.log_event_debug), "isInternetConnectionAvailable",
                     mWebView.getUrl(), "no internet connectivity available"));

@@ -40,4 +40,8 @@
     <string name="ok_button">OK</string>
     <string name="erase_button">APAGAR</string>
     <string name="cancel_button">CANCELAR</string>
+    <string name="fab_search_stop_bus">Buscar ponto</string>
+    <string name="fab_share_app">Compatilhar aplicativo</string>
+    <string name="fab_evaluate_app">Avaliar aplicativo</string>
+    <string name="fab_bookmark_stop_bus">Marcar como favorito</string>
 </resources>

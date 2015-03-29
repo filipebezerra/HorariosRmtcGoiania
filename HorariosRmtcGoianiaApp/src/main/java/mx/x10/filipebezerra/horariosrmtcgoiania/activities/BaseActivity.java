@@ -5,10 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
@@ -17,7 +18,12 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -25,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
+import java.util.ArrayList;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.FavoriteBusStopListFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment;
@@ -33,11 +40,12 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.CommonUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
+import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
+import net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 import timber.log.Timber;
@@ -62,6 +70,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragment
 public abstract class BaseActivity extends MaterialNavigationDrawer {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
+    private static final int REQUEST_CODE_SPEECH_INPUT = 100;
     /**
      * Search handled over all application.
      */
@@ -80,7 +89,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (CommonUtils.checkAndNotifyNetworkState(context)) {
+            if (AndroidUtils.checkAndNotifyNetworkState(context, mFabMenu)) {
                 Timber.d(String.format(
                         getString(R.string.log_event_debug), "onReceive",
                         intent.getAction(), "no internet connectivity"));
@@ -99,6 +108,17 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     protected MaterialSection favoriteBusStopSection;
 
+    public FloatingActionsMenu getFabMenu() {
+        return mFabMenu;
+    }
+
+    @InjectView(R.id.fab_menu) protected FloatingActionsMenu mFabMenu;
+    @InjectView(R.id.fab_search_stop_bus) protected FloatingActionButton mFabVoiceSearch;
+    @InjectView(R.id.fab_share_app) protected FloatingActionButton mFabShareApp;
+    @InjectView(R.id.fab_evaluate_app) protected FloatingActionButton mFabEvaluateApp;
+
+    private int mLastOrientationConfiguration;
+
     /**
      * The delegation method that initializes the activity. Don't use activity's onCreate method.
      */
@@ -109,13 +129,88 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         addSecondarySections();
         addBottomSections();
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+
+        initDrawerLearningPattern();
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Timber.tag(TAG);
+
+        addFabMenuView();
+
+        int initialOrientation = getWindowManager().getDefaultDisplay().getRotation();
+        if (initialOrientation == Surface.ROTATION_0 || initialOrientation == Surface.ROTATION_180)
+            mLastOrientationConfiguration = Configuration.ORIENTATION_PORTRAIT;
+        else
+            mLastOrientationConfiguration = Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private void initSpeechInputSearchAction() {
+        final Intent speechInputIntent = AndroidUtils.createSpeechInputIntent(BaseActivity.this);
+        if (speechInputIntent == null) {
+            mFabMenu.removeButton(mFabVoiceSearch);
+            return;
+        }
+
+        mFabVoiceSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu)) return;
+
+                mFabMenu.collapse();
+                startActivityForResult(speechInputIntent, REQUEST_CODE_SPEECH_INPUT);
+            }
+        });
+    }
+
+    private void initRatingAction() {
+        mFabEvaluateApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu)) return;
+
+                mFabMenu.collapse();
+                AndroidUtils.openAppRating(BaseActivity.this);
+            }
+        });
+    }
+
+    private void addFabMenuView() {
+        getLayoutInflater().inflate(R.layout.view_floating_action_button,
+                (android.view.ViewGroup) findViewById(
+                        it.neokree.materialnavigationdrawer.R.id.content), true);
+
+            ButterKnife.inject(BaseActivity.this);
+
+        initSpeechInputSearchAction();
+        initShareAction();
+        initRatingAction();
+    }
+
+    private void initDrawerLearningPattern() {
         if (PrefUtils.isWelcomeDone(BaseActivity.this)) {
             disableLearningPattern();
         } else {
             PrefUtils.markWelcomeDone(BaseActivity.this);
         }
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Timber.tag(TAG);
+    }
+
+    private void initShareAction() {
+        final Intent shareIntent = AndroidUtils.createShareIntent(BaseActivity.this);
+        if (shareIntent == null) {
+            mFabMenu.removeButton(mFabShareApp);
+            return;
+        }
+
+        mFabShareApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu)) return;
+
+                mFabMenu.collapse();
+                startActivity(Intent.createChooser(shareIntent,
+                        getString(R.string.share_dialog_title)));
+            }
+        });
     }
 
     /**
@@ -146,10 +241,11 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 getString(R.string.navdrawer_section_favorite_bus_stops),
                 R.drawable.ic_drawer_pontos_favoritos, new FavoriteBusStopListFragment());
 
-        if (favoriteCount == 0 && ! PrefUtils.isFavoriteLearned(BaseActivity.this))
+        if (favoriteCount == 0 && !PrefUtils.isFavoriteLearned(BaseActivity.this)) {
             favoriteBusStopSection.setNotificationsText("New!");
-        else
+        } else {
             favoriteBusStopSection.setNotifications(favoriteCount);
+        }
 
         addSection(favoriteBusStopSection
                 .setSectionColor(
@@ -225,9 +321,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         // if (sendIntent.resolveActivity(getPackageManager()) != null) {
         //    startActivity(chooser);
         //}
-        addBottomSection(newSection(getString(R.string.action_share), R.drawable.ic_share,
-                Intent.createChooser(createShareIntent(),
-                        getString(R.string.share_dialog_title))));
 
         addBottomSection(newSection(getString(R.string.navdrawer_bottom_section_configurations),
                 R.drawable.ic_drawer_settings,
@@ -277,24 +370,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     }
 
     /**
-     * Creates the share intent.
-     *
-     * @return share intent
-     */
-    @SuppressWarnings("deprecation")
-    private Intent createShareIntent() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        } else {
-            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        }
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
-        return shareIntent;
-    }
-
-    /**
      * Inject custom font into {@link Context}.
      */
     @Override
@@ -330,6 +405,25 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation != mLastOrientationConfiguration) {
+            View fabMenuView = findViewById(R.id.fab_menu);
+            if (fabMenuView != null) {
+                ViewGroup parent = (ViewGroup) fabMenuView.getParent();
+
+                if (parent != null) {
+                    parent.removeView(fabMenuView);
+                    addFabMenuView();
+                }
+            }
+
+            mLastOrientationConfiguration = newConfig.orientation;
+        }
     }
 
     /**
@@ -435,8 +529,41 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
             } else {
                 section.setTarget(newHorarioViagemPageFragment(BaseActivity.this));
             }
+        } else {
+            showFabMenu();
         }
         super.onClick(section);
+    }
+
+    public void showFabMenu() {
+        if (mFabMenu != null) {
+            mFabMenu.setVisibility(View.VISIBLE);
+            if (mFabMenu.isExpanded())
+                mFabMenu.collapse();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Timber.d("onActivityResult with request code "+requestCode+" with result code "+resultCode);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_SPEECH_INPUT:
+                    if (data != null) {
+                        Timber.d("Request REQUEST_CODE_SPEECH_INPUT returned with data %s. "
+                                + "Only first will be used", data);
+                        ArrayList<String> extras = data.getStringArrayListExtra(
+                                RecognizerIntent.EXTRA_RESULTS);
+                        Intent searchIntent = new Intent(Intent.ACTION_SEARCH);
+                        searchIntent.putExtra(SearchManager.QUERY, extras.get(0));
+                        onSearch(searchIntent);
+                    } else {
+                        Timber.d("No data returned with request REQUEST_CODE_SPEECH_INPUT");
+                    }
+                    break;
+            }
+        }
     }
 
     /**
@@ -446,6 +573,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     public void searchStopCode(final String stopCode) {
+        mFabMenu.setVisibility(View.GONE);
         HorarioViagemFragment fragment = (HorarioViagemFragment) horarioViagemSection
                 .getTargetFragment();
 
