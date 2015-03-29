@@ -285,7 +285,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
                         new WebViewCompatSwipeRefreshLayout.CanChildScrollUpCallback() {
                             @Override
                             public boolean canSwipeRefreshChildScrollUp() {
-                                return mWebView.getScrollY() > 0;
+                                return mWebView != null && mWebView.getScrollY() > 0;
                             }
                         });
             }
