@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:title="@string/pref_title_developer_name"
+        android:summary="@string/pref_summary_developer_name" />
+
+    <Preference
+        android:title="@string/pref_title_project_site"
+        android:summary="@string/pref_summary_project_site">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/project_site"/>
+    </Preference>
+
+    <Preference
+        android:title="@string/pref_title_portfolio_site"
+        android:summary="@string/pref_summary_portfolio_site">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/portfolio_site"/>
+    </Preference>
+
+    <Preference
+        android:title="@string/pref_title_developer_site"
+        android:summary="@string/pref_summary_developer_site">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/developer_site"/>
+    </Preference>
+
+    <Preference
+        android:key="mail_to_developer"
+        android:title="@string/pref_title_mail_to_developer"
+        android:summary="@string/pref_summary_mail_to_developer" />
+</PreferenceScreen>

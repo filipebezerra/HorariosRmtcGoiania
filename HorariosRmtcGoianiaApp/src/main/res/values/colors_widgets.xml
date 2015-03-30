@@ -7,7 +7,7 @@
 
     <color name="progress_bar_background">@color/material_deep_teal_500</color>
 
-    <color name="licenses_dialog_divider_color">@color/material_deep_teal_500</color>
+    <color name="licenses_dialog_divider_color">@color/theme_color_accent</color>
 
     <color name="navdrawer_favorites_section_color">@color/material_deep_orange_500</color>
     <color name="navdrawer_favorites_section_dark_color">@color/material_deep_orange_700</color>

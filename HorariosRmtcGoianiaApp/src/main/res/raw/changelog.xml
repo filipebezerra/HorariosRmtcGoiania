@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
-    <changelogversion versionName="2.0" changeDate="Março,12 2015">
+    <changelogversion versionName="2.0" changeDate="- 12 de Março de 2015">
         <changelogimprovement>
             Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia
         </changelogimprovement>

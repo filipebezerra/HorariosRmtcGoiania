@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_clear_recent_suggestions_title">Limpar histórico de pesquisa</string>
-    <string name="pref_clear_recent_suggestions_summary">Remover todo histórico de sugestões de pesquisa.</string>
-    <string name="prompt_user_pref_clear_recent_suggestions">Todas sugestões de pesquisa serão removidas.</string>
-    <string name="pref_clear_recent_suggestions_summary_edited">As sugestões foram removidas.</string>
-    
-    <string name="pref_clear_favorite_bus_stop_data_title">Limpar pontos favoritos</string>
-    <string name="pref_clear_favorite_bus_stop_data_summary">Remover todos seus pontos favoritos.</string>
-    <string name="prompt_user_pref_clear_favorite_bus_stop_data">Todos seus pontos favoritos serão removidos.</string>
-    <string name="pref_clear_favorite_bus_stop_data_summary_edited">Os favoritos foram removidos.</string>
+    <!-- Basic settings -->
+    <string name="prefs_category_basic">Básico</string>
 
-    <string name="pref_about_info_key_title">Desenvolvedor</string>
+    <string name="pref_title_clear_recent_suggestions">Limpar histórico de pesquisa</string>
+    <string name="pref_summary_clear_recent_suggestions">Remover todo histórico de sugestões de pesquisa.</string>
+    <string name="pref_prompt_clear_recent_suggestions">Todas sugestões de pesquisa serão removidas.</string>
+    <string name="pref_summary_recent_suggestions_changed">As sugestões foram removidas.</string>
+
+    <string name="pref_title_clear_favorite_bus_stop_data">Limpar favoritos</string>
+    <string name="pref_summary_clear_favorite_bus_stop_data">Remover todos seus favoritos.</string>
+    <string name="pref_prompt_clear_favorite_bus_stop_data">Todos seus favoritos serão removidos.</string>
+    <string name="pref_summary_favorite_bus_stop_data_changed">Os favoritos foram removidos.</string>
+
+    <!-- About developer settings -->
+    <string name="prefs_category_developer">Desenvolvedor</string>
+
+    <string name="pref_title_developer_name">Criador/Desenvolvedor</string>
+    <string name="pref_summary_developer_name">Filipe Bezerra de Sousa</string>
+
+    <string name="pref_title_project_site">Site do projeto</string>
+    <string name="pref_summary_project_site">Ir para site do projeto</string>
+
+    <string name="pref_title_portfolio_site">Portfólio do desenvolvedor</string>
+    <string name="pref_summary_portfolio_site">Ir para portfólio do desenvolvedor</string>
+
+    <string name="pref_title_developer_site">Site do desenvolvedor</string>
+    <string name="pref_summary_developer_site">Ir para site do desenvolvedor</string>
+
+    <string name="pref_title_mail_to_developer">E-mail para desenvolvedor</string>
+    <string name="pref_summary_mail_to_developer">Enviar e-mail para o desenvolvedor</string>
+
+    <!-- About settings -->
+    <string name="prefs_category_about">Sobre</string>
+
+    <string name="pref_title_about_version">Versão</string>
+
+    <string name="pref_title_licenses_info">Licenças de código aberto</string>
+    <string name="pref_summary_licenses_info">Detalhes de licença de software de código aberto.</string>
     
-    <string name="pref_open_source_licenses_info_key_title">Licenças de código aberto</string>
-    <string name="pref_open_source_licenses_info_summary">Detalhes de licença de software de código aberto.</string>
+    <string name="pref_title_changelog_info">Histórico de mudanças</string>
+    <string name="pref_summary_changelog_info">Notas das atualizações realizadas.</string>
     
-    <string name="pref_changelog_info_title">Histórico de mudanças</string>
-    <string name="pref_changelog_info_summary">Notas das atualizações realizadas.</string>
-    
-    <string name="pref_product_tour_title">Tour do produto</string>
-    <string name="pref_product_tour_summary">Conheça o aplicativo e seus principais recursos.</string>
+    <string name="pref_title_tour">Tour do produto</string>
+    <string name="pref_summary_tour">Conheça o aplicativo e seus principais recursos.</string>
 </resources>

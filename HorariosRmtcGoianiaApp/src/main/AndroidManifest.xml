@@ -43,6 +43,7 @@
 
         <activity
             android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:theme="@style/Theme.HorariosRmtcGoiania.Settings"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|navigation"/>
 

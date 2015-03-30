@@ -47,10 +47,6 @@
         <item name="layout">@layout/widget_search_view</item>
     </style>
 
-    <style name="Widget.LicensesDialog" parent="android:Theme.Dialog">
-        <item name="android:textColor">#FF00DFFF</item>
-    </style>
-
     <style name="FloatingActionLabel">
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>

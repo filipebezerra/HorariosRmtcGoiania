@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="pref_about_version"
+        android:title="@string/pref_title_about_version"/>
+
+    <Preference
+        android:key="pref_licenses_info"
+        android:title="@string/pref_title_licenses_info"
+        android:summary="@string/pref_summary_licenses_info"/>
+
+    <Preference
+        android:key="pref_changelog_info"
+        android:title="@string/pref_title_changelog_info"
+        android:summary="@string/pref_summary_changelog_info"/>
+
+    <Preference
+        android:key="pref_tour"
+        android:title="@string/pref_title_tour"
+        android:summary="@string/pref_summary_tour"/>
+</PreferenceScreen>

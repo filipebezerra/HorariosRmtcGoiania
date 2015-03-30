@@ -31,4 +31,7 @@
     <string name="info_content_please_wait">
         Por favor aguarde&#8230;
     </string>
+    <string name="message_send_mail_application_not_found">
+        Desculpe, não foi localizado nenhum aplicativo para enviar e-mail!
+    </string>
 </resources>

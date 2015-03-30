@@ -9,8 +9,8 @@ import android.preference.PreferenceManager;
  * Utilities and constants related to app preferences..
  *
  * @author Filipe Bezerra
- * @version 2, 10/03/2015
- * @since #
+ * @version 2.1, 30/03/2015
+ * @since 2.0
  */
 public final class PrefUtils {
     /**
@@ -26,12 +26,12 @@ public final class PrefUtils {
     /**
      * Preference that triggers onClick listener to show app about dialog.
      */
-    public static final String PREF_ABOUT_INFO = "pref_about_info";
+    public static final String PREF_ABOUT_VERSION = "pref_about_version";
 
     /**
      * Preference that triggers onClick listener to show open source licences dialog.
      */
-    public static final String PREF_OPEN_SOURCE_LICENSES_INFO = "pref_open_source_licenses_info";
+    public static final String PREF_LICENSES_INFO = "pref_licenses_info";
 
     /**
      * Preference that triggers onClick listener to show app changelog.
@@ -41,7 +41,7 @@ public final class PrefUtils {
     /**
      * Preference that triggers onClick listener to show product tour guide.
      */
-    public static final String PREF_PRODUCT_TOUR = "pref_product_tour";
+    public static final String PREF_TOUR = "pref_tour";
 
     /**
      * Boolean indicating whether we performed the (one-time) welcome flow.
@@ -52,6 +52,8 @@ public final class PrefUtils {
      * Boolean indicating whether the user learned how the feature save favorites
      */
     public static final String PREF_FAVORITES_LEARNED = "pref_favorites_learned";
+
+    public static final String PREF_MAIL_TO_DEVELOPER = "mail_to_developer";
 
     public static boolean isWelcomeDone(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

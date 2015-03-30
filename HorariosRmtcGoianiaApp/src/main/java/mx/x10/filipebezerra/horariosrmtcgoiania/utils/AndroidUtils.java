@@ -279,4 +279,15 @@ public class AndroidUtils {
             return false;
         }
     }
+
+    public static String getVersion(Context context) {
+        String version;
+        try {
+            version = context.getPackageManager().getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            version = "UnknownVersion";
+        }
+        return version;
+    }
 }
