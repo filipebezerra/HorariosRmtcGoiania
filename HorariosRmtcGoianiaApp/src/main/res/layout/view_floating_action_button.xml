@@ -20,6 +20,7 @@
         fab:fab_colorNormal="@color/material_pink_500"
         fab:fab_title="@string/fab_search_stop_bus"
         fab:fab_colorPressed="@color/material_pink_900"
+        fab:fab_size="mini"
         />
 
     <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
@@ -30,6 +31,7 @@
         fab:fab_colorNormal="@color/material_pink_500"
         fab:fab_title="@string/fab_share_app"
         fab:fab_colorPressed="@color/material_pink_900"
+        fab:fab_size="mini"
         />
 
     <net.i2p.android.ext.floatingactionbutton.FloatingActionButton
@@ -40,6 +42,7 @@
         fab:fab_colorNormal="@color/material_pink_500"
         fab:fab_title="@string/fab_evaluate_app"
         fab:fab_colorPressed="@color/material_pink_900"
+        fab:fab_size="mini"
         />
 
 </net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu>
