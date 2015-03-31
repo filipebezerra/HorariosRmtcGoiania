@@ -168,7 +168,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
                 if (mPersistedFavoriteBusStop != null) {
                     mFabBookmarkStopBus.setIconDrawable(getResources().getDrawable(
-                            R.drawable.ic_drawer_pontos_favoritos));
+                            R.drawable.ic_favorite));
                 }
             }
         }
@@ -208,7 +208,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                         mFabBookmarkStopBus);
                                 mFabBookmarkStopBus.setIconDrawable(
                                         getResources().getDrawable(
-                                                R.drawable.ic_drawer_pontos_favoritos));
+                                                R.drawable.ic_favorite));
                             }
                         },
                         new Response.ErrorListener() {
