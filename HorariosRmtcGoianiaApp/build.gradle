@@ -1,6 +1,8 @@
 buildscript {
     repositories {
-        maven { url 'https://maven.fabric.io/public' }
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
 
     dependencies {
@@ -19,22 +21,19 @@ repositories {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.1.2'
-
+    compileSdkVersion 22
+    buildToolsVersion '22.0.0'
     defaultConfig {
         applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
-        minSdkVersion 8
-        targetSdkVersion 21
+        minSdkVersion 10
+        targetSdkVersion 22
         versionCode 9
         versionName "2.1"
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
     signingConfigs {
         release {
             if (rootProject.file('keystore.properties').exists()) {
@@ -48,7 +47,6 @@ android {
             }
         }
     }
-
     buildTypes {
         release {
             minifyEnabled true
@@ -59,7 +57,6 @@ android {
             }
         }
     }
-
     sourceSets {
         main {
             java.srcDirs = [
@@ -73,24 +70,26 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':MaterialNavigationDrawerLib')
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
-        transitive = true;
-    }
+
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:recyclerview-v7:22.0.0'
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.android.support:support-annotations:22.0.0'
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
+        transitive = true;
+    }
     compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'uk.co.chrisjenx:calligraphy:2.0.1'
-    compile 'de.greenrobot:greendao:1.3.7'
-    compile 'org.jsoup:jsoup:1.8.1'
-    compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
+    compile 'com.jakewharton.timber:timber:2.7.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup:otto:1.3.6'
     compile 'com.github.gabrielemariotti.changeloglib:library:1.5.2'
-    compile 'com.jakewharton.timber:timber:2.7.1'
     compile 'com.nispok:snackbar:2.10.5'
-    compile 'net.i2p.android.ext:floatingactionbutton:1.8.0'
     compile 'com.afollestad:material-dialogs:0.6.4.7'
+    compile 'de.greenrobot:greendao:1.3.7'
+    compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
+    compile 'it.neokree:MaterialNavigationDrawer:1.3.3'
+    compile 'org.jsoup:jsoup:1.8.1'
+    compile 'net.i2p.android.ext:floatingactionbutton:1.8.0'
+    compile 'uk.co.chrisjenx:calligraphy:2.0.1'
 }
