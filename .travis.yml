@@ -24,4 +24,4 @@ before_script:
     - gradle -v
 
 script:
-    - gradle clean debug --stacktrace
+    - gradle clean build --stacktrace
