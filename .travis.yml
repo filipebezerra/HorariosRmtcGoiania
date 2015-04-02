@@ -1,5 +1,7 @@
 language: android
-jdk: oraclejdk7
+
+jdk:
+  - oraclejdk7
 
 branches:
   only:
@@ -22,4 +24,4 @@ before_script:
     - gradle -v
 
 script:
-    - gradle assembleDebug --stacktrace
+    - gradle clean debug --stacktrace
