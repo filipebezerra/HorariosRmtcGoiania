@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
+import it.neokree.materialnavigationdrawer.util.Utils;
 import java.util.ArrayList;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.FavoriteBusStopListFragment;
@@ -154,7 +155,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mFabVoiceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu)) return;
+                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
+                    return;
 
                 mFabMenu.collapse();
                 startActivityForResult(speechInputIntent, REQUEST_CODE_SPEECH_INPUT);
@@ -166,7 +168,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mFabEvaluateApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu)) return;
+                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
+                    return;
 
                 mFabMenu.collapse();
                 AndroidUtils.openAppRating(BaseActivity.this);
@@ -378,35 +381,54 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     }
 
     /**
-     * Handles search hardware button. Compatibility for old Android devices.
+     * Handles search hardware button, for compatibility for old Android devices and
+     * handles the menu hardware button to opening the Navigation Drawer.
      */
     @Override
-    public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_SEARCH) {
-            if (MenuItemCompat.expandActionView(mSearchMenuItem)) {
-                mSearchView.requestFocus();
-                return true;
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        Timber.d("dispatchKeyEvent with event " + event);
+
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_SEARCH:
+                    if (MenuItemCompat.expandActionView(mSearchMenuItem)) {
+                        mSearchView.requestFocus();
+                        return true;
+                    }
+                case KeyEvent.KEYCODE_MENU:
+                    // TODO: workaround of the bug closing drawer onClick and KEY_MENU pressed when is a tablet device
+                    if (! deviceSupportMultiPane()) {
+                        if (isDrawerOpen()) {
+                            closeDrawer();
+                        } else {
+                            openDrawer();
+                        }
+                        return true;
+                    }
+                default:
+                    return super.dispatchKeyEvent(event);
             }
         }
-        return super.onKeyUp(keyCode, event);
+
+        return super.dispatchKeyEvent(event);
+    }
+
+    // TODO: Duplicated validation manually fixing bug https://github.com/neokree/MaterialNavigationDrawer/issues/263
+    /**
+     * Checks if the current orientation is {@link Configuration#ORIENTATION_LANDSCAPE} and the
+     * current device is a tablet. This method suppose that <code>multipaneSupport</code> for
+     * the current theme is <code>true</code>.
+     * @return
+     */
+    private boolean deviceSupportMultiPane() {
+        final Resources resources = getResources();
+        return resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                Utils.isTablet(resources);
     }
 
     /**
-     * Handles the menu hardware button to opening the Navigation Drawer.
+     * Handles orientation configuration changes to layout floating actions correctly.
      */
-    @Override
-    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (isDrawerOpen()) {
-                closeDrawer();
-            } else {
-                openDrawer();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -519,6 +541,14 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
     @Override
     public void onClick(final MaterialSection section) {
+        // TODO: workaround of the bug closing drawer onClick and KEY_MENU pressed when is a tablet device
+        if (getCurrentSection().equals(section)) {
+            if (! deviceSupportMultiPane()) {
+                closeDrawer();
+            }
+            return;
+        }
+
         if (section == horarioViagemSection) {
             HorarioViagemFragment fragment = (HorarioViagemFragment) section.getTargetFragment();
 
