@@ -1,8 +1,6 @@
 buildscript {
     repositories {
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
@@ -15,20 +13,19 @@ apply plugin: 'io.fabric'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://maven.fabric.io/public'
-    }
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url 'https://dl.bintray.com/drummer-aidan/maven' }
 }
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '22.0.0'
+    buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 9
-        versionName "2.1"
+        versionCode 10
+        versionName "2.2"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -74,12 +71,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.android.support:support-annotations:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:support-annotations:22.2.0'
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
         transitive = true;
     }
     compile 'com.jakewharton:butterknife:6.1.0'
@@ -88,7 +85,7 @@ dependencies {
     compile 'com.squareup:otto:1.3.6'
     compile 'com.github.gabrielemariotti.changeloglib:library:1.5.2'
     compile 'com.nispok:snackbar:2.10.5'
-    compile 'com.afollestad:material-dialogs:0.6.4.7'
+    compile 'com.afollestad:material-dialogs:0.7.6.0'
     compile 'de.greenrobot:greendao:1.3.7'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
     compile 'it.neokree:MaterialNavigationDrawer:1.3.3'
