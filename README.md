@@ -19,6 +19,7 @@ Funcionalidades e Recursos
 --------------------------
 
 Com este aplicativo você pode:
+
 1. Consultar por voz pelo número do ponto, acessível por todo o app.
 2. Consultar pelo endereço ou simplesmente pelo número do ponto.
 3. Salvar seus pontos favoritos pois eles poderão ser acessados facilmente para consulta rápida com apenas um toque.
@@ -45,14 +46,14 @@ Versões/Mudanças
 ----------------
 
 * 2.0
-** Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia
-** Consulta por voz pelo número do ponto, acessível por todo o app.
-** Salve seus pontos favoritos pois eles poderão ser acessados facilmente para consulta rápida com apenas um toque.
-** Sugestões de pesquisa baseado nas suas consultas anteriores
-** Atualize os horários de viagem simplesmente deslizando o dedo para baixo quando estiver na Consulta por Endereço
-** Remova seus dados das sugestões de pesquisa e favoritos na guia de configurações
-** Indique seu aplicativo para seus amigos nas redes sociais
-** Várias correções de erros reportados por usuários
+  * Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia
+  * Consulta por voz pelo número do ponto, acessível por todo o app.
+  * Salve seus pontos favoritos pois eles poderão ser acessados facilmente para consulta rápida com apenas um toque.
+  * Sugestões de pesquisa baseado nas suas consultas anteriores
+  * Atualize os horários de viagem simplesmente deslizando o dedo para baixo quando estiver na Consulta por Endereço
+  * Remova seus dados das sugestões de pesquisa e favoritos na guia de configurações
+  * Indique seu aplicativo para seus amigos nas redes sociais
+  * Várias correções de erros reportados por usuários
 
 Screenshots
 ------------
