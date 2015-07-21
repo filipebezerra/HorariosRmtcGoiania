@@ -1,7 +1,5 @@
 language: android
-
-jdk:
-  - oraclejdk7
+jdk: oraclejdk7
 
 branches:
   only:
@@ -24,4 +22,4 @@ before_script:
     - gradle -v
 
 script:
-    - gradle clean build --stacktrace
+  ./gradlew clean build --stacktrace

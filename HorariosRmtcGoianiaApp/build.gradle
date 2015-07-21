@@ -1,3 +1,7 @@
+apply from: '../buildsystem/ci.gradle'
+apply from: '../buildsystem/dependencies.gradle'
+apply from: '../buildsystem/android.gradle'
+
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -18,20 +22,48 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    def appConfiguration = getProject().extensions.getByName("ext")
+
+    compileSdkVersion appConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion appConfiguration.getAt("androidBuildToolsVersion")
+
     defaultConfig {
-        applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
-        minSdkVersion 10
-        targetSdkVersion 22
-        versionCode 10
-        versionName "2.2"
+        applicationId appConfiguration.getAt("androidApplicationId")
+        minSdkVersion appConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion appConfiguration.getAt("androidTargetSdkVersion")
+        versionCode appConfiguration.getAt("androidVersionCode")
+        versionName appConfiguration.getAt("androidVersionName")
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError false
+        ignoreWarnings true
+        disable 'InvalidPackage'            //Some libraries have issues with this.
+        disable 'OldTargetApi'              //Lint gives this warning but SDK 20 would be Android L Beta.
+    }
+
     signingConfigs {
+        debug {
+            storeFile file('../buildsystem/debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+
         release {
             if (rootProject.file('keystore.properties').exists()) {
                 def props = new Properties()
@@ -44,6 +76,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -54,6 +87,7 @@ android {
             }
         }
     }
+
     sourceSets {
         main {
             java.srcDirs = [
@@ -63,31 +97,36 @@ android {
             ]
         }
     }
-    lintOptions {
-        abortOnError false
-    }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.android.support:support-annotations:22.2.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
+    def allDependencies = getProject().ext.allDependencies
+
+    compile allDependencies.appCompat
+    compile allDependencies.recyclerView
+    compile allDependencies.supportV4
+    compile allDependencies.supportAnnotations
+
+    def appConfiguration = getProject().extensions.getByName("ext")
+
+    compile("com.crashlytics.sdk.android:crashlytics:${appConfiguration.crashlyticsVersion}") {
         transitive = true;
     }
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.jakewharton.timber:timber:2.7.1'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.squareup:otto:1.3.6'
-    compile 'com.github.gabrielemariotti.changeloglib:library:1.5.2'
-    compile 'com.nispok:snackbar:2.10.5'
-    compile 'com.afollestad:material-dialogs:0.7.6.0'
-    compile 'de.greenrobot:greendao:1.3.7'
-    compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
-    compile 'it.neokree:MaterialNavigationDrawer:1.3.3'
-    compile 'org.jsoup:jsoup:1.8.1'
-    compile 'net.i2p.android.ext:floatingactionbutton:1.8.0'
-    compile 'uk.co.chrisjenx:calligraphy:2.0.1'
+
+    compile allDependencies.butterKnife
+    compile allDependencies.timber
+    compile allDependencies.nineoldandroids
+    compile allDependencies.otto
+    compile allDependencies.changeloglib
+    compile allDependencies.materialDialogs
+    compile allDependencies.greendao
+    compile allDependencies.licensesdialog
+    compile allDependencies.jsoup
+    compile allDependencies.calligraphy
+
+    compile allDependencies.materialNavigationDrawer
+    compile allDependencies.snackbar
+    compile allDependencies.floatingactionbutton
 }

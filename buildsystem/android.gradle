@@ -1,0 +1,5 @@
+ext {
+    androidApplicationId = 'mx.x10.filipebezerra.horariosrmtcgoiania'
+    androidVersionCode = 10
+    androidVersionName = '2.2'
+}
