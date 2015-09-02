@@ -11,7 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -19,11 +19,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -45,8 +42,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
-import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
-import net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 import timber.log.Timber;
@@ -90,7 +85,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (AndroidUtils.checkAndNotifyNetworkState(context, mFabMenu)) {
+            if (AndroidUtils.checkAndNotifyNetworkState(context)) {
                 Timber.d(String.format(
                         getString(R.string.log_event_debug), "onReceive",
                         intent.getAction(), "no internet connectivity"));
@@ -108,15 +103,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      * Navigation drawer section of {@link mx.x10.filipebezerra.horariosrmtcgoiania.fragments.FavoriteBusStopListFragment}.
      */
     protected MaterialSection favoriteBusStopSection;
-
-    public FloatingActionsMenu getFabMenu() {
-        return mFabMenu;
-    }
-
-    @InjectView(R.id.fab_menu) protected FloatingActionsMenu mFabMenu;
-    @InjectView(R.id.fab_search_stop_bus) protected FloatingActionButton mFabVoiceSearch;
-    @InjectView(R.id.fab_share_app) protected FloatingActionButton mFabShareApp;
-    @InjectView(R.id.fab_evaluate_app) protected FloatingActionButton mFabEvaluateApp;
 
     private int mLastOrientationConfiguration;
 
@@ -139,54 +125,38 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         addFabMenuView();
 
         int initialOrientation = getWindowManager().getDefaultDisplay().getRotation();
-        if (initialOrientation == Surface.ROTATION_0 || initialOrientation == Surface.ROTATION_180)
+        if (initialOrientation == Surface.ROTATION_0
+                || initialOrientation == Surface.ROTATION_180) {
             mLastOrientationConfiguration = Configuration.ORIENTATION_PORTRAIT;
-        else
+        } else {
             mLastOrientationConfiguration = Configuration.ORIENTATION_LANDSCAPE;
+        }
     }
 
     private void initSpeechInputSearchAction() {
         final Intent speechInputIntent = AndroidUtils.createSpeechInputIntent(BaseActivity.this);
         if (speechInputIntent == null) {
-            mFabMenu.removeButton(mFabVoiceSearch);
             return;
         }
 
-        mFabVoiceSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
-                    return;
-
-                mFabMenu.collapse();
-                startActivityForResult(speechInputIntent, REQUEST_CODE_SPEECH_INPUT);
-            }
-        });
+        startActivityForResult(speechInputIntent, REQUEST_CODE_SPEECH_INPUT);
     }
 
     private void initRatingAction() {
-        mFabEvaluateApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
-                    return;
+        if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this)) {
+            return;
+        }
 
-                mFabMenu.collapse();
-                AndroidUtils.openAppRating(BaseActivity.this);
-            }
-        });
+        AndroidUtils.openAppRating(BaseActivity.this);
     }
 
     private void addFabMenuView() {
-        getLayoutInflater().inflate(R.layout.view_floating_action_button,
-                (android.view.ViewGroup) findViewById(
-                        it.neokree.materialnavigationdrawer.R.id.content), true);
+        ButterKnife.inject(BaseActivity.this);
 
-            ButterKnife.inject(BaseActivity.this);
-
-        initSpeechInputSearchAction();
+        //TODO Estas funções serão mantidas?
+        /*initSpeechInputSearchAction();
         initShareAction();
-        initRatingAction();
+        initRatingAction();*/
     }
 
     private void initDrawerLearningPattern() {
@@ -200,20 +170,15 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     private void initShareAction() {
         final Intent shareIntent = AndroidUtils.createShareIntent(BaseActivity.this);
         if (shareIntent == null) {
-            mFabMenu.removeButton(mFabShareApp);
             return;
         }
 
-        mFabShareApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu)) return;
+        if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this)) {
+            return;
+        }
 
-                mFabMenu.collapse();
-                startActivity(Intent.createChooser(shareIntent,
-                        getString(R.string.share_dialog_title)));
-            }
-        });
+        startActivity(Intent.createChooser(shareIntent,
+                getString(R.string.share_dialog_title)));
     }
 
     /**
@@ -252,19 +217,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
         addSection(favoriteBusStopSection
                 .setSectionColor(
-                        getColor(R.color.navdrawer_favorites_section_color),
-                        getColor(R.color.navdrawer_favorites_section_dark_color)));
-    }
-
-    /**
-     * Convenient method for return a color integer from the application's package's default color
-     * table.
-     *
-     * @param resId The desired resource identifier, must be a color identifier.
-     * @return Resource id for the color
-     */
-    public final int getColor(@ColorRes int resId) {
-        return getResources().getColor(resId);
+                        ContextCompat.getColor(this, R.color.navdrawer_favorites_section_color),
+                        ContextCompat.getColor(this, R.color.navdrawer_favorites_section_dark_color)));
     }
 
     /**
@@ -277,15 +231,15 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 R.drawable.ic_drawer_wap,
                 newWapPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_wap_section_color),
-                        getColor(R.color.navdrawer_wap_section_dark_color)));
+                        ContextCompat.getColor(this, R.color.navdrawer_wap_section_color),
+                        ContextCompat.getColor(this, R.color.navdrawer_wap_section_dark_color)));
         addSection(horarioViagemSection = newSection(
                 getString(R.string.navdrawer_section_rmtc_horario_viagem),
                 R.drawable.ic_drawer_horario_viagem,
                 newHorarioViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_horario_viagem_section_color),
-                        getColor(R.color.navdrawer_horario_viagem_section_dark_color)));
+                        ContextCompat.getColor(this, R.color.navdrawer_horario_viagem_section_color),
+                        ContextCompat.getColor(this, R.color.navdrawer_horario_viagem_section_dark_color)));
 
         addDivisor();
 
@@ -293,20 +247,20 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 R.drawable.ic_drawer_planeje_sua_viagem,
                 newPlanejeViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_planeje_sua_viagem_section_color),
-                        getColor(R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
+                        ContextCompat.getColor(this, R.color.navdrawer_planeje_sua_viagem_section_color),
+                        ContextCompat.getColor(this, R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_ponto_a_ponto),
                 R.drawable.ic_drawer_ponto_a_ponto,
                 newPontoaPontoPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_ponto_a_ponto_section_color),
-                        getColor(R.color.navdrawer_ponto_a_ponto_section_dark_color)));
+                        ContextCompat.getColor(this, R.color.navdrawer_ponto_a_ponto_section_color),
+                        ContextCompat.getColor(this, R.color.navdrawer_ponto_a_ponto_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_sac),
                 R.drawable.ic_drawer_sac,
                 newSacPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_sac_section_color),
-                        getColor(R.color.navdrawer_sac_section_dark_color)));
+                        ContextCompat.getColor(this, R.color.navdrawer_sac_section_color),
+                        ContextCompat.getColor(this, R.color.navdrawer_sac_section_dark_color)));
     }
 
     /**
@@ -381,8 +335,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     }
 
     /**
-     * Handles search hardware button, for compatibility for old Android devices and
-     * handles the menu hardware button to opening the Navigation Drawer.
+     * Handles search hardware button, for compatibility for old Android devices and handles the
+     * menu hardware button to opening the Navigation Drawer.
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -397,7 +351,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                     }
                 case KeyEvent.KEYCODE_MENU:
                     // TODO: workaround of the bug closing drawer onClick and KEY_MENU pressed when is a tablet device
-                    if (! deviceSupportMultiPane()) {
+                    if (!deviceSupportMultiPane()) {
                         if (isDrawerOpen()) {
                             closeDrawer();
                         } else {
@@ -414,11 +368,11 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     }
 
     // TODO: Duplicated validation manually fixing bug https://github.com/neokree/MaterialNavigationDrawer/issues/263
+
     /**
      * Checks if the current orientation is {@link Configuration#ORIENTATION_LANDSCAPE} and the
-     * current device is a tablet. This method suppose that <code>multipaneSupport</code> for
-     * the current theme is <code>true</code>.
-     * @return
+     * current device is a tablet. This method suppose that <code>multipaneSupport</code> for the
+     * current theme is <code>true</code>.
      */
     private boolean deviceSupportMultiPane() {
         final Resources resources = getResources();
@@ -434,16 +388,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         super.onConfigurationChanged(newConfig);
 
         if (newConfig.orientation != mLastOrientationConfiguration) {
-            View fabMenuView = findViewById(R.id.fab_menu);
-            if (fabMenuView != null) {
-                ViewGroup parent = (ViewGroup) fabMenuView.getParent();
-
-                if (parent != null) {
-                    parent.removeView(fabMenuView);
-                    addFabMenuView();
-                }
-            }
-
             mLastOrientationConfiguration = newConfig.orientation;
         }
     }
@@ -543,7 +487,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     public void onClick(final MaterialSection section) {
         // TODO: workaround of the bug closing drawer onClick and KEY_MENU pressed when is a tablet device
         if (getCurrentSection().equals(section)) {
-            if (! deviceSupportMultiPane()) {
+            if (!deviceSupportMultiPane()) {
                 closeDrawer();
             }
             return;
@@ -559,23 +503,14 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
             } else {
                 section.setTarget(newHorarioViagemPageFragment(BaseActivity.this));
             }
-        } else {
-            showFabMenu();
         }
         super.onClick(section);
     }
 
-    public void showFabMenu() {
-        if (mFabMenu != null) {
-            mFabMenu.setVisibility(View.VISIBLE);
-            if (mFabMenu.isExpanded())
-                mFabMenu.collapse();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Timber.d("onActivityResult with request code "+requestCode+" with result code "+resultCode);
+        Timber.d("onActivityResult with request code " + requestCode + " with result code "
+                + resultCode);
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -603,7 +538,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     public void searchStopCode(final String stopCode) {
-        mFabMenu.setVisibility(View.GONE);
         HorarioViagemFragment fragment = (HorarioViagemFragment) horarioViagemSection
                 .getTargetFragment();
 

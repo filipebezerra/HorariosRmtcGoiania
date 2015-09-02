@@ -10,20 +10,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import java.util.List;
-
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.activities.BaseActivity;
+import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
+import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.adapters.FavoriteBusStopsAdapter;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.FavoriteItemSelectionEvent;
-import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
-import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.DividerItemDecoration;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.EmptyRecyclerView;
 
@@ -70,7 +67,6 @@ public class FavoriteBusStopListFragment extends Fragment
         mRecyclerView.setAdapter(mFavoriteBusStopsAdapter = new FavoriteBusStopsAdapter(
                 getFavoritesData()));
         mFavoriteBusStopsAdapter.setOnItemClickListener(this);
-        ((BaseActivity)getActivity()).showFabMenu();
     }
 
     @Override
@@ -82,8 +78,7 @@ public class FavoriteBusStopListFragment extends Fragment
     @Override
     public void onItemClick(final FavoriteBusStop favoriteBusStop) {
         FragmentActivity drawerActivity = getActivity();
-        if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity,
-                ((BaseActivity) drawerActivity).getFabMenu())) return;
+        if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity)) return;
 
         EventBusProvider.getInstance().getEventBus().post(
                 new FavoriteItemSelectionEvent(favoriteBusStop));

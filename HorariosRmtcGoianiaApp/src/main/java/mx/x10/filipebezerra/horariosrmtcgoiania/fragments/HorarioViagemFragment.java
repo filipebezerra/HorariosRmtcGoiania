@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.otto.Bus;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
-import mx.x10.filipebezerra.horariosrmtcgoiania.activities.BaseActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
@@ -33,14 +33,12 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
-import net.i2p.android.ext.floatingactionbutton.FloatingActionButton;
-import net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu;
 import timber.log.Timber;
 
 /**
  * Fragment composed by a {@link android.webkit.WebView}, an animated
  * {@link com.afollestad.materialdialogs.MaterialDialog} and a special action
- * {@link net.i2p.android.ext.floatingactionbutton.FloatingActionButton} based in Material design.
+ * {@link FloatingActionButton} based in Material design.
  *
  * @author Filipe Bezerra
  * @version 2.1, 25/03/2015
@@ -154,10 +152,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
             }
 
             if (mIsViewingBusStopPage) {
-                FloatingActionsMenu fabMenu = ((BaseActivity) getActivity()).getFabMenu();
-                if (fabMenu != null) {
-                    fabMenu.setVisibility(View.GONE);
-                }
                 mFabBookmarkStopBus.setVisibility(View.VISIBLE);
 
                 mPersistedFavoriteBusStop = getPersistedFavoriteBusStop();
@@ -167,8 +161,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 "is persisted with id: "+mPersistedFavoriteBusStop.getId()));
 
                 if (mPersistedFavoriteBusStop != null) {
-                    mFabBookmarkStopBus.setIconDrawable(getResources().getDrawable(
-                            R.drawable.ic_favorite));
+                    mFabBookmarkStopBus.setImageResource(R.drawable.ic_favorite);
                 }
             }
         }
@@ -206,9 +199,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 SnackBarHelper.showSingleLine(getActivity(),
                                         getString(R.string.info_stop_bus_added_to_favorites),
                                         mFabBookmarkStopBus);
-                                mFabBookmarkStopBus.setIconDrawable(
-                                        getResources().getDrawable(
-                                                R.drawable.ic_favorite));
+                                mFabBookmarkStopBus.setImageResource(R.drawable.ic_favorite);
                             }
                         },
                         new Response.ErrorListener() {
@@ -244,8 +235,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 SnackBarHelper.showSingleLine(getActivity(),
                         getString(R.string.info_stop_bus_removed_from_favorites),
                         mFabBookmarkStopBus);
-                mFabBookmarkStopBus.setIconDrawable(getResources().getDrawable(
-                        R.drawable.ic_unmark_favorite));
+                mFabBookmarkStopBus.setImageResource(R.drawable.ic_unmark_favorite);
             }
         }
     }
