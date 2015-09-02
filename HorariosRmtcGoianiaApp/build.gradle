@@ -104,10 +104,11 @@ dependencies {
 
     def allDependencies = getProject().ext.allDependencies
 
-    compile allDependencies.appCompat
+    compile allDependencies.appCompatV7
     compile allDependencies.recyclerView
     compile allDependencies.supportV4
     compile allDependencies.supportAnnotations
+    compile allDependencies.design
 
     def appConfiguration = getProject().extensions.getByName("ext")
 
@@ -128,5 +129,4 @@ dependencies {
 
     compile allDependencies.materialNavigationDrawer
     compile allDependencies.snackbar
-    compile allDependencies.floatingactionbutton
 }
