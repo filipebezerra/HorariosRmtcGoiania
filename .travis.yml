@@ -1,16 +1,12 @@
 language: android
 jdk: oraclejdk7
 
-branches:
-  only:
-    - new-2.0
-
 android:
   components:
     - platform-tools
     - tools
-    - build-tools-22.0.1
-    - android-22
+    - build-tools-23.0.0
+    - android-23
     - extra-android-support
     - extra-android-m2repository
     - extra-google-m2repository
