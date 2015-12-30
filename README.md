@@ -3,7 +3,7 @@ Horários Rmtc Goiânia para Android [![Build Status](https://travis-ci.org/fili
 
 > "Saiba dos horários de viagem da sua linha ou planeje sua viagem de forma rápida"
 
-** Atenção, este aplicativo encontra-se em desenvolvimento de melhoria e qualquer erro deve ser reportado no [rastreador de problemas][2]. Obrigado!**
+** Atenção, este aplicativo encontra-se em [desenvolvimento de melhoria][3] e qualquer erro deve ser reportado no [rastreador de problemas][2]. Obrigado!**
 
 Saiba mais sobre o aplicativo
 -----------------------------
@@ -90,3 +90,4 @@ Licença
 [Lollipop]:http://www.android.com/versions/lollipop-5-0/
 [1]: https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania
 [2]: https://github.com/filipebezerra/HorariosRmtcGoiania/issues
+[3]: https://github.com/filipebezerra/HorariosRmtcGoiania/tree/develop
