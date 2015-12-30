@@ -17,6 +17,14 @@ independente da versão do Android, assim como seu visual bonito, moderno e intu
 semelhantemente em todas as versões, mas no fator visual não é possível que se mantenha compatibilidade de 100%
 sobre todos os efeitos, transições, animações, fontes e cores, mas acredite tentamos ao máximo manter compatível.
 
+Download
+--------
+
+<a href="https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/pt-br_generic_rgb_wo_60.png" />
+</a>
+
 Funcionalidades e Recursos
 --------------------------
 
@@ -37,19 +45,6 @@ Live
 
 <a href="https://appetize.io/app/ggxbqafba7p8w6gu5m1dxtcthw?device=nexus5&scale=75&orientation=portrait&osVersion=5.1&autoplay=true" target="_blank"><img src="./art/live/Appetize-Nexus5.PNG" heigth="320" width="163"></a>
 
-
-Colaboradores
--------------
-
-* Filipe Bezerra de Sousa - <filipebzerra@gmail.com>
-
-<a href="https://twitter.com/filipebsousa">
-  <img alt="Siga-me no Twitter" src="http://imageshack.us/a/img812/3923/smallth.png" />
-</a>
-<a href="https://br.linkedin.com/in/filipebezerra">
-  <img alt="Me adicione ao Linkedin" src="http://imageshack.us/a/img41/7877/smallld.png" />
-</a>
-
 Versões/Mudanças
 ----------------
 
@@ -67,12 +62,16 @@ Screenshots
 ------------
 [TODO] Por favor confira as telas do aplicativo diretamente [na loja][1]
 
-Download
---------
+Colaboradores
+-------------
 
-<a href="https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania">
-  <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/pt-br_generic_rgb_wo_60.png" />
+* Filipe Bezerra de Sousa - <filipebzerra@gmail.com>
+
+<a href="https://twitter.com/filipebsousa">
+  <img alt="Siga-me no Twitter" src="http://imageshack.us/a/img812/3923/smallth.png" />
+</a>
+<a href="https://br.linkedin.com/in/filipebezerra">
+  <img alt="Me adicione ao Linkedin" src="http://imageshack.us/a/img41/7877/smallld.png" />
 </a>
 
 Licença
