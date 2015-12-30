@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <android.support.v7.widget.CardView
+        style="@style/Widget.HorariosRmtc.CardView"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                >
+
+                <TextView
+                    android:id="@+id/line_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    tools:text="280"
+                    />
+
+                <TextView
+                    android:id="@+id/line_itinerary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    tools:text="Vale dos Sonhos / Guanabara / Centro"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                style="@style/Widget.HorariosRmtc.Button"
+                android:id="@+id/next_travel"
+                android:layout_below="@id/content"
+                android:layout_centerHorizontal="true"
+                android:text="Próxima Viagem"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

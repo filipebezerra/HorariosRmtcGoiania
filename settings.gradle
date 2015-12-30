@@ -1,2 +1,1 @@
-include ':HorariosRmtcGoianiaApp'
-include ':HorariosRmtcGoianiaModelGenerator'
+include ':app'

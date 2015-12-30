@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Horarios Rmtc</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="search_hint">Buscar ponto</string>
+    <string name="search_label">Pontos de ônibus</string>
+    <string name="action_search">Pesquisa</string>
+
+    <string name="feedback_no_network">
+        Não foi possível pesquisar. Verifique a sua conexão de rede e tente novamente.
+    </string>
+
+    <string name="feedback_searching_bus_stop">
+        Buscando ponto de ônibus…
+    </string>
+
+    <string name="feedback_searching_arrival_prediction">
+        Buscando horário da próxima viagem…
+    </string>
+    <string name="feedback_no_arrival_prediction">
+        Não há viagem programada para esta linha.
+    </string>
+
+</resources>

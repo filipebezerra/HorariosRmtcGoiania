@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<searchable
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:hint="@string/search_hint"
+    android:imeOptions="actionSearch"
+    android:inputType="number"
+    android:label="@string/search_label"
+    android:searchSuggestAuthority="mx.x10.filipebezerra.horariosrmtcgoiania.suggestion.BusStopSearchSuggestionsProvider"
+    android:searchSuggestSelection=" ?"
+    android:voicePromptText="@string/search_hint"
+    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
+    />
