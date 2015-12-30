@@ -1,13 +1,20 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.home;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -18,6 +25,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -38,10 +48,17 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.keyboard.KeyboardUtil;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.NetworkUtil;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RetrofitController;
 import mx.x10.filipebezerra.horariosrmtcgoiania.observable.SubscriberDelegate;
+import mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.PlayServicesPermission;
 import mx.x10.filipebezerra.horariosrmtcgoiania.suggestion.BusStopSearchSuggestionsHelper;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.REQUEST_LOCATION;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.REQUEST_RESOLVE_ERROR;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.PlayServicesPermission.FINE_LOCATION;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.STATE_RESOLVING_ERROR;
 
 /**
  * Home and main screen
@@ -51,20 +68,23 @@ import timber.log.Timber;
  * @since 0.1.0
  */
 public class HomeActivity extends BaseDrawerActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PlayServicesHelper.PlayServicesCallbacks {
 
-    private static final String LOG = HomeActivity.class.getSimpleName();
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
     private static final String ACTION_VOICE_SEARCH
             = "com.google.android.gms.actions.SEARCH_ACTION";
 
-    @Bind(R.id.root_layout)
-    protected CoordinatorLayout mRootLayout;
+    @Bind(R.id.root_layout) protected CoordinatorLayout mRootLayout;
 
     private SearchView mSearchView;
     private MenuItem mSearchItem;
 
     private ApiSubscriber<BusStopLinesResponse> mBusStopLinesSubscriber;
+
+    private PlayServicesHelper mPlayServicesHelper;
+
+    private static final String DIALOG_ERROR = "dialog_error";
 
     @Override
     protected int provideLayoutResource() {
@@ -82,7 +102,7 @@ public class HomeActivity extends BaseDrawerActivity
         super.onCreate(savedInstanceState);
 
         Timber.plant(new Timber.DebugTree());
-        Timber.tag(LOG);
+        Timber.tag(TAG);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorite);
         DrawableHelper.tint(this, R.color.white, fab.getDrawable());
@@ -95,6 +115,7 @@ public class HomeActivity extends BaseDrawerActivity
                             }
                         }));
 
+        mPlayServicesHelper = new PlayServicesHelper(this, savedInstanceState, this);
     }
 
     @Override
@@ -143,15 +164,14 @@ public class HomeActivity extends BaseDrawerActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         BusProvider.register(this);
+        mPlayServicesHelper.connect();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
+    protected void onStop() {
         if (mBusStopLinesSubscriber != null) {
             if (mBusStopLinesSubscriber.isUnsubscribed()) {
                 mBusStopLinesSubscriber.unsubscribe();
@@ -160,7 +180,17 @@ public class HomeActivity extends BaseDrawerActivity
             mBusStopLinesSubscriber = null;
         }
 
+        mPlayServicesHelper.disconnect();
+
         BusProvider.unregister(this);
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_RESOLVING_ERROR, mPlayServicesHelper.isResolvingError());
     }
 
     private SubscriberDelegate<BusStopLinesResponse> mBusStopLinesRxDelegate
@@ -268,5 +298,103 @@ public class HomeActivity extends BaseDrawerActivity
     @Subscribe
     public void onArrivalPredictionFound(GenericEvent<ArrivalPrediction> event) {
         replaceFragment(ArrivalPredictionFragment.newInstance(event.message()), true);
+    }
+
+    @SuppressWarnings("ResourceType")
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // We can now safely use the API we requested access to
+                mPlayServicesHelper.setRequestedPermissionGranted(FINE_LOCATION);
+            } else {
+                // Permission was denied or request was cancelled
+                Timber.i("%s Permission was denied or request was cancelled",
+                        permissions[0]);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_RESOLVE_ERROR) {
+            boolean isErrorSolved = resultCode == RESULT_OK;
+            Timber.i("Connection error was solved = %b", isErrorSolved);
+            mPlayServicesHelper.setResolvingError(isErrorSolved);
+        }
+    }
+
+    @Override
+    public void onLocationIsAvailable(@NonNull Location location) {
+        Timber.i("Received location %f/%f", location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public void onConnectionError(int errorCode) {
+        // Show dialog using GoogleApiAvailability.getErrorDialog()
+        Timber.i("Received connection error with code %d", errorCode);
+        showErrorDialog(errorCode);
+    }
+
+    @Override
+    public void onRequestLocationPermission(PlayServicesPermission permission) {
+        Timber.i("Received request to grant location permission %s", permission.getName());
+        switch (permission) {
+            case FINE_LOCATION:
+                mMaterialDialogHelper.showDialog(this, "Permissões",
+                        "Precisamos acessar sua localização, por isto necessitamos que nos permita.",
+                        "Aceitar",
+                        new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                ActivityCompat.requestPermissions(
+                                        HomeActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        REQUEST_LOCATION);
+                            }
+                        },
+                        "Negar",
+                        new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                            }
+                        });
+                break;
+        }
+    }
+
+    private void showErrorDialog(int errorCode) {
+        // Create a fragment for the error dialog
+        ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
+        // Pass the error that should be displayed
+        Bundle args = new Bundle();
+        args.putInt(DIALOG_ERROR, errorCode);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getSupportFragmentManager(), "errordialog");
+    }
+
+    /* Called from ErrorDialogFragment when the dialog is dismissed. */
+    public void onDialogDismissed() {
+        mPlayServicesHelper.setResolvingError(true);
+    }
+
+    public static class ErrorDialogFragment extends DialogFragment {
+        public ErrorDialogFragment() {
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            int errorCode = this.getArguments().getInt(DIALOG_ERROR);
+            return GoogleApiAvailability.getInstance().getErrorDialog(
+                    this.getActivity(), errorCode, REQUEST_RESOLVE_ERROR);
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            ((HomeActivity) getActivity()).onDialogDismissed();
+        }
     }
 }

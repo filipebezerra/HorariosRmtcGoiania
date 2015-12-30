@@ -5,6 +5,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 
 /**
  * {@link com.afollestad.materialdialogs.MaterialDialog} helper class.
@@ -40,6 +41,28 @@ public class MaterialDialogHelper {
         }
 
         sMaterialDialog.show();
+    }
+
+    public void showDialog(@NonNull Context context, @NonNull String title, @NonNull String content) {
+        sMaterialDialog = new MaterialDialog.Builder(context)
+                .title(title)
+                .content(content)
+                .show();
+    }
+
+    public void showDialog(@NonNull Context context, @NonNull String title,
+        @NonNull String content, @NonNull String acceptLabel,
+        @NonNull SingleButtonCallback acceptCallback, @NonNull String denyLabel,
+        @NonNull SingleButtonCallback denyCallback) {
+
+        sMaterialDialog = new MaterialDialog.Builder(context)
+                .title(title)
+                .content(content)
+                .onPositive(acceptCallback)
+                .positiveText(acceptLabel)
+                .onNegative(denyCallback)
+                .negativeText(denyLabel)
+                .show();
     }
 
     public void dismissDialog() {

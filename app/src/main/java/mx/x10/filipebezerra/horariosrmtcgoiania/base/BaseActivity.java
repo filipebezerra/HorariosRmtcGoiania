@@ -42,6 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(provideLayoutResource());
         ButterKnife.bind(this);
         setupToolbarAsActionBar();
+        mMaterialDialogHelper = MaterialDialogHelper.toContext(this);
     }
 
     private void setupToolbarAsActionBar() {
@@ -58,15 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                     actionBar.setHomeAsUpIndicator(drawable);
                 }
             }
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (mMaterialDialogHelper == null) {
-            mMaterialDialogHelper = MaterialDialogHelper.toContext(this);
         }
     }
 
