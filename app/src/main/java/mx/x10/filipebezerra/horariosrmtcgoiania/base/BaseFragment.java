@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import butterknife.ButterKnife;
 import mx.x10.filipebezerra.horariosrmtcgoiania.dialog.MaterialDialogHelper;
+import timber.log.Timber;
 
 /**
  * Base fragment.
@@ -22,13 +24,6 @@ public abstract class BaseFragment extends Fragment {
     public BaseFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        mMaterialDialogHelper = MaterialDialogHelper.toContext(getContext());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         final View view = inflater.inflate(provideLayoutResource(), container, false);
@@ -37,7 +32,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mMaterialDialogHelper = MaterialDialogHelper.toContext(getContext());
+    }
+
+    @Override
     public void onStop() {
+        Timber.d("%s onStop()", getClass().getSimpleName());
         if (mMaterialDialogHelper != null) {
             mMaterialDialogHelper.dismissDialog();
 
@@ -49,6 +51,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        Timber.d("%s onDestroyView()", getClass().getSimpleName());
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
