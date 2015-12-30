@@ -18,8 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.Bind;
 import com.squareup.otto.Subscribe;
+
+import butterknife.Bind;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.BusStopModel;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.BusStopLinesResponse;
@@ -29,7 +30,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredict
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStopLinesFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.dialog.MaterialDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
@@ -63,8 +63,6 @@ public class HomeActivity extends BaseDrawerActivity
 
     private SearchView mSearchView;
     private MenuItem mSearchItem;
-
-    private MaterialDialogHelper mMaterialDialogHelper;
 
     private ApiSubscriber<BusStopLinesResponse> mBusStopLinesSubscriber;
 
@@ -147,7 +145,6 @@ public class HomeActivity extends BaseDrawerActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mMaterialDialogHelper = MaterialDialogHelper.toContext(this);
         BusProvider.register(this);
     }
 
@@ -204,7 +201,7 @@ public class HomeActivity extends BaseDrawerActivity
                             .newInstance(busStop);
                     replaceFragment(fragment, true);
                 } else {
-                    BusProvider.postOnMain(new GenericEvent<>(busStop));
+                    BusProvider.post(new GenericEvent<>(busStop));
                 }
             } else {
                 FeedbackHelper.snackbar(getRootViewLayout(), observable.message, false,

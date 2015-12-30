@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.dialog.MaterialDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
 
 /**
@@ -28,7 +29,11 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
  * @since 0.1.0
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
     protected static final int NO_UP_INDICATOR = -1;
+
+    protected MaterialDialogHelper mMaterialDialogHelper;
+
     @Nullable @Bind(R.id.toolbar) protected Toolbar mToolbarActionBar;
 
     @Override
@@ -53,6 +58,24 @@ public abstract class BaseActivity extends AppCompatActivity {
                     actionBar.setHomeAsUpIndicator(drawable);
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mMaterialDialogHelper == null) {
+            mMaterialDialogHelper = MaterialDialogHelper.toContext(this);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mMaterialDialogHelper != null) {
+            mMaterialDialogHelper.dismissDialog();
         }
     }
 

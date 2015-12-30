@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.Bind;
+
 import com.squareup.otto.Subscribe;
+
+import org.parceler.Parcels;
+
+import butterknife.Bind;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ArrivalPredictionResponse;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
@@ -19,7 +23,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.NetworkUtil;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RetrofitController;
 import mx.x10.filipebezerra.horariosrmtcgoiania.observable.SubscriberDelegate;
-import org.parceler.Parcels;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -132,7 +135,7 @@ public class BusStopLinesFragment extends BaseFragment
                     } else {
                         final ArrivalPrediction arrivalPrediction = ArrivalPrediction
                                 .fromModel(observable.data[0]);
-                        BusProvider.postOnMain(new GenericEvent<>(arrivalPrediction));
+                        BusProvider.post(new GenericEvent<>(arrivalPrediction));
                     }
                 } else {
                     FeedbackHelper.snackbar(getView(), observable.message, false);
