@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
+import mx.x10.filipebezerra.horariosrmtcgoiania.dialog.MaterialDialogHelper;
 
 /**
  * Base fragment.
@@ -16,12 +17,15 @@ import butterknife.ButterKnife;
  * @since 0.1.0
  */
 public abstract class BaseFragment extends Fragment {
+    protected MaterialDialogHelper mMaterialDialogHelper;
+
     public BaseFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        mMaterialDialogHelper = MaterialDialogHelper.toContext(getContext());
     }
 
     @Override
@@ -30,6 +34,17 @@ public abstract class BaseFragment extends Fragment {
         final View view = inflater.inflate(provideLayoutResource(), container, false);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        if (mMaterialDialogHelper != null) {
+            mMaterialDialogHelper.dismissDialog();
+
+            mMaterialDialogHelper = null;
+        }
+
+        super.onStop();
     }
 
     @Override

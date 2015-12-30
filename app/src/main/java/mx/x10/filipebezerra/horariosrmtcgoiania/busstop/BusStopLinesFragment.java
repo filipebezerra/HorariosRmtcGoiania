@@ -16,7 +16,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ArrivalPredictionRe
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.dialog.MaterialDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
@@ -41,8 +40,6 @@ public class BusStopLinesFragment extends BaseFragment
     private BusStopLinesAdapter mBusStopLinesAdapter;
 
     private BusStop mBusStop;
-
-    private MaterialDialogHelper mMaterialDialogHelper;
 
     private ApiSubscriber<ArrivalPredictionResponse> mApiResponseSubscriber;
 
@@ -79,7 +76,6 @@ public class BusStopLinesFragment extends BaseFragment
     public void onStart() {
         super.onStart();
         BusProvider.register(this);
-        mMaterialDialogHelper = MaterialDialogHelper.toContext(getContext());
     }
 
     @Override
