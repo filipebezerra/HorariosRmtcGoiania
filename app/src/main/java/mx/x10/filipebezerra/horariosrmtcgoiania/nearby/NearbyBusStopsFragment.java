@@ -2,7 +2,6 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.nearby;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -14,6 +13,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ArrivalPredictionResponse;
+import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
+import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busline.BusLine;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStop;
@@ -21,6 +23,10 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.NetworkUtil;
+import mx.x10.filipebezerra.horariosrmtcgoiania.network.RetrofitController;
+import mx.x10.filipebezerra.horariosrmtcgoiania.observable.SubscriberDelegate;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Nearby bus stops visualization.
@@ -36,6 +42,8 @@ public class NearbyBusStopsFragment extends BaseFragment implements NearbyBusSto
     private NearbyBusStopsAdapter mNearbyBusStopsAdapter;
 
     private List<BusStop> mBusStopList;
+
+    private ApiSubscriber<ArrivalPredictionResponse> mApiResponseSubscriber;
 
     @Bind(R.id.list) protected RecyclerView mBusStopLinesView;
 
@@ -73,6 +81,19 @@ public class NearbyBusStopsFragment extends BaseFragment implements NearbyBusSto
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        if (mApiResponseSubscriber != null) {
+            if (mApiResponseSubscriber.isUnsubscribed()) {
+                mApiResponseSubscriber.unsubscribe();
+            }
+
+            mApiResponseSubscriber = null;
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         BusProvider.unregister(this);
@@ -87,10 +108,82 @@ public class NearbyBusStopsFragment extends BaseFragment implements NearbyBusSto
         }
     }
 
+    private SubscriberDelegate<ArrivalPredictionResponse> mArrivalPredictionResponseDelegate
+            = new SubscriberDelegate<ArrivalPredictionResponse>() {
+        @Override
+        public void onStart() {
+            mMaterialDialogHelper
+                    .showIndeterminateProgress(getString(
+                                    R.string.feedback_searching_arrival_prediction),
+                            true,
+                            dialog -> {
+                                mMaterialDialogHelper.dismissDialog();
+                                mApiResponseSubscriber.unsubscribe();
+                            });
+        }
+
+        @SuppressWarnings("ConstantConditions")
+        @Override
+        public void onNext(ArrivalPredictionResponse observable) {
+            if (isVisible()) {
+                if (Boolean.parseBoolean(observable.status)) {
+                    if (observable.data.length == 0) {
+                        FeedbackHelper.snackbar(getView(),
+                                getString(R.string.feedback_no_arrival_prediction), false);
+                    } else {
+                        final ArrivalPrediction arrivalPrediction = ArrivalPrediction
+                                .fromModel(observable.data[0]);
+                        BusProvider.post(new GenericEvent<>(arrivalPrediction));
+                    }
+                } else {
+                    FeedbackHelper.snackbar(getView(), observable.message, false);
+                }
+            }
+        }
+
+        @Override
+        public void onCompleted() {
+            if (isVisible()) {
+                mMaterialDialogHelper.dismissDialog();
+            }
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            if (isVisible()) {
+                mMaterialDialogHelper.dismissDialog();
+            }
+        }
+    };
+
     @Override
     public void onRequest(String busStopId, List<BusLine> lines) {
         if (NetworkUtil.isDeviceConnectedToInternet(getActivity())) {
-            BusProvider.post(new GenericEvent<>(Pair.create(busStopId, lines)));
+            String [] list = new String[lines.size()];
+            for (int i = 0; i < lines.size() ; i++) {
+                final BusLine line = lines.get(i);
+                list[i] = line.getNumber() + " - " + line.getItinerary();
+            }
+
+            mMaterialDialogHelper.showListDialog(getContext(), "Linhas Disponíveis", -1,
+                    (dialog, itemView, which, text) -> {
+                        requestArrivalPrediction(busStopId, lines.get(0).getNumber());
+                        return true;
+                    }, list);
+        }else {
+            FeedbackHelper.toast(getActivity(), getString(R.string.feedback_no_network), false);
+        }
+    }
+
+    private void requestArrivalPrediction(String busStopId, String busLineNumber) {
+        if (NetworkUtil.isDeviceConnectedToInternet(getActivity())) {
+            mApiResponseSubscriber  = new ApiSubscriber<>(mArrivalPredictionResponseDelegate);
+
+            RetrofitController.instance(getActivity())
+                    .searchArrivalPrediction(busStopId, busLineNumber)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(mApiResponseSubscriber);
         }else {
             FeedbackHelper.toast(getActivity(), getString(R.string.feedback_no_network), false);
         }

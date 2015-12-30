@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.MaterialDialog.ListCallbackSingleChoice;
 import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 
 /**
@@ -62,6 +64,17 @@ public class MaterialDialogHelper {
                 .positiveText(acceptLabel)
                 .onNegative(denyCallback)
                 .negativeText(denyLabel)
+                .show();
+    }
+
+    public void showListDialog(@NonNull Context context, @NonNull String title,
+            int defaultIdex, @NonNull ListCallbackSingleChoice callback,
+            @NonNull String... items) {
+        sMaterialDialog = new MaterialDialog.Builder(context)
+                .title(title)
+                .items(items)
+                .itemsCallbackSingleChoice(defaultIdex, callback)
+                .alwaysCallSingleChoiceCallback()
                 .show();
     }
 
