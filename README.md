@@ -32,6 +32,12 @@ Com este aplicativo você pode:
 9. Contato direto com o atendimento da Rmtc para reclamações.
 10. Indicar seu aplicativo para seus amigos nas redes sociais.
 
+Live
+------
+
+<a href="https://appetize.io/app/ggxbqafba7p8w6gu5m1dxtcthw?device=nexus5&scale=75&orientation=portrait&osVersion=5.1&autoplay=true" target="_blank"><img src="./art/live/Appetize-Nexus5.PNG" heigth="320" width="163"></a>
+
+
 Colaboradores
 -------------
 
