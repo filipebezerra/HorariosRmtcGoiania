@@ -16,8 +16,8 @@ android {
         minSdkVersion 10
         targetSdkVersion 23
         // API Version + Version Name -> 10 + 0.1.0 = 10010
-        versionCode 10010
-        versionName "0.1.0"
+        versionCode 10300
+        versionName "3.0.0"
         manifestPlaceholders = [applicationLabel: "@string/app_name"]
     }
 
