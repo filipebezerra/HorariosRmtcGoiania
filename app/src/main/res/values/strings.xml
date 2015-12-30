@@ -22,5 +22,8 @@
     <string name="feedback_no_arrival_prediction">
         Não há viagem programada para esta linha.
     </string>
+    <string name="feedback_searching_nearby_bus_stop">
+        Buscando pontos de ônibus próximos à você…
+    </string>
 
 </resources>

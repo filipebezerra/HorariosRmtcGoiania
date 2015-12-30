@@ -2,6 +2,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.api.service;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ArrivalPredictionResponse;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.BusStopLinesResponse;
+import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.NearbyBusStopsResponse;
 import retrofit.http.POST;
 import retrofit.http.Query;
 import rx.Observable;
@@ -24,4 +25,10 @@ public interface BusStopService {
     Observable<ArrivalPredictionResponse> searchArrivalPrediction(
             @Query("qryIdPontoParada") String busStopId,
             @Query("qryLinha") String lineNumber);
+
+    @POST("pontoparada/proximos")
+    Observable<NearbyBusStopsResponse> searchNearbyBusStops(
+            @Query("qryLatitude") double latitude,
+            @Query("qryLongitude") double longitude,
+            @Query("qryRaioDistancia") float radius);
 }

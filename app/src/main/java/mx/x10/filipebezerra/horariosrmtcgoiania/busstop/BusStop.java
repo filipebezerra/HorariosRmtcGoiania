@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.BusStopModel;
@@ -39,6 +40,16 @@ public class BusStop {
                 .setLatitude(model.latitude)
                 .setLongitude(model.longitude)
                 .setLines(BusLine.fromModel(model.lines));
+    }
+
+    public static List<BusStop> fromModel(@NonNull List<BusStopModel> models) {
+        final List<BusStop> busLines = new ArrayList<>();
+
+        for (BusStopModel model : models) {
+            busLines.add(BusStop.fromModel(model));
+        }
+
+        return busLines;
     }
 
     public String getId() {

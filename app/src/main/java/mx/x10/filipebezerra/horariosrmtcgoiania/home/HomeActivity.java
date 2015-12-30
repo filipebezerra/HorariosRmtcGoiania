@@ -30,10 +30,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 import butterknife.Bind;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.BusStopModel;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.BusStopLinesResponse;
+import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.NearbyBusStopsResponse;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredictionFragment;
@@ -45,6 +48,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.keyboard.KeyboardUtil;
+import mx.x10.filipebezerra.horariosrmtcgoiania.nearby.NearbyBusStopsFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.NetworkUtil;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RetrofitController;
 import mx.x10.filipebezerra.horariosrmtcgoiania.observable.SubscriberDelegate;
@@ -80,7 +84,9 @@ public class HomeActivity extends BaseDrawerActivity
     private SearchView mSearchView;
     private MenuItem mSearchItem;
 
-    private ApiSubscriber<BusStopLinesResponse> mBusStopLinesSubscriber;
+    private ApiSubscriber<BusStopLinesResponse> mBusStopLinesApiSubscriber;
+
+    private ApiSubscriber<NearbyBusStopsResponse> mNearbyBusStopsApiSubscriber;
 
     private PlayServicesHelper mPlayServicesHelper;
 
@@ -172,12 +178,20 @@ public class HomeActivity extends BaseDrawerActivity
 
     @Override
     protected void onStop() {
-        if (mBusStopLinesSubscriber != null) {
-            if (mBusStopLinesSubscriber.isUnsubscribed()) {
-                mBusStopLinesSubscriber.unsubscribe();
+        if (mBusStopLinesApiSubscriber != null) {
+            if (!mBusStopLinesApiSubscriber.isUnsubscribed()) {
+                mBusStopLinesApiSubscriber.unsubscribe();
             }
 
-            mBusStopLinesSubscriber = null;
+            mBusStopLinesApiSubscriber = null;
+        }
+
+        if (mNearbyBusStopsApiSubscriber != null) {
+            if (!mNearbyBusStopsApiSubscriber.isUnsubscribed()) {
+                mNearbyBusStopsApiSubscriber.unsubscribe();
+            }
+
+            mNearbyBusStopsApiSubscriber = null;
         }
 
         mPlayServicesHelper.disconnect();
@@ -202,7 +216,7 @@ public class HomeActivity extends BaseDrawerActivity
                             true,
                             dialog -> {
                                 mMaterialDialogHelper.dismissDialog();
-                                mBusStopLinesSubscriber.unsubscribe();
+                                mBusStopLinesApiSubscriber.unsubscribe();
                             });
         }
 
@@ -226,7 +240,8 @@ public class HomeActivity extends BaseDrawerActivity
                 final Fragment existingFragment = getSupportFragmentManager()
                         .findFragmentById(R.id.fragment_placeholder);
 
-                if (existingFragment == null) {
+                if (existingFragment == null
+                        || !(existingFragment instanceof BusStopLinesFragment)) {
                     BusStopLinesFragment fragment = BusStopLinesFragment
                             .newInstance(busStop);
                     replaceFragment(fragment, true);
@@ -245,6 +260,84 @@ public class HomeActivity extends BaseDrawerActivity
                             public void onShown(Snackbar snackbar) {
                             }
                         });
+            }
+        }
+
+        @Override
+        public void onCompleted() {
+            mMaterialDialogHelper.dismissDialog();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            mMaterialDialogHelper.dismissDialog();
+        }
+    };
+
+    private SubscriberDelegate<NearbyBusStopsResponse> mNearbyBusStopsResponseRxDelegate
+            = new SubscriberDelegate<NearbyBusStopsResponse>() {
+        @Override
+        public void onStart() {
+            mMaterialDialogHelper
+                    .showIndeterminateProgress(getString(R.string.feedback_searching_nearby_bus_stop),
+                            true,
+                            dialog -> {
+                                mMaterialDialogHelper.dismissDialog();
+                                mNearbyBusStopsApiSubscriber.unsubscribe();
+                            });
+        }
+
+        @Override
+        public void onNext(NearbyBusStopsResponse observable) {
+            if (Boolean.parseBoolean(observable.status)) {
+                final List<BusStopModel> model = observable.data;
+
+                if (model.isEmpty()) {
+                    // TODO Apply empty state strategy
+                } else {
+                    switch (model.size()) {
+                        case 1:
+                            final BusStop busStop = BusStop.fromModel(model.get(0));
+
+                            changeTitleAndSubtitle(String.format("Ponto próximo %s",
+                                    busStop.getId()), busStop.getAddress());
+
+                            final Fragment busStopFragment = getSupportFragmentManager()
+                                    .findFragmentById(R.id.fragment_placeholder);
+
+                            if (busStopFragment == null
+                                    || !(busStopFragment instanceof BusStopLinesFragment)) {
+                                BusStopLinesFragment fragment = BusStopLinesFragment
+                                        .newInstance(busStop);
+                                replaceFragment(fragment, true);
+                            } else {
+                                BusProvider.post(new GenericEvent<>(busStop));
+                            }
+
+                            break;
+
+                        default:
+                            final List<BusStop> busStops = BusStop.fromModel(model);
+
+                            changeTitleAndSubtitle("Pontos próximos à você", "");
+
+                            final Fragment nearbyFragment = getSupportFragmentManager()
+                                    .findFragmentById(R.id.fragment_placeholder);
+
+                            if (nearbyFragment == null
+                                    || !(nearbyFragment instanceof NearbyBusStopsFragment)) {
+                                NearbyBusStopsFragment fragment = NearbyBusStopsFragment
+                                        .newInstance(busStops);
+                                replaceFragment(fragment, true);
+                            } else {
+                                BusProvider.post(new GenericEvent<>(busStops));
+                            }
+
+                            break;
+                    }
+                }
+            } else {
+                FeedbackHelper.snackbar(getRootViewLayout(), observable.message, false);
             }
         }
 
@@ -283,13 +376,13 @@ public class HomeActivity extends BaseDrawerActivity
 
     private void performSearch(String query) {
         if (NetworkUtil.isDeviceConnectedToInternet(this)) {
-            mBusStopLinesSubscriber = new ApiSubscriber<>(mBusStopLinesRxDelegate);
+            mBusStopLinesApiSubscriber = new ApiSubscriber<>(mBusStopLinesRxDelegate);
 
             RetrofitController.instance(this)
                     .searchBusStopLines(query)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(mBusStopLinesSubscriber);
+                    .subscribe(mBusStopLinesApiSubscriber);
         } else {
             FeedbackHelper.toast(this, getString(R.string.feedback_no_network), false);
         }
@@ -328,6 +421,19 @@ public class HomeActivity extends BaseDrawerActivity
     @Override
     public void onLocationIsAvailable(@NonNull Location location) {
         Timber.i("Received location %f/%f", location.getLatitude(), location.getLongitude());
+
+        if (NetworkUtil.isDeviceConnectedToInternet(this)) {
+            mNearbyBusStopsApiSubscriber = new ApiSubscriber<>(
+                    mNearbyBusStopsResponseRxDelegate);
+
+            RetrofitController.instance(this)
+                    .searchNearbyBusStops(location.getLatitude(), location.getLongitude(), 0.25f)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(mNearbyBusStopsApiSubscriber);
+        } else {
+            FeedbackHelper.toast(this, getString(R.string.feedback_no_network), false);
+        }
     }
 
     @Override
@@ -358,7 +464,6 @@ public class HomeActivity extends BaseDrawerActivity
                         new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
                             }
                         });
                 break;
