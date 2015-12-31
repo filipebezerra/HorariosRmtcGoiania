@@ -4,4 +4,5 @@
     <item name="root_layout" type="id" />
     <item name="list" type="id"/>
     <item name="fab_favorite" type="id"/>
+    <item name="app_bar" type="id" />
 </resources>
