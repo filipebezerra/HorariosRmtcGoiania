@@ -2,6 +2,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction;
 
 import android.support.annotation.NonNull;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.ArrivalPredictionModel;
+import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ResponseUtil;
 import org.parceler.Parcel;
 
 /**
@@ -67,5 +68,11 @@ public class ArrivalPrediction {
     public ArrivalPrediction setFollowing(BusTravel following) {
         this.mFollowing = following;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s \n%s", getClass().getSimpleName(),
+                ResponseUtil.toPrintable(this));
     }
 }

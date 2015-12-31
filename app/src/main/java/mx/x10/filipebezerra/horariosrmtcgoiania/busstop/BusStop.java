@@ -2,6 +2,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.busstop;
 
 import android.support.annotation.NonNull;
 
+import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ResponseUtil;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
@@ -95,5 +96,11 @@ public class BusStop {
     public BusStop setLines(List<BusLine> lines) {
         mLines = lines;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s \n%s", getClass().getSimpleName(),
+                ResponseUtil.toPrintable(this));
     }
 }

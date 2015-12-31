@@ -2,6 +2,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.busline;
 
 import android.support.annotation.NonNull;
 
+import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ResponseUtil;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
@@ -58,5 +59,11 @@ public class BusLine {
     public BusLine setItinerary(String itinerary) {
         this.itinerary = itinerary;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s \n%s", getClass().getSimpleName(),
+                ResponseUtil.toPrintable(this));
     }
 }

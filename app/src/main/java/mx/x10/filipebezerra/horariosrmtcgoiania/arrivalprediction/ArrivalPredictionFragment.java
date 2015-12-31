@@ -14,6 +14,7 @@ import java.util.Locale;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
 import org.parceler.Parcels;
+import timber.log.Timber;
 
 /**
  * Arrival prediction visualization.
@@ -25,6 +26,7 @@ import org.parceler.Parcels;
 public class ArrivalPredictionFragment extends BaseFragment {
 
     private static final String ARG_DATA = "ArrivalPrediction";
+    private static final String LOG = ArrivalPredictionFragment.class.getSimpleName();
 
     private ArrivalPrediction mArrivalPrediction;
 
@@ -46,9 +48,12 @@ public class ArrivalPredictionFragment extends BaseFragment {
     }
 
     public static ArrivalPredictionFragment newInstance(@NonNull ArrivalPrediction data) {
+        Timber.d("Creating new instance of %s", LOG);
         ArrivalPredictionFragment fragment = new ArrivalPredictionFragment();
 
         Bundle args = new Bundle();
+
+        Timber.d("Assigning data arguments with value %s", data.toString());
         args.putParcelable(ARG_DATA, Parcels.wrap(data));
         fragment.setArguments(args);
 
@@ -58,15 +63,26 @@ public class ArrivalPredictionFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Timber.d("Creating view");
 
         mArrivalPrediction = Parcels.unwrap(getArguments().getParcelable(ARG_DATA));
 
-        setUpNextTravelCard(mArrivalPrediction);
-        setUpFollowingTravelCard(mArrivalPrediction);
+        Timber.d("Data retrieved with value %s", mArrivalPrediction.toString());
+
+        if (mArrivalPrediction.getNext() == null
+                && mArrivalPrediction.getFollowing() == null) {
+
+        } else {
+            setUpNextTravelCard(mArrivalPrediction);
+            setUpFollowingTravelCard(mArrivalPrediction);
+        }
     }
 
     private void setUpNextTravelCard(@NonNull ArrivalPrediction arrivalPrediction) {
+        Timber.d("Binding next travel received to view");
+
         final BusTravel next = arrivalPrediction.getNext();
+
         mNextArrivesMinutesView.setText(
                 String.valueOf(next.getMinutesToArrive()));
         mNextTravelQualityView.setText(
@@ -81,8 +97,11 @@ public class ArrivalPredictionFragment extends BaseFragment {
 
     @SuppressWarnings("ConstantConditions")
     private void setUpFollowingTravelCard(@NonNull ArrivalPrediction arrivalPrediction) {
+        Timber.d("Binding following travel received to view");
+
         final BusTravel following = arrivalPrediction.getFollowing();
         if (following == null) {
+            Timber.d("No following travel found");
             ButterKnife.findById(getView(), R.id.following_travel).setVisibility(View.GONE);
         } else {
             mFollowingArrivesMinutesView.setText(
@@ -108,6 +127,7 @@ public class ArrivalPredictionFragment extends BaseFragment {
             return DateUtils.getRelativeTimeSpanString(date.getTime(),
                     System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
         } catch (ParseException e) {
+            Timber.e("Error parsing the data string %s", dateString);
             return dateString;
         }
     }

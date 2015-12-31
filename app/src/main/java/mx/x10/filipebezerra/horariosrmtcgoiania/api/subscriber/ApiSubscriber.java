@@ -23,7 +23,7 @@ public class ApiSubscriber<T extends BaseApiResponse> extends BaseSubscriber<T> 
     @Override
     public void onNext(T t) {
         super.onNext(t);
-        Timber.i("Requesting bus stop with lines result with \n\t%s",
+        Timber.i("Requesting bus stop with lines result with \n%s",
                 ResponseUtil.toPrintable(t));
     }
 }

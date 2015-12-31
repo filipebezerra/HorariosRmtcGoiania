@@ -78,6 +78,7 @@ public class HomeActivity extends BaseDrawerActivity
 
     private static final String ACTION_VOICE_SEARCH
             = "com.google.android.gms.actions.SEARCH_ACTION";
+    private static final String LOG = HomeActivity.class.getSimpleName();
 
     @Bind(R.id.root_layout) protected CoordinatorLayout mRootLayout;
 
@@ -390,10 +391,21 @@ public class HomeActivity extends BaseDrawerActivity
 
     @Subscribe
     public void onArrivalPredictionFound(GenericEvent<ArrivalPrediction> event) {
+        Timber.d("%s observer received the event with data %s", LOG, event.message().toString());
+
         final ArrivalPrediction arrivalPrediction = event.message();
         changeTitleAndSubtitle("Próxima viagem", String.format("%s - %s",
                 arrivalPrediction.getLineNumber(), arrivalPrediction.getDestination()));
-        replaceFragment(ArrivalPredictionFragment.newInstance(arrivalPrediction), true);
+
+        Timber.d("Replacing with fragment...");
+        final int transactionId = replaceFragment(
+                ArrivalPredictionFragment.newInstance(arrivalPrediction), true);
+
+        if (transactionId >= 0) {
+            Timber.d("Replacement of the fragment was successful with id %d", transactionId);
+        } else {
+            Timber.d("Replacement of the fragment had some trouble");
+        }
     }
 
     @SuppressWarnings("ResourceType")

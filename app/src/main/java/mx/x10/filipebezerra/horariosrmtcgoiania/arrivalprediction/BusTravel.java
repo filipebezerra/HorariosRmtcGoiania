@@ -27,7 +27,12 @@ public class BusTravel {
         //required
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static BusTravel fromModel(@NonNull BusTravelModel model) {
+        if (model == null) {
+            return null;
+        }
+
         return new BusTravel()
                 .setQuality(model.quality)
                 .setBusNumber(model.busNumber)

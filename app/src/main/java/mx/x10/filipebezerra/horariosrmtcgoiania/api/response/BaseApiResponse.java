@@ -14,4 +14,10 @@ public abstract class BaseApiResponse {
 
     @SerializedName("mensagem")
     public String message;
+
+    @Override
+    public String toString() {
+        return String.format("%s \n%s", getClass().getSimpleName(),
+                ResponseUtil.toPrintable(this));
+    }
 }
