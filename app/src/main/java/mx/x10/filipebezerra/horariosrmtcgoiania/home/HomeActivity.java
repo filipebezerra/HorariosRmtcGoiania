@@ -390,7 +390,10 @@ public class HomeActivity extends BaseDrawerActivity
 
     @Subscribe
     public void onArrivalPredictionFound(GenericEvent<ArrivalPrediction> event) {
-        replaceFragment(ArrivalPredictionFragment.newInstance(event.message()), true);
+        final ArrivalPrediction arrivalPrediction = event.message();
+        changeTitleAndSubtitle("Próxima viagem", String.format("%s - %s",
+                arrivalPrediction.getLineNumber(), arrivalPrediction.getDestination()));
+        replaceFragment(ArrivalPredictionFragment.newInstance(arrivalPrediction), true);
     }
 
     @SuppressWarnings("ResourceType")

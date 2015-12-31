@@ -2,7 +2,15 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
 import org.parceler.Parcels;
@@ -19,6 +27,18 @@ public class ArrivalPredictionFragment extends BaseFragment {
     private static final String ARG_DATA = "ArrivalPrediction";
 
     private ArrivalPrediction mArrivalPrediction;
+
+    @Bind(R.id.next_arrives_in_minutes) TextView mNextArrivesMinutesView;
+    @Bind(R.id.next_travel_quality) TextView mNextTravelQualityView;
+    @Bind(R.id.next_bus_number) TextView mNextBusNumber;
+    @Bind(R.id.next_expected_arrival) TextView mNextExpectedArrival;
+    @Bind(R.id.next_planned_arrival) TextView mNextPlannedArrival;
+
+    @Bind(R.id.following_arrives_in_minutes) TextView mFollowingArrivesMinutesView;
+    @Bind(R.id.following_travel_quality) TextView mFollowingTravelQualityView;
+    @Bind(R.id.following_bus_number) TextView mFollowingBusNumber;
+    @Bind(R.id.following_expected_arrival) TextView mFollowingExpectedArrival;
+    @Bind(R.id.following_planned_arrival) TextView mFollowingPlannedArrival;
 
     @Override
     protected int provideLayoutResource() {
@@ -40,5 +60,56 @@ public class ArrivalPredictionFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mArrivalPrediction = Parcels.unwrap(getArguments().getParcelable(ARG_DATA));
+
+        setUpNextTravelCard(mArrivalPrediction);
+        setUpFollowingTravelCard(mArrivalPrediction);
     }
+
+    private void setUpNextTravelCard(@NonNull ArrivalPrediction arrivalPrediction) {
+        final BusTravel next = arrivalPrediction.getNext();
+        mNextArrivesMinutesView.setText(
+                String.valueOf(next.getMinutesToArrive()));
+        mNextTravelQualityView.setText(
+                next.getQuality());
+        mNextBusNumber.setText(
+                next.getBusNumber());
+        mNextExpectedArrival.setText(
+                parseAndFormatDate(next.getExpectedArrivalTime()));
+        mNextPlannedArrival.setText(
+                parseAndFormatDate(next.getPlannedArrivalTime()));
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void setUpFollowingTravelCard(@NonNull ArrivalPrediction arrivalPrediction) {
+        final BusTravel following = arrivalPrediction.getFollowing();
+        if (following == null) {
+            ButterKnife.findById(getView(), R.id.following_travel).setVisibility(View.GONE);
+        } else {
+            mFollowingArrivesMinutesView.setText(
+                    String.valueOf(following.getMinutesToArrive()));
+            mFollowingTravelQualityView.setText(
+                    following.getQuality());
+            mFollowingBusNumber.setText(
+                    following.getBusNumber());
+            mFollowingExpectedArrival.setText(
+                    parseAndFormatDate(following.getExpectedArrivalTime()));
+            mFollowingPlannedArrival.setText(
+                    parseAndFormatDate(following.getPlannedArrivalTime()));
+        }
+    }
+
+    final SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",
+            Locale.getDefault());
+
+    private String parseAndFormatDate(@NonNull String dateString) {
+        try {
+            Date date = mDateFormatter.parse(dateString);
+
+            return DateUtils.getRelativeTimeSpanString(date.getTime(),
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            return dateString;
+        }
+    }
+
 }
