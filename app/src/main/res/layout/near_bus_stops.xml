@@ -50,7 +50,7 @@
                 android:id="@+id/available_lines"
                 android:layout_below="@id/content"
                 android:layout_centerHorizontal="true"
-                android:text="Linhas Disponíveis"
+                android:text="@string/available_bus_lines"
                 />
 
         </RelativeLayout>

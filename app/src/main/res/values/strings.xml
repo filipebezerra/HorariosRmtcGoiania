@@ -25,5 +25,7 @@
     <string name="feedback_searching_nearby_bus_stop">
         Buscando pontos de ônibus próximos à você…
     </string>
+    <string name="next_travel">Próxima viagem</string>
+    <string name="available_bus_lines">Linhas disponíveis</string>
 
 </resources>

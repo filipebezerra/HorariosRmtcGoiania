@@ -49,7 +49,7 @@
                 android:id="@+id/next_travel"
                 android:layout_below="@id/content"
                 android:layout_centerHorizontal="true"
-                android:text="Próxima Viagem"
+                android:text="@string/next_travel"
                 />
 
         </RelativeLayout>
