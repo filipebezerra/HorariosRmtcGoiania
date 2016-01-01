@@ -1,4 +1,6 @@
-Horários Rmtc Goiânia para Android [![Build Status](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania.svg?branch=new-2.0)](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania)
+[![Build Status](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania.svg?branch=new-2.0)](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania)
+
+Horários Rmtc Goiânia para Android
 ===================
 
 > "Saiba dos horários de viagem da sua linha ou planeje sua viagem de forma rápida"
@@ -20,10 +22,7 @@ sobre todos os efeitos, transições, animações, fontes e cores, mas acredite 
 Download
 --------
 
-<a href="https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania">
-  <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/pt-br_generic_rgb_wo_60.png" />
-</a>
+<a href="https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/pt-br-play-badge.png" heigth="480" width="272" /></a>
 
 Funcionalidades e Recursos
 --------------------------
@@ -48,7 +47,7 @@ Live
 Versões/Mudanças
 ----------------
 
-* 2.0
+* Versão 2.0
   * Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia
   * Consulta por voz pelo número do ponto, acessível por todo o app.
   * Salve seus pontos favoritos pois eles poderão ser acessados facilmente para consulta rápida com apenas um toque.
