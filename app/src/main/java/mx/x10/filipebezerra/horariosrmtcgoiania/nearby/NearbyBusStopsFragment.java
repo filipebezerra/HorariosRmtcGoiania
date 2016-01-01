@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.Bind;
 import com.squareup.otto.Subscribe;
+import java.util.Arrays;
 import java.util.List;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ArrivalPredictionResponse;
@@ -214,7 +215,7 @@ public class NearbyBusStopsFragment extends BaseFragment
             list[i] = line.getNumber() + " - " + line.getItinerary();
         }
 
-        Timber.d("Available lines was transformed into %s", list);
+        Timber.d("Available lines was transformed into %s", Arrays.asList(list));
 
         mMaterialDialogHelper.showListDialog(getContext(), "Linhas Disponíveis", -1,
                 (dialog, itemView, which, text) -> {
