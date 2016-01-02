@@ -1,31 +1,29 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import com.hannesdorfmann.parcelableplease.annotation.ParcelablePlease;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.BusTravelModel;
-import org.parceler.Parcel;
 
 /**
  * Bus travel model.
  *
  * @author Filipe Bezerra
- * @version 0.1.0, 29/12/2015
+ * @version 0.3.0, 02/01/2016
  * @since 0.1.0
  */
-@Parcel(Parcel.Serialization.BEAN)
-public class BusTravel {
-    private String mQuality;
+@ParcelablePlease
+public class BusTravel implements Parcelable {
+    String mQuality;
 
-    private String mBusNumber;
+    String mBusNumber;
 
-    private String mPlannedArrivalTime;
+    String mPlannedArrivalTime;
 
-    private String mExpectedArrivalTime;
+    String mExpectedArrivalTime;
 
-    private Long mMinutesToArrive;
-
-    public BusTravel() {
-        //required
-    }
+    Long mMinutesToArrive;
 
     @SuppressWarnings("ConstantConditions")
     public static BusTravel fromModel(@NonNull BusTravelModel model) {
@@ -85,4 +83,26 @@ public class BusTravel {
         mMinutesToArrive = minutesToArrive;
         return this;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        BusTravelParcelablePlease.writeToParcel(this, dest, flags);
+    }
+
+    public static final Creator<BusTravel> CREATOR = new Creator<BusTravel>() {
+        public BusTravel createFromParcel(Parcel source) {
+            BusTravel target = new BusTravel();
+            BusTravelParcelablePlease.readFromParcel(target, source);
+            return target;
+        }
+
+        public BusTravel[] newArray(int size) {
+            return new BusTravel[size];
+        }
+    };
 }

@@ -3,6 +3,7 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -16,7 +17,6 @@ import java.text.ParseException;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
-import org.parceler.Parcels;
 import timber.log.Timber;
 
 import static android.os.Build.VERSION;
@@ -87,18 +87,34 @@ public class ArrivalPredictionFragment extends BaseFragment {
         Bundle args = new Bundle();
 
         Timber.d("Assigning data arguments with value %s", data.toString());
-        args.putParcelable(ARG_DATA, Parcels.wrap(data));
+        args.putParcelable(ARG_DATA, data);
         fragment.setArguments(args);
 
         return fragment;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if ((getArguments() == null)
+                || !(getArguments().containsKey(ARG_DATA))) {
+            throw new IllegalStateException(
+                    "This fragment must contains the argument 'ARG_DATA'.");
+        } else if (!(getArguments().get(ARG_DATA) instanceof Parcelable)
+                || getArguments().getParcelable(ARG_DATA) == null) {
+            throw new IllegalArgumentException(
+                    "The argument 'ARG_DATA' must be a android.os.Parcelable instance.");
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Timber.d("Creating view");
 
-        mArrivalPrediction = Parcels.unwrap(getArguments().getParcelable(ARG_DATA));
+        mArrivalPrediction = getArguments().getParcelable(ARG_DATA);
 
         Timber.d("Data retrieved with value %s", mArrivalPrediction.toString());
 

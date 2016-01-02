@@ -1,16 +1,12 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.busstop;
 
-
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import com.squareup.otto.Subscribe;
-
-import org.parceler.Parcels;
-
 import butterknife.Bind;
+import com.squareup.otto.Subscribe;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ArrivalPredictionResponse;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
@@ -60,18 +56,34 @@ public class BusStopLinesFragment extends BaseFragment
         Bundle args = new Bundle();
 
         Timber.d("Assigning data arguments with value %s", data.toString());
-        args.putParcelable(ARG_DATA, Parcels.wrap(data));
+        args.putParcelable(ARG_DATA, data);
         fragment.setArguments(args);
 
         return fragment;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if ((getArguments() == null)
+                || !(getArguments().containsKey(ARG_DATA))) {
+            throw new IllegalStateException(
+                    "This fragment must contains the argument 'ARG_DATA'.");
+        } else if (!(getArguments().get(ARG_DATA) instanceof Parcelable)
+                || getArguments().getParcelable(ARG_DATA) == null) {
+            throw new IllegalArgumentException(
+                    "The argument 'ARG_DATA' must be a android.os.Parcelable instance.");
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Timber.d("Creating view");
 
-        mBusStop = Parcels.unwrap(getArguments().getParcelable(ARG_DATA));
+        mBusStop = getArguments().getParcelable(ARG_DATA);
 
         Timber.d("Data retrieved with value %s", mBusStop.toString());
 

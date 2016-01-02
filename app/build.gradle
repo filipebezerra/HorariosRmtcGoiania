@@ -79,9 +79,8 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') { transitive = true }
 
-    // parceler is huge for dexing
-    compile 'org.parceler:parceler:1.0.4'
-    apt 'org.parceler:parceler:1.0.4'
+    compile 'com.hannesdorfmann.parcelableplease:annotation:1.0.1'
+    apt 'com.hannesdorfmann.parcelableplease:processor:1.0.1'
 }
 
 retrolambda {
