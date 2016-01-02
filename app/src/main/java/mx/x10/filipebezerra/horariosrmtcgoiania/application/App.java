@@ -2,7 +2,6 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.application;
 
 import android.support.multidex.MultiDexApplication;
 import mx.x10.filipebezerra.horariosrmtcgoiania.BuildConfig;
-import net.danlew.android.joda.JodaTimeAndroid;
 import timber.log.Timber;
 
 /**
@@ -17,16 +16,11 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         enableLogging();
-        initJodaTime();
     }
 
     private void enableLogging() {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-    }
-
-    private void initJodaTime() {
-        JodaTimeAndroid.init(this);
     }
 }

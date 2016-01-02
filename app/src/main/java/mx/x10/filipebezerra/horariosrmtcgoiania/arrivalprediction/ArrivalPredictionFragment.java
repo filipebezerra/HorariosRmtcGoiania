@@ -12,10 +12,10 @@ import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import java.text.ParseException;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
-import org.joda.time.DateTime;
 import org.parceler.Parcels;
 import timber.log.Timber;
 
@@ -24,7 +24,8 @@ import static android.os.Build.VERSION_CODES;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static org.joda.time.format.DateTimeFormat.forPattern;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.API_DATE_TIME_FORMATTER;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.DEFAULT_TIME_FORMATTER;
 
 /**
  * Arrival prediction visualization.
@@ -233,8 +234,12 @@ public class ArrivalPredictionFragment extends BaseFragment {
     }
 
     private String toTimeFormat(@NonNull String dateString) {
-        return DateTime.parse(dateString, forPattern("yyyy-MM-dd'T'HH:mm:ssZ"))
-                .toString(forPattern("HH:mm"));
+        try {
+            return DEFAULT_TIME_FORMATTER.format(
+                    API_DATE_TIME_FORMATTER.parse(dateString));
+        } catch (ParseException e) {
+            return dateString;
+        }
     }
 
     private String toRemainingTimeFormat(long millisUntilFinished) {
