@@ -1,31 +1,24 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import java.text.ParseException;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
 import timber.log.Timber;
 
-import static android.os.Build.VERSION;
-import static android.os.Build.VERSION_CODES;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.API_DATE_TIME_FORMATTER;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.DEFAULT_TIME_FORMATTER;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.date.DateHelper.toTimeFormat;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper.changeLeftCompoundDrawable;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper.changeLeftDrawableColor;
 
 /**
  * Arrival prediction visualization.
@@ -141,11 +134,12 @@ public class ArrivalPredictionFragment extends BaseFragment {
         } else {
             // setting up next travel icon for different quality
             if (nextTravel.getQuality().equalsIgnoreCase(QUALIDADE_PLANILHA_DE_HORARIOS)) {
-                changeDrawable(mNextTravelView, R.drawable.ic_timetable_24dp);
+                changeLeftCompoundDrawable(getContext(), mNextTravelView,
+                        R.drawable.ic_timetable_24dp);
             }
 
             // setting up next travel icon color
-            changeDrawableColor(mNextTravelView, R.color.colorPrimary);
+            changeLeftDrawableColor(getContext(), mNextTravelView, R.color.colorPrimary);
 
             // setting up next bus number text
             mNextBusNumberView.setText(getString(
@@ -187,11 +181,12 @@ public class ArrivalPredictionFragment extends BaseFragment {
         } else {
             // setting up following travel icon for different quality
             if (followingTravel.getQuality().equalsIgnoreCase(QUALIDADE_PLANILHA_DE_HORARIOS)) {
-                changeDrawable(mFollowingTravelView, R.drawable.ic_timetable_24dp);
+                changeLeftCompoundDrawable(getContext(), mFollowingTravelView,
+                        R.drawable.ic_timetable_24dp);
             }
 
             // setting up following travel icon color
-            changeDrawableColor(mFollowingTravelView, R.color.colorAccent);
+            changeLeftDrawableColor(getContext(), mFollowingTravelView, R.color.colorAccent);
 
             // setting up following bus number text
             mFollowingBusNumberView.setText(getString(R.string.bus_number,
@@ -221,40 +216,6 @@ public class ArrivalPredictionFragment extends BaseFragment {
                     }
                 }
             }.start();
-        }
-    }
-
-    private void changeDrawable(@NonNull TextView textView, @DrawableRes int drawableRes) {
-        final Drawable drawable = ContextCompat.getDrawable(getContext(), drawableRes);
-        textView.setCompoundDrawables(drawable, null, null, null);
-
-        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-            textView.setCompoundDrawablesRelative(drawable, null, null, null);
-        }
-    }
-
-    private void changeDrawableColor(@NonNull TextView textView, @ColorRes int colorRes) {
-        final Drawable leftDrawable = textView.getCompoundDrawables()[0];
-
-        if (leftDrawable != null) {
-            DrawableHelper.tint(getContext(), colorRes, leftDrawable);
-        }
-
-        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-            final Drawable leftRelativeDrawable = textView.getCompoundDrawablesRelative()[0];
-
-            if (leftRelativeDrawable != null) {
-                DrawableHelper.tint(getContext(), colorRes, leftRelativeDrawable);
-            }
-        }
-    }
-
-    private String toTimeFormat(@NonNull String dateString) {
-        try {
-            return DEFAULT_TIME_FORMATTER.format(
-                    API_DATE_TIME_FORMATTER.parse(dateString));
-        } catch (ParseException e) {
-            return dateString;
         }
     }
 
