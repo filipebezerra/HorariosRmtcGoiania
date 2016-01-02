@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.Bind;
-import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -128,6 +127,8 @@ public class NearbyBusStopsFragment extends BaseFragment
         BusProvider.unregister(this);
     }
 
+    // TODO remove commented block
+    /*
     @Subscribe
     public void onNearbyBusStopsFound(GenericEvent<List<BusStop>> event) {
         Timber.d("onNearbyBusStopsFound onBusStopFound() event with message %s", event.message());
@@ -140,6 +141,7 @@ public class NearbyBusStopsFragment extends BaseFragment
             Timber.d("Fragment is not visible");
         }
     }
+    */
 
     private SubscriberDelegate<ArrivalPredictionResponse> mArrivalPredictionResponseDelegate
             = new SubscriberDelegate<ArrivalPredictionResponse>() {

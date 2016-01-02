@@ -6,12 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.Bind;
-import com.squareup.otto.Subscribe;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.ArrivalPredictionResponse;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.busline.BusLine;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
@@ -23,23 +23,31 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
- * Bus stop list visualization.
+ * User presentation of {@link BusLine} list.
  *
  * @author Filipe Bezerra
- * @version 0.1.0, 29/12/2015
- * @since 0.1.0
+ * @version 3.0.0, 02/01/2015
+ * @since 3.0.0
  */
 public class BusStopLinesFragment extends BaseFragment
         implements BusStopLinesAdapter.OnRequestArrivalPrediction {
 
+    // logging purposes
     private static final String LOG = BusStopLinesFragment.class.getSimpleName();
 
-    public static final String ARG_DATA = "BusStop";
+    // User data handled by this fragment
+    private static final String ARG_DATA = "BusStop";
 
-    private BusStopLinesAdapter mBusStopLinesAdapter;
+    // State of user data handled by this fragment
+    private static final String STATE_ARG_DATA = "State_" + ARG_DATA;
 
+    // Data representation handled by this fragment
     private BusStop mBusStop;
 
+    // View data adapter representation handled by this fragment
+    private BusStopLinesAdapter mBusStopLinesAdapter;
+
+    // API subscriber to receive API calls
     private ApiSubscriber<ArrivalPredictionResponse> mApiResponseSubscriber;
 
     @Bind(R.id.list) protected RecyclerView mBusStopLinesView;
@@ -77,6 +85,15 @@ public class BusStopLinesFragment extends BaseFragment
         }
     }
 
+    @Override
+    public void onActivityCreated(Bundle inState) {
+        super.onActivityCreated(inState);
+
+        if (inState != null && mBusStop == null) {
+            mBusStop = inState.getParcelable(STATE_ARG_DATA);
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -91,6 +108,12 @@ public class BusStopLinesFragment extends BaseFragment
         mBusStopLinesView.setAdapter(
                 mBusStopLinesAdapter = new BusStopLinesAdapter(getActivity(), mBusStop));
         mBusStopLinesAdapter.setOnRequestArrivalPrediction(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_ARG_DATA, mBusStop);
     }
 
     @Override
@@ -123,6 +146,9 @@ public class BusStopLinesFragment extends BaseFragment
         BusProvider.unregister(this);
     }
 
+
+    // TODO remove commented block
+    /*
     @Subscribe
     public void onBusStopFound(GenericEvent<BusStop> event) {
         Timber.d("Receiving onBusStopFound() event with message %s", event.message());
@@ -135,6 +161,7 @@ public class BusStopLinesFragment extends BaseFragment
             Timber.d("Fragment is not visible");
         }
     }
+    */
 
     private SubscriberDelegate<ArrivalPredictionResponse> mArrivalPredictionResponseDelegate
             = new SubscriberDelegate<ArrivalPredictionResponse>() {
@@ -215,7 +242,7 @@ public class BusStopLinesFragment extends BaseFragment
 
     @Override
     public void onRequest(String busStopId, String busLineNumber) {
-        Timber.d("User asks to view the arrival prediction from bus stop %s, line number",
+        Timber.d("User asks to view the arrival prediction from bus stop %s, line number %s",
                 busStopId, busLineNumber);
 
         if (NetworkUtil.isDeviceConnectedToInternet(getActivity())) {

@@ -24,8 +24,8 @@ public abstract class BaseDrawerActivity extends BaseActivity
     @Bind(R.id.nav_view) protected NavigationView mNavigationView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle inState) {
+        super.onCreate(inState);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbarActionBar, R.string.navigation_drawer_open,

@@ -8,6 +8,8 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -20,6 +22,7 @@ import butterknife.ButterKnife;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.dialog.MaterialDialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
+import timber.log.Timber;
 
 /**
  * Base activity for all activities in this application.
@@ -30,19 +33,35 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+    protected static final String STATE_FRAGMENT_IN_CONTAINER = "State_FragmentInContainer";
+
     protected static final int NO_UP_INDICATOR = -1;
 
     protected MaterialDialogHelper mMaterialDialogHelper;
 
+    protected boolean mIsFragmentRestored = false;
+
     @Nullable @Bind(R.id.toolbar) protected Toolbar mToolbarActionBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle inState) {
+        super.onCreate(inState);
         setContentView(provideLayoutResource());
         ButterKnife.bind(this);
         setupToolbarAsActionBar();
         mMaterialDialogHelper = MaterialDialogHelper.toContext(this);
+
+        if (inState != null) {
+            Timber.d("Activity restored state");
+
+            final Fragment fragmentSaved = getSupportFragmentManager()
+                    .getFragment(inState, STATE_FRAGMENT_IN_CONTAINER);
+
+            if (fragmentSaved != null) {
+                Timber.d("Fragment restored from activity state");
+                mIsFragmentRestored = replaceFragment(fragmentSaved, true) >= 0;
+            }
+        }
     }
 
     private void setupToolbarAsActionBar() {
@@ -71,16 +90,73 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Adds, replaces or reattaches the given {@code fragment} to the fragment container.
+     *
+     * @param fragment the fragment.
+     * @param addToBackStack {@code true} if has to be added in the back stack.
+     * @return true is {@code fragment} is existing in that container.
+     */
     @SuppressLint("CommitTransaction")
     public int replaceFragment(@NonNull Fragment fragment, boolean addToBackStack) {
-        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_placeholder, fragment);
+        Timber.d("Caller want to add the fragment %s.", fragment.getClass().getSimpleName());
 
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        final FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
+
+        // fragment tag
+        final String tagName = fragment.getClass().getSimpleName();
+
+        final Fragment fragmentFound = fragmentManager
+                .findFragmentById(R.id.fragment_placeholder);
+
+        // no fragments in the fragment container, so ADD
+        if (fragmentFound == null) {
+            Timber.d("Fragment container is empty. Adding the fragment to it using tag %s",
+                    tagName);
+
+            fragmentTransaction
+                    .add(R.id.fragment_placeholder, fragment, tagName);
         }
 
-        return transaction.commit();
+        // contains a fragment in container but isn't the same, so REPLACE
+        else {
+            Timber.d("Fragment container has another fragment. "
+                    + "Replacing with this fragment using tag %s", tagName);
+
+            fragmentTransaction
+                    .replace(
+                            R.id.fragment_placeholder, fragment, tagName);
+        }
+
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(tagName);
+        }
+
+        final int id = fragmentTransaction.commit();
+        Timber.d("Transaction commit with id %d", id);
+
+        return id;
+    }
+
+    public void addOnBackStackChangedListener(OnBackStackChangedListener listener) {
+        getSupportFragmentManager().addOnBackStackChangedListener(listener);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        final Fragment fragmentFound = getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_placeholder);
+
+        if (fragmentFound != null) {
+            Timber.d("Saving fragment in container to activity state");
+            getSupportFragmentManager()
+                    .putFragment(outState, STATE_FRAGMENT_IN_CONTAINER, fragmentFound);
+        }
     }
 
     public void changeTitleAndSubtitle(String newTitle, String subtitle) {

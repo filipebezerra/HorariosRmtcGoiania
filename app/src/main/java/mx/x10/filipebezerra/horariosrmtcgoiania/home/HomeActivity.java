@@ -15,7 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -24,15 +24,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import butterknife.Bind;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.otto.Subscribe;
-
 import java.util.List;
-
-import butterknife.Bind;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.BusStopModel;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.BusStopLinesResponse;
@@ -62,6 +59,7 @@ import timber.log.Timber;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.REQUEST_LOCATION;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.REQUEST_RESOLVE_ERROR;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.PlayServicesPermission.FINE_LOCATION;
+import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.STATE_LAST_LOCATION;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.STATE_RESOLVING_ERROR;
 
 /**
@@ -72,7 +70,10 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServices
  * @since 0.1.0
  */
 public class HomeActivity extends BaseDrawerActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PlayServicesHelper.PlayServicesCallbacks {
+        implements
+        NavigationView.OnNavigationItemSelectedListener,
+        PlayServicesHelper.PlayServicesCallbacks,
+        FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
@@ -80,11 +81,9 @@ public class HomeActivity extends BaseDrawerActivity
             = "com.google.android.gms.actions.SEARCH_ACTION";
     private static final String LOG = HomeActivity.class.getSimpleName();
 
-    @Bind(R.id.root_layout) protected CoordinatorLayout mRootLayout;
-
     private SearchView mSearchView;
-    private MenuItem mSearchItem;
 
+    private MenuItem mSearchItem;
     private ApiSubscriber<BusStopLinesResponse> mBusStopLinesApiSubscriber;
 
     private ApiSubscriber<NearbyBusStopsResponse> mNearbyBusStopsApiSubscriber;
@@ -92,6 +91,8 @@ public class HomeActivity extends BaseDrawerActivity
     private PlayServicesHelper mPlayServicesHelper;
 
     private static final String DIALOG_ERROR = "dialog_error";
+
+    @Bind(R.id.root_layout) protected CoordinatorLayout mRootLayout;
 
     @Override
     protected int provideLayoutResource() {
@@ -105,24 +106,26 @@ public class HomeActivity extends BaseDrawerActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Timber.plant(new Timber.DebugTree());
+    protected void onCreate(Bundle inState) {
+        super.onCreate(inState);
         Timber.tag(TAG);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorite);
-        DrawableHelper.tint(this, R.color.white, fab.getDrawable());
-        fab.setOnClickListener(view ->
-                FeedbackHelper.snackbar(view, "Replace with your own action", true,
-                        "Action", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+        mPlayServicesHelper = new PlayServicesHelper(this, inState, this);
 
-                            }
-                        }));
+        if (inState == null) {
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorite);
+            DrawableHelper.tint(this, R.color.white, fab.getDrawable());
+            fab.setOnClickListener(view ->
+                    FeedbackHelper.snackbar(view, "Replace with your own action", true,
+                            "Action", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
-        mPlayServicesHelper = new PlayServicesHelper(this, savedInstanceState, this);
+                                }
+                            }));
+
+            addOnBackStackChangedListener(this);
+        }
     }
 
     @Override
@@ -206,6 +209,7 @@ public class HomeActivity extends BaseDrawerActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_RESOLVING_ERROR, mPlayServicesHelper.isResolvingError());
+        outState.putParcelable(STATE_LAST_LOCATION, mPlayServicesHelper.getLastLocation());
     }
 
     private SubscriberDelegate<BusStopLinesResponse> mBusStopLinesRxDelegate
@@ -238,27 +242,26 @@ public class HomeActivity extends BaseDrawerActivity
 
                 final BusStop busStop = BusStop.fromModel(model);
 
-                final Fragment existingFragment = getSupportFragmentManager()
-                        .findFragmentById(R.id.fragment_placeholder);
+                BusStopLinesFragment fragment = BusStopLinesFragment.newInstance(busStop);
 
-                if (existingFragment == null
-                        || !(existingFragment instanceof BusStopLinesFragment)) {
-                    BusStopLinesFragment fragment = BusStopLinesFragment
-                            .newInstance(busStop);
-                    replaceFragment(fragment, true);
-                } else {
+                Timber.d("Sending fragment %s to be added",
+                        fragment.getClass().getSimpleName());
+                replaceFragment(fragment, true);
+
+                // TODO remove commented block
+                /*if (exists) {
+                    Timber.d("The fragment %s already exists in the container. Sending "
+                                    + "data via event", fragment.getClass().getSimpleName());
+
                     BusProvider.post(new GenericEvent<>(busStop));
-                }
+                }*/
             } else {
                 FeedbackHelper.snackbar(getRootViewLayout(), observable.message, false,
                         new Snackbar.Callback() {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
-                                KeyboardUtil.focusThenShowKeyboard(HomeActivity.this, mSearchView);
-                            }
-
-                            @Override
-                            public void onShown(Snackbar snackbar) {
+                                KeyboardUtil.focusThenShowKeyboard(HomeActivity.this,
+                                        mSearchView);
                             }
                         });
             }
@@ -303,17 +306,21 @@ public class HomeActivity extends BaseDrawerActivity
                             changeTitleAndSubtitle(String.format("Ponto próximo %s",
                                     busStop.getId()), busStop.getAddress());
 
-                            final Fragment busStopFragment = getSupportFragmentManager()
-                                    .findFragmentById(R.id.fragment_placeholder);
+                            BusStopLinesFragment busStopFragment = BusStopLinesFragment
+                                    .newInstance(busStop);
 
-                            if (busStopFragment == null
-                                    || !(busStopFragment instanceof BusStopLinesFragment)) {
-                                BusStopLinesFragment fragment = BusStopLinesFragment
-                                        .newInstance(busStop);
-                                replaceFragment(fragment, true);
-                            } else {
+                            Timber.d("Sending fragment %s to be added",
+                                    busStopFragment.getClass().getSimpleName());
+                            replaceFragment(busStopFragment, true);
+
+                            // TODO remove commented block
+                            /*if (exists) {
+                                Timber.d("The fragment %s already exists in the container. "
+                                                + "Sending data via event",
+                                        busStopFragment.getClass().getSimpleName());
+
                                 BusProvider.post(new GenericEvent<>(busStop));
-                            }
+                            }*/
 
                             break;
 
@@ -322,17 +329,21 @@ public class HomeActivity extends BaseDrawerActivity
 
                             changeTitleAndSubtitle("Pontos próximos à você", "");
 
-                            final Fragment nearbyFragment = getSupportFragmentManager()
-                                    .findFragmentById(R.id.fragment_placeholder);
+                            NearbyBusStopsFragment nearbyFragment = NearbyBusStopsFragment
+                                    .newInstance(busStops);
 
-                            if (nearbyFragment == null
-                                    || !(nearbyFragment instanceof NearbyBusStopsFragment)) {
-                                NearbyBusStopsFragment fragment = NearbyBusStopsFragment
-                                        .newInstance(busStops);
-                                replaceFragment(fragment, true);
-                            } else {
+                            Timber.d("Sending fragment %s to be added",
+                                    nearbyFragment.getClass().getSimpleName());
+                            replaceFragment(nearbyFragment, true);
+
+                            // TODO remove commented block
+                            /*if (exists) {
+                                Timber.d("The fragment %s already exists in the container. "
+                                                + "Sending data via event",
+                                        nearbyFragment.getClass().getSimpleName());
+
                                 BusProvider.post(new GenericEvent<>(busStops));
-                            }
+                            }*/
 
                             break;
                     }
@@ -388,24 +399,27 @@ public class HomeActivity extends BaseDrawerActivity
             FeedbackHelper.toast(this, getString(R.string.feedback_no_network), false);
         }
     }
-
     @Subscribe
     public void onArrivalPredictionFound(GenericEvent<ArrivalPrediction> event) {
-        Timber.d("%s observer received the event with data %s", LOG, event.message().toString());
+        Timber.d("%s observer received the event with data %s", LOG,
+                event.message().toString());
 
         final ArrivalPrediction arrivalPrediction = event.message();
         changeTitleAndSubtitle("Próxima viagem", String.format("%s - %s",
                 arrivalPrediction.getLineNumber(), arrivalPrediction.getDestination()));
 
-        Timber.d("Replacing with fragment...");
-        final int transactionId = replaceFragment(
-                ArrivalPredictionFragment.newInstance(arrivalPrediction), true);
+        final ArrivalPredictionFragment fragment
+                = ArrivalPredictionFragment.newInstance(arrivalPrediction);
 
-        if (transactionId >= 0) {
-            Timber.d("Replacement of the fragment was successful with id %d", transactionId);
-        } else {
-            Timber.d("Replacement of the fragment had some trouble");
-        }
+        Timber.d("Sending fragment %s to be added", fragment.getClass().getSimpleName());
+
+        replaceFragment(fragment, true);
+
+        // TODO remove commented block
+        /*if (exists) {
+            Timber.d("The fragment %s already exists in the container. Sending data via event",
+                    fragment.getClass().getSimpleName());
+        }*/
     }
 
     @SuppressWarnings("ResourceType")
@@ -437,17 +451,22 @@ public class HomeActivity extends BaseDrawerActivity
     public void onLocationIsAvailable(@NonNull Location location) {
         Timber.i("Received location %f/%f", location.getLatitude(), location.getLongitude());
 
-        if (NetworkUtil.isDeviceConnectedToInternet(this)) {
-            mNearbyBusStopsApiSubscriber = new ApiSubscriber<>(
-                    mNearbyBusStopsResponseRxDelegate);
+        if (!mIsFragmentRestored) {
+            if (NetworkUtil.isDeviceConnectedToInternet(this)) {
+                mNearbyBusStopsApiSubscriber = new ApiSubscriber<>(
+                        mNearbyBusStopsResponseRxDelegate);
 
-            RetrofitController.instance(this)
-                    .searchNearbyBusStops(location.getLatitude(), location.getLongitude(), 0.25f)
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(mNearbyBusStopsApiSubscriber);
+                RetrofitController.instance(this)
+                        .searchNearbyBusStops(location.getLatitude(), location.getLongitude(),
+                                0.25f)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(mNearbyBusStopsApiSubscriber);
+            } else {
+                FeedbackHelper.toast(this, getString(R.string.feedback_no_network), false);
+            }
         } else {
-            FeedbackHelper.toast(this, getString(R.string.feedback_no_network), false);
+            Timber.d("Last fragment was restored");
         }
     }
 
@@ -482,6 +501,14 @@ public class HomeActivity extends BaseDrawerActivity
                             }
                         });
                 break;
+        }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            Timber.d("No fragments found in the back stack. Finishing application");
+            finish();
         }
     }
 

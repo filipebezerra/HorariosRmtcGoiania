@@ -38,11 +38,12 @@ public class PlayServicesHelper
     // Bool to track whether the app is already resolving an error
     private boolean mResolvingError;
 
-    public static final String STATE_RESOLVING_ERROR = "resolving_error";
+    public static final String STATE_RESOLVING_ERROR = "State_ResolvingError";
+    public static final String STATE_LAST_LOCATION = "State_LastLocation";
 
     private GoogleApiClient mGoogleApiClient;
 
-    private Location mMyLocation;
+    private Location mLastLocation;
 
     @NonNull private final Activity mActivity;
 
@@ -79,6 +80,7 @@ public class PlayServicesHelper
 
         if (activityState != null) {
             mResolvingError = activityState.getBoolean(STATE_RESOLVING_ERROR, false);
+            mLastLocation = activityState.getParcelable(STATE_LAST_LOCATION);
             Timber.i("Saved state was restored. Resolving error = %b", mResolvingError);
         }
     }
@@ -128,6 +130,10 @@ public class PlayServicesHelper
         mResolvingError = isResolving;
     }
 
+    public Location getLastLocation() {
+        return mLastLocation;
+    }
+
     private void produceLocationIfAvailable() {
         Timber.d("Checking requirements to produce location");
         if (checkSelfPermission(mActivity, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
@@ -146,13 +152,13 @@ public class PlayServicesHelper
             Timber.i("No location was produced");
         } else {
             Timber.i("All requirements was verified, now requesting last location to provider");
-            mMyLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-            if (mMyLocation == null) {
+            if (mLastLocation == null) {
                 Timber.i("Last location was not available");
             } else {
-                Timber.i("Last location is %s", mMyLocation.toString());
-                mCallbacks.onLocationIsAvailable(mMyLocation);
+                Timber.i("Last location is %s", mLastLocation.toString());
+                mCallbacks.onLocationIsAvailable(mLastLocation);
             }
         }
     }
