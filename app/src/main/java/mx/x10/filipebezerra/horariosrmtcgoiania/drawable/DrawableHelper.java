@@ -28,7 +28,9 @@ public class DrawableHelper {
             @NonNull Drawable drawable) {
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTint(drawable, ContextCompat.getColor(context, colorRes));
-        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_ATOP);
+        // TODO: Bug (https://code.google.com/p/android/issues/detail?id=198082)
+        // Another approach: PorterDuff.Mode.SRC_ATOP
+        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
     }
 
     public static void tint(@NonNull Context context, @ColorRes int colorRes,
