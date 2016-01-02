@@ -21,18 +21,27 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper.c
 import static mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper.changeLeftDrawableColor;
 
 /**
- * Arrival prediction visualization.
+ * User presentation of {@link ArrivalPrediction}.
  *
  * @author Filipe Bezerra
- * @version 0.1.0, 29/12/2015
- * @since 0.1.0
+ * @version 3.0.0, 02/01/2016
+ * @since 3.0.0
  */
 public class ArrivalPredictionFragment extends BaseFragment {
 
-    private static final String ARG_DATA = "ArrivalPrediction";
+    // logging purposes
     private static final String LOG = ArrivalPredictionFragment.class.getSimpleName();
-    public static final String QUALIDADE_PLANILHA_DE_HORARIOS = "Planilha de Horários";
 
+    // User data handled by this fragment
+    private static final String ARG_DATA = "ArrivalPrediction";
+
+    // State of user data handled by this fragment
+    private static final String STATE_ARG_DATA = "State_" + ARG_DATA;
+
+    // timetable quality from arrival prediction
+    private static final String TIMETABLE_QUALITY = "Planilha de Horários";
+
+    // Data representation handled by this fragment
     private ArrivalPrediction mArrivalPrediction;
 
     @Bind(R.id.root_layout)
@@ -101,6 +110,15 @@ public class ArrivalPredictionFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onActivityCreated(Bundle inState) {
+        super.onActivityCreated(inState);
+
+        if (inState != null) {
+            mArrivalPrediction = inState.getParcelable(STATE_ARG_DATA);
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -115,6 +133,12 @@ public class ArrivalPredictionFragment extends BaseFragment {
                 mArrivalPrediction.getDestination());
         setupNextTravelCard(mArrivalPrediction.getNext());
         setupFollowingTravelCard(mArrivalPrediction.getFollowing());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_ARG_DATA, mArrivalPrediction);
     }
 
     private void setupLineInfoCard(String lineNumber, String destination) {
@@ -133,7 +157,7 @@ public class ArrivalPredictionFragment extends BaseFragment {
                     .setVisibility(View.GONE);
         } else {
             // setting up next travel icon for different quality
-            if (nextTravel.getQuality().equalsIgnoreCase(QUALIDADE_PLANILHA_DE_HORARIOS)) {
+            if (nextTravel.getQuality().equalsIgnoreCase(TIMETABLE_QUALITY)) {
                 changeLeftCompoundDrawable(getContext(), mNextTravelView,
                         R.drawable.ic_timetable_24dp);
             }
@@ -180,7 +204,7 @@ public class ArrivalPredictionFragment extends BaseFragment {
                     .setVisibility(View.GONE);
         } else {
             // setting up following travel icon for different quality
-            if (followingTravel.getQuality().equalsIgnoreCase(QUALIDADE_PLANILHA_DE_HORARIOS)) {
+            if (followingTravel.getQuality().equalsIgnoreCase(TIMETABLE_QUALITY)) {
                 changeLeftCompoundDrawable(getContext(), mFollowingTravelView,
                         R.drawable.ic_timetable_24dp);
             }
