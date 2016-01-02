@@ -5,4 +5,8 @@
     <item name="list" type="id"/>
     <item name="fab_favorite" type="id"/>
     <item name="app_bar" type="id" />
+
+    <item name="line_number" type="id" />
+    <item name="line_itinerary" type="id" />
+    <item name="your_address" type="id" />
 </resources>

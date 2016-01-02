@@ -21,7 +21,7 @@ public class BusTravel {
 
     private String mExpectedArrivalTime;
 
-    private Integer mMinutesToArrive;
+    private Long mMinutesToArrive;
 
     public BusTravel() {
         //required
@@ -77,11 +77,11 @@ public class BusTravel {
         return this;
     }
 
-    public Integer getMinutesToArrive() {
+    public Long getMinutesToArrive() {
         return mMinutesToArrive;
     }
 
-    public BusTravel setMinutesToArrive(Integer minutesToArrive) {
+    public BusTravel setMinutesToArrive(Long minutesToArrive) {
         mMinutesToArrive = minutesToArrive;
         return this;
     }

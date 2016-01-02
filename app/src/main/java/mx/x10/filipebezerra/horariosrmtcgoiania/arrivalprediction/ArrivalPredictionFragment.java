@@ -1,20 +1,30 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.text.format.DateUtils;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
+import org.joda.time.DateTime;
 import org.parceler.Parcels;
 import timber.log.Timber;
+
+import static android.os.Build.VERSION;
+import static android.os.Build.VERSION_CODES;
+import static java.util.concurrent.TimeUnit.HOURS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static org.joda.time.format.DateTimeFormat.forPattern;
 
 /**
  * Arrival prediction visualization.
@@ -27,20 +37,42 @@ public class ArrivalPredictionFragment extends BaseFragment {
 
     private static final String ARG_DATA = "ArrivalPrediction";
     private static final String LOG = ArrivalPredictionFragment.class.getSimpleName();
+    public static final String QUALIDADE_PLANILHA_DE_HORARIOS = "Planilha de Horários";
 
     private ArrivalPrediction mArrivalPrediction;
 
-    @Bind(R.id.next_arrives_in_minutes) TextView mNextArrivesMinutesView;
-    @Bind(R.id.next_travel_quality) TextView mNextTravelQualityView;
-    @Bind(R.id.next_bus_number) TextView mNextBusNumber;
-    @Bind(R.id.next_expected_arrival) TextView mNextExpectedArrival;
-    @Bind(R.id.next_planned_arrival) TextView mNextPlannedArrival;
+    @Bind(R.id.root_layout)
+    protected NestedScrollView mRootLayout;
 
-    @Bind(R.id.following_arrives_in_minutes) TextView mFollowingArrivesMinutesView;
-    @Bind(R.id.following_travel_quality) TextView mFollowingTravelQualityView;
-    @Bind(R.id.following_bus_number) TextView mFollowingBusNumber;
-    @Bind(R.id.following_expected_arrival) TextView mFollowingExpectedArrival;
-    @Bind(R.id.following_planned_arrival) TextView mFollowingPlannedArrival;
+    @Bind(R.id.line_itinerary)
+    protected TextView mLineItineraryView;
+
+    @Bind(R.id.line_number)
+    protected TextView mLineNumberView;
+
+    @Bind(R.id.next_travel_label)
+    protected TextView mNextTravelView;
+
+    @Bind(R.id.next_bus_number)
+    protected TextView mNextBusNumberView;
+
+    @Bind(R.id.next_expected_arrival_time)
+    protected TextView mNextExpectedArrivalTimeView;
+
+    @Bind(R.id.next_countdown_timer)
+    protected TextView mNextCountdownTimerView;
+
+    @Bind(R.id.following_travel_label)
+    protected TextView mFollowingTravelView;
+
+    @Bind(R.id.following_bus_number)
+    protected TextView mFollowingBusNumberView;
+
+    @Bind(R.id.following_expected_arrival_time)
+    protected TextView mFollowingExpectedArrivalTimeView;
+
+    @Bind(R.id.following_countdown_timer)
+    protected TextView mFollowingCountdownTimerView;
 
     @Override
     protected int provideLayoutResource() {
@@ -69,67 +101,157 @@ public class ArrivalPredictionFragment extends BaseFragment {
 
         Timber.d("Data retrieved with value %s", mArrivalPrediction.toString());
 
-        if (mArrivalPrediction.getNext() == null
-                && mArrivalPrediction.getFollowing() == null) {
-
-        } else {
-            setUpNextTravelCard(mArrivalPrediction);
-            setUpFollowingTravelCard(mArrivalPrediction);
-        }
+        setupLineInfoCard(mArrivalPrediction.getLineNumber(),
+                mArrivalPrediction.getDestination());
+        setupNextTravelCard(mArrivalPrediction.getNext());
+        setupFollowingTravelCard(mArrivalPrediction.getFollowing());
     }
 
-    private void setUpNextTravelCard(@NonNull ArrivalPrediction arrivalPrediction) {
+    private void setupLineInfoCard(String lineNumber, String destination) {
+        Timber.d("Binding line info received to view");
+
+        mLineNumberView.setText(lineNumber);
+        mLineItineraryView.setText(destination);
+    }
+
+    private void setupNextTravelCard(BusTravel nextTravel) {
         Timber.d("Binding next travel received to view");
 
-        final BusTravel next = arrivalPrediction.getNext();
+        if (nextTravel == null) {
+            Timber.d("Next travel not found");
+            ButterKnife.findById(mRootLayout, R.id.next_travel)
+                    .setVisibility(View.GONE);
+        } else {
+            // setting up next travel icon for different quality
+            if (nextTravel.getQuality().equalsIgnoreCase(QUALIDADE_PLANILHA_DE_HORARIOS)) {
+                changeDrawable(mNextTravelView, R.drawable.ic_timetable_24dp);
+            }
 
-        mNextArrivesMinutesView.setText(
-                String.valueOf(next.getMinutesToArrive()));
-        mNextTravelQualityView.setText(
-                next.getQuality());
-        mNextBusNumber.setText(
-                next.getBusNumber());
-        mNextExpectedArrival.setText(
-                parseAndFormatDate(next.getExpectedArrivalTime()));
-        mNextPlannedArrival.setText(
-                parseAndFormatDate(next.getPlannedArrivalTime()));
+            // setting up next travel icon color
+            changeDrawableColor(mNextTravelView, R.color.colorPrimary);
+
+            // setting up next bus number text
+            mNextBusNumberView.setText(getString(
+                    R.string.bus_number, nextTravel.getBusNumber()));
+
+            // setting up next expected arrival time text
+            mNextExpectedArrivalTimeView.setText(getString(
+                    R.string.expected_arrival_time,
+                    toTimeFormat(nextTravel.getExpectedArrivalTime())));
+
+            // setting up next countdown timer
+            new CountDownTimer(
+                    MINUTES.toMillis(nextTravel.getMinutesToArrive()),
+                    1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if (isVisible()) {
+                        mNextCountdownTimerView.setText(toRemainingTimeFormat(millisUntilFinished));
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    if (isVisible()) {
+                        mNextCountdownTimerView.setText(R.string.bus_has_arrived);
+                    }
+                }
+            }.start();
+        }
     }
 
-    @SuppressWarnings("ConstantConditions")
-    private void setUpFollowingTravelCard(@NonNull ArrivalPrediction arrivalPrediction) {
+    private void setupFollowingTravelCard(BusTravel followingTravel) {
         Timber.d("Binding following travel received to view");
 
-        final BusTravel following = arrivalPrediction.getFollowing();
-        if (following == null) {
-            Timber.d("No following travel found");
-            ButterKnife.findById(getView(), R.id.following_travel).setVisibility(View.GONE);
+        if (followingTravel == null) {
+            Timber.d("Following travel not found");
+            ButterKnife.findById(mRootLayout, R.id.following_travel)
+                    .setVisibility(View.GONE);
         } else {
-            mFollowingArrivesMinutesView.setText(
-                    String.valueOf(following.getMinutesToArrive()));
-            mFollowingTravelQualityView.setText(
-                    following.getQuality());
-            mFollowingBusNumber.setText(
-                    following.getBusNumber());
-            mFollowingExpectedArrival.setText(
-                    parseAndFormatDate(following.getExpectedArrivalTime()));
-            mFollowingPlannedArrival.setText(
-                    parseAndFormatDate(following.getPlannedArrivalTime()));
+            // setting up following travel icon for different quality
+            if (followingTravel.getQuality().equalsIgnoreCase(QUALIDADE_PLANILHA_DE_HORARIOS)) {
+                changeDrawable(mFollowingTravelView, R.drawable.ic_timetable_24dp);
+            }
+
+            // setting up following travel icon color
+            changeDrawableColor(mFollowingTravelView, R.color.colorAccent);
+
+            // setting up following bus number text
+            mFollowingBusNumberView.setText(getString(R.string.bus_number,
+                    followingTravel.getBusNumber()));
+
+            // setting up following expected arrival time text
+            mFollowingExpectedArrivalTimeView.setText(getString(
+                    R.string.expected_arrival_time,
+                    toTimeFormat(followingTravel.getExpectedArrivalTime())));
+
+            // setting up following countdown timer
+            new CountDownTimer(
+                    MINUTES.toMillis(followingTravel.getMinutesToArrive()),
+                    1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if (isVisible()) {
+                        mFollowingCountdownTimerView.setText(
+                                toRemainingTimeFormat(millisUntilFinished));
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    if (isVisible()) {
+                        mFollowingCountdownTimerView.setText(getString(R.string.bus_has_arrived));
+                    }
+                }
+            }.start();
         }
     }
 
-    final SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",
-            Locale.getDefault());
+    private void changeDrawable(@NonNull TextView textView, @DrawableRes int drawableRes) {
+        final Drawable drawable = ContextCompat.getDrawable(getContext(), drawableRes);
+        textView.setCompoundDrawables(drawable, null, null, null);
 
-    private String parseAndFormatDate(@NonNull String dateString) {
-        try {
-            Date date = mDateFormatter.parse(dateString);
-
-            return DateUtils.getRelativeTimeSpanString(date.getTime(),
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        } catch (ParseException e) {
-            Timber.e("Error parsing the data string %s", dateString);
-            return dateString;
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+            textView.setCompoundDrawablesRelative(drawable, null, null, null);
         }
     }
 
+    private void changeDrawableColor(@NonNull TextView textView, @ColorRes int colorRes) {
+        final Drawable leftDrawable = textView.getCompoundDrawables()[0];
+
+        if (leftDrawable != null) {
+            DrawableHelper.tint(getContext(), colorRes, leftDrawable);
+        }
+
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+            final Drawable leftRelativeDrawable = textView.getCompoundDrawablesRelative()[0];
+
+            if (leftRelativeDrawable != null) {
+                DrawableHelper.tint(getContext(), colorRes, leftRelativeDrawable);
+            }
+        }
+    }
+
+    private String toTimeFormat(@NonNull String dateString) {
+        return DateTime.parse(dateString, forPattern("yyyy-MM-dd'T'HH:mm:ssZ"))
+                .toString(forPattern("HH:mm"));
+    }
+
+    private String toRemainingTimeFormat(long millisUntilFinished) {
+        final long hours = MILLISECONDS.toHours(millisUntilFinished);
+        final long minutes = MILLISECONDS.toMinutes(millisUntilFinished) -
+                HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished));
+        final long seconds = MILLISECONDS.toSeconds(millisUntilFinished) -
+                MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished));
+
+        if (hours == 0 && minutes == 0) {
+            return getString(R.string.countdown_fewer_than_minute);
+        } else {
+            if (hours == 0) {
+                return getString(R.string.countdown_in_minutes, minutes, seconds);
+            } else {
+                return getString(R.string.countdown_in_hours, hours, minutes, seconds);
+            }
+        }
+    }
 }

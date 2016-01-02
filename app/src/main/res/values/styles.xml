@@ -40,14 +40,23 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:background">@color/white</item>
         <item name="cardCornerRadius">2dp</item>
-        <item name="cardElevation">8dp</item>
-        <item name="cardMaxElevation">8dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardMaxElevation">4dp</item>
         <item name="cardUseCompatPadding">true</item>
         <item name="contentPadding">16dp</item>
+        <item name="cardPreventCornerOverlap">false</item>
     </style>
 
     <style name="Widget.HorariosRmtc.CardView.NoContentPadding">
         <item name="contentPadding">0dp</item>
         <item name="cardCornerRadius">0dp</item>
+    </style>
+
+    <style name="Widget.HorariosRmtc.TextView">
+
+    </style>
+
+    <style name="Widget.HorariosRmtc.TextView.WithDrawable">
+        <item name="android:drawablePadding">32dp</item>
     </style>
 </resources>

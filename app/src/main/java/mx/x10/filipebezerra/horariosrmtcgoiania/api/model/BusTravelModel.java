@@ -23,5 +23,5 @@ public class BusTravelModel {
     public String expectedArrivalTime;
 
     @SerializedName("PrevisaoChegada")
-    public int minutesToArrive;
+    public Long minutesToArrive;
 }
