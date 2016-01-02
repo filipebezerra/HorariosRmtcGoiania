@@ -2,6 +2,8 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -46,5 +48,56 @@ public class AutofitRecyclerView extends RecyclerView {
             int spanCount = Math.max(1, getMeasuredWidth() / columnWidth);
             manager.setSpanCount(spanCount);
         }
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        final Parcelable superState = super.onSaveInstanceState();
+        final SavedState thisState = new SavedState(superState);
+        thisState.stateColumnWidth = columnWidth;
+
+        return thisState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+
+        this.columnWidth = savedState.stateColumnWidth;
+    }
+
+    static class SavedState extends BaseSavedState {
+        int stateColumnWidth;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.stateColumnWidth = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(this.stateColumnWidth);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
 }
