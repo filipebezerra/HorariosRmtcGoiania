@@ -1,6 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.application;
 
-import android.support.multidex.MultiDexApplication;
+import android.app.Application;
 import mx.x10.filipebezerra.horariosrmtcgoiania.BuildConfig;
 import timber.log.Timber;
 
@@ -11,7 +11,7 @@ import timber.log.Timber;
  * @version 0.3.0, 31/12/2015
  * @since 0.3.0
  */
-public class App extends MultiDexApplication {
+public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
