@@ -40,7 +40,7 @@ public class NearbyBusStopsAdapter
     @Override
     public NearBusStopsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater.from(mContext)
-                .inflate(R.layout.near_bus_stops, parent, false);
+                .inflate(R.layout.nearby_bus_stops, parent, false);
         return new NearBusStopsViewHolder(itemView);
     }
 

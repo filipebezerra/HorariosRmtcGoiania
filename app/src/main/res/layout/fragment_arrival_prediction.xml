@@ -23,7 +23,6 @@
         <android.support.v7.widget.CardView
             style="@style/Widget.HorariosRmtc.CardView"
             android:id="@+id/bus_line_info"
-
             >
 
             <include layout="@layout/card_bus_line_info" />

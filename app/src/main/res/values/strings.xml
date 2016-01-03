@@ -47,4 +47,7 @@
     <string name="countdown_in_minutes">faltam %1$02d min %2$02d seg</string>
     <string name="countdown_fewer_than_minute">falta menos de 1 minuto</string>
     <string name="bus_has_arrived">SEU ÔNIBUS CHEGOU!</string>
+
+    <string name="bus_stop_id_example">3357</string>
+    <string name="bus_stop_address">Interna Do Campus, Area Da Ufg - Goiania</string>
 </resources>

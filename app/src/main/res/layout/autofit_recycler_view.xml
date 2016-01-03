@@ -2,6 +2,7 @@
 <mx.x10.filipebezerra.horariosrmtcgoiania.view.AutofitRecyclerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,4 +11,6 @@
     android:scrollbarStyle="outsideOverlay"
     android:columnWidth="@dimen/column_width"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:layoutManager="GridLayoutManager"
+    tools:listitem="@layout/bus_stop_lines"
     />

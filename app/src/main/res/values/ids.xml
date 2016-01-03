@@ -9,4 +9,6 @@
     <item name="line_number" type="id" />
     <item name="line_itinerary" type="id" />
     <item name="your_address" type="id" />
+
+    <item name="content" type="id" />
 </resources>
