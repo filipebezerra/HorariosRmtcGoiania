@@ -3,24 +3,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_24dp"
             android:title="Início"
             android:checked="true"
             />
         <item
             android:id="@+id/nav_bus_terminals"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_bus_24dp"
             android:title="Terminais"
             />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Mapa"
-            />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_favorite_24dp"
             android:title="Favoritos"
             />
     </group>
@@ -29,12 +24,12 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_travel_24dp"
                 android:title="Share"
                 />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_timelapse_24dp"
                 android:title="Send"
                 />
         </menu>

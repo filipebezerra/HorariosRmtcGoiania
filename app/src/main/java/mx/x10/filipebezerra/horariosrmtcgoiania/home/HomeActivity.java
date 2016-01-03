@@ -40,7 +40,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredict
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStopLinesFragment;
-import mx.x10.filipebezerra.horariosrmtcgoiania.busterminal.BusTerminalActivity;
+import mx.x10.filipebezerra.horariosrmtcgoiania.busterminal.BusTerminalFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
@@ -157,17 +157,11 @@ public class HomeActivity extends BaseDrawerActivity
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
 
         } else if (id == R.id.nav_bus_terminals) {
-            startActivity(new Intent(this, BusTerminalActivity.class));
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            replaceFragment(BusTerminalFragment.newInstance(), true);
+        } else if (id == R.id.nav_favorites) {
 
         }
 
