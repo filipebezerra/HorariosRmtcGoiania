@@ -50,4 +50,9 @@
 
     <string name="bus_stop_id_example">3357</string>
     <string name="bus_stop_address">Interna Do Campus, Area Da Ufg - Goiania</string>
+
+    <string name="bus_terminal_id_example">31801</string>
+    <string name="bus_terminal_address_example">Terminal Neropolis,  - Neropolis</string>
+    <string name="title_activity_bus_terminal">Terminais</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -9,7 +9,7 @@
             android:checked="true"
             />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_bus_terminals"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Terminais"
             />

@@ -11,4 +11,7 @@
     <item name="your_address" type="id" />
 
     <item name="content" type="id" />
+    <item name="available_lines" type="id" />
+
+    <item name="toolbar" type="id" />
 </resources>

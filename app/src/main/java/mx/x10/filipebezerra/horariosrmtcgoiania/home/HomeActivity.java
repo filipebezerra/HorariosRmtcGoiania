@@ -40,6 +40,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredict
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStopLinesFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.busterminal.BusTerminalActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
@@ -158,8 +159,8 @@ public class HomeActivity extends BaseDrawerActivity
 
         if (id == R.id.nav_camera) {
 
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_bus_terminals) {
+            startActivity(new Intent(this, BusTerminalActivity.class));
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

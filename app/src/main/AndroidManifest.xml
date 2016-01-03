@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".application.App"
@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/HorariosRmtc"
         >
-
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".home.HomeActivity"
@@ -24,15 +23,14 @@
         <activity
             android:name=".home.HomeActivity"
             android:label="${applicationLabel}"
-            android:theme="@style/HorariosRmtc.NoActionBar"
             android:launchMode="singleTop"
+            android:theme="@style/HorariosRmtc.NoActionBar"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <!--
@@ -41,7 +39,6 @@
                      using component name.
                 -->
             </intent-filter>
-
             <intent-filter>
                 <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
 
@@ -59,6 +56,18 @@
             android:authorities="mx.x10.filipebezerra.horariosrmtcgoiania.suggestion.BusStopSearchSuggestionsProvider"
             android:exported="false"
             />
+
+        <activity
+            android:name=".busterminal.BusTerminalActivity"
+            android:label="@string/title_activity_bus_terminal"
+            android:parentActivityName=".home.HomeActivity"
+            android:theme="@style/HorariosRmtc.NoActionBar"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="mx.x10.filipebezerra.horariosrmtcgoiania.home.HomeActivity"
+                />
+        </activity>
     </application>
 
 </manifest>
