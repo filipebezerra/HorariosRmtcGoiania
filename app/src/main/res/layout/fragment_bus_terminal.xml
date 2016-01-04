@@ -8,7 +8,6 @@
     android:paddingBottom="5dp"
     android:paddingRight="6dp"
     android:paddingLeft="6dp"
-    tools:showIn="@layout/activity_bus_terminal"
     tools:context=".busterminal.BusTerminalFragment"
     >
 
