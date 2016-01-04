@@ -56,11 +56,6 @@ public class NearbyBusStopsAdapter
         return mBusStops.size();
     }
 
-    public void swapData(@NonNull final List<BusStop> busStops) {
-        mBusStops = busStops;
-        notifyDataSetChanged();
-    }
-
     public void setOnRequestAvailableLines(OnRequestAvailableLines callback) {
         mOnRequestAvailableLines = callback;
     }

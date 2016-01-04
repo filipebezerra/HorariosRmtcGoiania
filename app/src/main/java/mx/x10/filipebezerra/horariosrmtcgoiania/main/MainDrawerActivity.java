@@ -1,21 +1,13 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.main;
 
-import android.Manifest;
-import android.app.Dialog;
 import android.app.SearchManager;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -25,15 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.otto.Subscribe;
-import java.util.List;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.BusStopModel;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.BusStopLinesResponse;
-import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.NearbyBusStopsResponse;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredictionFragment;
@@ -50,18 +37,10 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.nearby.NearbyBusStopsFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.NetworkUtil;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RetrofitController;
 import mx.x10.filipebezerra.horariosrmtcgoiania.observable.SubscriberDelegate;
-import mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper;
-import mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.PlayServicesPermission;
 import mx.x10.filipebezerra.horariosrmtcgoiania.suggestion.BusStopSearchSuggestionsHelper;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
-
-import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.REQUEST_LOCATION;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.application.Constants.REQUEST_RESOLVE_ERROR;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.PlayServicesPermission.FINE_LOCATION;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.STATE_LAST_LOCATION;
-import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.STATE_RESOLVING_ERROR;
 
 /**
  * Main activity which contains the {@link android.support.v4.widget.DrawerLayout}.
@@ -71,10 +50,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServices
  * @since 0.1.0
  */
 public class MainDrawerActivity extends BaseDrawerActivity
-        implements
-        NavigationView.OnNavigationItemSelectedListener,
-        PlayServicesHelper.PlayServicesCallbacks,
-        FragmentManager.OnBackStackChangedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String LOG = MainDrawerActivity.class.getSimpleName();
 
@@ -86,12 +62,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
     private MenuItem mSearchItem;
 
     private ApiSubscriber<BusStopLinesResponse> mBusStopLinesApiSubscriber;
-
-    private ApiSubscriber<NearbyBusStopsResponse> mNearbyBusStopsApiSubscriber;
-
-    private PlayServicesHelper mPlayServicesHelper;
-
-    private static final String DIALOG_ERROR = "dialog_error";
 
     @Bind(R.id.root_layout) protected CoordinatorLayout mRootLayout;
 
@@ -111,8 +81,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
         super.onCreate(inState);
         Timber.tag(LOG);
 
-        mPlayServicesHelper = new PlayServicesHelper(this, inState, this);
-
         if (inState == null) {
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorite);
             DrawableHelper.tint(this, R.color.white, fab.getDrawable());
@@ -125,7 +93,8 @@ public class MainDrawerActivity extends BaseDrawerActivity
                                 }
                             }));
 
-            addOnBackStackChangedListener(this);
+            changeTitleAndSubtitle("Rodovia R 2", "Pontos próximos à você");
+            replaceFragment(NearbyBusStopsFragment.newInstance(), false);
         }
     }
 
@@ -172,7 +141,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
     protected void onStart() {
         super.onStart();
         BusProvider.register(this);
-        mPlayServicesHelper.connect();
     }
 
     @Override
@@ -185,26 +153,9 @@ public class MainDrawerActivity extends BaseDrawerActivity
             mBusStopLinesApiSubscriber = null;
         }
 
-        if (mNearbyBusStopsApiSubscriber != null) {
-            if (!mNearbyBusStopsApiSubscriber.isUnsubscribed()) {
-                mNearbyBusStopsApiSubscriber.unsubscribe();
-            }
-
-            mNearbyBusStopsApiSubscriber = null;
-        }
-
-        mPlayServicesHelper.disconnect();
-
         BusProvider.unregister(this);
 
         super.onStop();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_RESOLVING_ERROR, mPlayServicesHelper.isResolvingError());
-        outState.putParcelable(STATE_LAST_LOCATION, mPlayServicesHelper.getLastLocation());
     }
 
     private SubscriberDelegate<BusStopLinesResponse> mBusStopLinesRxDelegate
@@ -265,74 +216,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
         }
     };
 
-    private SubscriberDelegate<NearbyBusStopsResponse> mNearbyBusStopsResponseRxDelegate
-            = new SubscriberDelegate<NearbyBusStopsResponse>() {
-        @Override
-        public void onStart() {
-            mMaterialDialogHelper
-                    .showIndeterminateProgress(getString(R.string.feedback_searching_nearby_bus_stop),
-                            true,
-                            dialog -> {
-                                mMaterialDialogHelper.dismissDialog();
-                                mNearbyBusStopsApiSubscriber.unsubscribe();
-                            });
-        }
-
-        @Override
-        public void onNext(NearbyBusStopsResponse observable) {
-            if (Boolean.parseBoolean(observable.status)) {
-                final List<BusStopModel> model = observable.data;
-
-                if (model.isEmpty()) {
-                    // TODO Apply empty state strategy
-                } else {
-                    switch (model.size()) {
-                        case 1:
-                            final BusStop busStop = BusStop.fromModel(model.get(0));
-
-                            changeTitleAndSubtitle(String.format("Ponto próximo %s",
-                                    busStop.getId()), busStop.getAddress());
-
-                            BusStopLinesFragment busStopFragment = BusStopLinesFragment
-                                    .newInstance(busStop);
-
-                            Timber.d("Sending fragment %s to be added",
-                                    busStopFragment.getClass().getSimpleName());
-                            replaceFragment(busStopFragment, true);
-
-                            break;
-
-                        default:
-                            final List<BusStop> busStops = BusStop.fromModel(model);
-
-                            changeTitleAndSubtitle("Pontos próximos à você", "");
-
-                            NearbyBusStopsFragment nearbyFragment = NearbyBusStopsFragment
-                                    .newInstance(busStops);
-
-                            Timber.d("Sending fragment %s to be added",
-                                    nearbyFragment.getClass().getSimpleName());
-                            replaceFragment(nearbyFragment, true);
-
-                            break;
-                    }
-                }
-            } else {
-                FeedbackHelper.snackbar(getRootViewLayout(), observable.message, false);
-            }
-        }
-
-        @Override
-        public void onCompleted() {
-            mMaterialDialogHelper.dismissDialog();
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            mMaterialDialogHelper.dismissDialog();
-        }
-    };
-
     private void handleSearchQuery(Intent intent) {
         if (intent != null) {
             Timber.i("Handling the new intent.");
@@ -368,6 +251,7 @@ public class MainDrawerActivity extends BaseDrawerActivity
             FeedbackHelper.toast(this, getString(R.string.feedback_no_network), false);
         }
     }
+
     @Subscribe
     public void onArrivalPredictionFound(GenericEvent<ArrivalPrediction> event) {
         Timber.d("%s observer received the event with data %s", LOG,
@@ -385,126 +269,15 @@ public class MainDrawerActivity extends BaseDrawerActivity
         replaceFragment(fragment, true);
     }
 
-    @SuppressWarnings("ResourceType")
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION) {
-            if (grantResults.length == 1
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // We can now safely use the API we requested access to
-                mPlayServicesHelper.setRequestedPermissionGranted(FINE_LOCATION);
-            } else {
-                // Permission was denied or request was cancelled
-                Timber.i("%s Permission was denied or request was cancelled",
-                        permissions[0]);
-            }
-        }
-    }
+    @Subscribe
+    public void onBusStopFound(BusStop busStop) {
+        changeTitleAndSubtitle(String.format("Ponto próximo %s", busStop.getId()),
+                busStop.getAddress());
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_RESOLVE_ERROR) {
-            boolean isErrorSolved = resultCode == RESULT_OK;
-            Timber.i("Connection error was solved = %b", isErrorSolved);
-            mPlayServicesHelper.setResolvingError(isErrorSolved);
-        }
-    }
+        final BusStopLinesFragment fragment = BusStopLinesFragment.newInstance(busStop);
 
-    @Override
-    public void onLocationIsAvailable(@NonNull Location location) {
-        Timber.i("Received location %f/%f", location.getLatitude(), location.getLongitude());
+        Timber.d("Sending fragment %s to be added", fragment.getClass().getSimpleName());
 
-        if (!mIsFragmentRestored) {
-            if (NetworkUtil.isDeviceConnectedToInternet(this)) {
-                mNearbyBusStopsApiSubscriber = new ApiSubscriber<>(
-                        mNearbyBusStopsResponseRxDelegate);
-
-                RetrofitController.instance(this)
-                        .searchNearbyBusStops(location.getLatitude(), location.getLongitude(),
-                                0.25f)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(mNearbyBusStopsApiSubscriber);
-            } else {
-                FeedbackHelper.toast(this, getString(R.string.feedback_no_network), false);
-            }
-        } else {
-            Timber.d("Last fragment was restored");
-        }
-    }
-
-    @Override
-    public void onConnectionError(int errorCode) {
-        // Show dialog using GoogleApiAvailability.getErrorDialog()
-        Timber.i("Received connection error with code %d", errorCode);
-        showErrorDialog(errorCode);
-    }
-
-    @Override
-    public void onRequestLocationPermission(PlayServicesPermission permission) {
-        Timber.i("Received request to grant location permission %s", permission.getName());
-        switch (permission) {
-            case FINE_LOCATION:
-                mMaterialDialogHelper.showDialog(this, "Permissões",
-                        "Precisamos acessar sua localização, por isto necessitamos que nos permita.",
-                        "Aceitar",
-                        new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                ActivityCompat.requestPermissions(
-                                        MainDrawerActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        REQUEST_LOCATION);
-                            }
-                        },
-                        "Negar",
-                        new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            }
-                        });
-                break;
-        }
-    }
-
-    @Override
-    public void onBackStackChanged() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            Timber.d("No fragments found in the back stack. Finishing application");
-            finish();
-        }
-    }
-
-    private void showErrorDialog(int errorCode) {
-        // Create a fragment for the error dialog
-        ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
-        // Pass the error that should be displayed
-        Bundle args = new Bundle();
-        args.putInt(DIALOG_ERROR, errorCode);
-        dialogFragment.setArguments(args);
-        dialogFragment.show(getSupportFragmentManager(), "errordialog");
-    }
-
-    /* Called from ErrorDialogFragment when the dialog is dismissed. */
-    public void onDialogDismissed() {
-        mPlayServicesHelper.setResolvingError(true);
-    }
-
-    public static class ErrorDialogFragment extends DialogFragment {
-        public ErrorDialogFragment() {
-        }
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            int errorCode = this.getArguments().getInt(DIALOG_ERROR);
-            return GoogleApiAvailability.getInstance().getErrorDialog(
-                    this.getActivity(), errorCode, REQUEST_RESOLVE_ERROR);
-        }
-
-        @Override
-        public void onDismiss(DialogInterface dialog) {
-            ((MainDrawerActivity) getActivity()).onDialogDismissed();
-        }
+        replaceFragment(fragment, true);
     }
 }
