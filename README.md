@@ -64,7 +64,7 @@ Screenshots
 Colaboradores
 -------------
 
-* Filipe Bezerra de Sousa - <filipebzerra@gmail.com>
+* Filipe Bezerra - http://filipebezerra.github.io - filipebzerra@gmail.com
 
 <a href="https://twitter.com/filipebsousa">
   <img alt="Siga-me no Twitter" src="http://imageshack.us/a/img812/3923/smallth.png" />
