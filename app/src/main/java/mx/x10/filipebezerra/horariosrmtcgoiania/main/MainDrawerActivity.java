@@ -2,6 +2,8 @@ package mx.x10.filipebezerra.horariosrmtcgoiania.main;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -24,6 +26,8 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.BusStopLinesRespons
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredictionFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.asynctask.AsyncTaskCallback;
+import mx.x10.filipebezerra.horariosrmtcgoiania.asynctask.AsyncTaskException;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseDrawerActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStopLinesFragment;
@@ -32,6 +36,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
+import mx.x10.filipebezerra.horariosrmtcgoiania.geocoder.LocationToAddressTask;
 import mx.x10.filipebezerra.horariosrmtcgoiania.keyboard.KeyboardUtil;
 import mx.x10.filipebezerra.horariosrmtcgoiania.nearby.NearbyBusStopsFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.NetworkUtil;
@@ -63,6 +68,8 @@ public class MainDrawerActivity extends BaseDrawerActivity
 
     private ApiSubscriber<BusStopLinesResponse> mBusStopLinesApiSubscriber;
 
+    private LocationToAddressTask mLocationToAddressTask;
+
     @Bind(R.id.root_layout) protected CoordinatorLayout mRootLayout;
 
     @Override
@@ -93,7 +100,7 @@ public class MainDrawerActivity extends BaseDrawerActivity
                                 }
                             }));
 
-            changeTitleAndSubtitle("Rodovia R 2", "Pontos próximos à você");
+            changeTitleAndSubtitle(getString(R.string.subtitle_nearby_bus_stops), null);
             replaceFragment(NearbyBusStopsFragment.newInstance(), false);
         }
     }
@@ -127,8 +134,10 @@ public class MainDrawerActivity extends BaseDrawerActivity
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
         if (id == R.id.nav_home) {
-
+            changeTitleAndSubtitle(getString(R.string.subtitle_nearby_bus_stops), null);
+            replaceFragment(NearbyBusStopsFragment.newInstance(), false);
         } else if (id == R.id.nav_bus_terminals) {
+            changeTitleAndSubtitle(getString(R.string.title_terminals), null);
             replaceFragment(BusTerminalFragment.newInstance(), true);
         } else if (id == R.id.nav_favorites) {
 
@@ -184,7 +193,13 @@ public class MainDrawerActivity extends BaseDrawerActivity
                         model.id,
                         model.address);
 
-                changeTitleAndSubtitle(String.format("Ponto %s", model.id), model.address);
+                if (mLocationToAddressTask != null) {
+                    Timber.d("Cancelling LocationToAddressTask");
+                    mLocationToAddressTask.cancel(true);
+                }
+
+                changeTitleAndSubtitle(String.format(getString(R.string.title_bus_stop_lines),
+                        model.id), model.address);
 
                 final BusStop busStop = BusStop.fromModel(model);
 
@@ -258,8 +273,15 @@ public class MainDrawerActivity extends BaseDrawerActivity
                 event.message().toString());
 
         final ArrivalPrediction arrivalPrediction = event.message();
-        changeTitleAndSubtitle("Próxima viagem", String.format("%s - %s",
-                arrivalPrediction.getLineNumber(), arrivalPrediction.getDestination()));
+
+        if (mLocationToAddressTask != null) {
+            Timber.d("Cancelling LocationToAddressTask");
+            mLocationToAddressTask.cancel(true);
+        }
+
+        changeTitleAndSubtitle(String.format("%s - %s", arrivalPrediction.getLineNumber(),
+                arrivalPrediction.getDestination()), getString(
+                R.string.title_arrival_prediction));
 
         final ArrivalPredictionFragment fragment
                 = ArrivalPredictionFragment.newInstance(arrivalPrediction);
@@ -271,13 +293,58 @@ public class MainDrawerActivity extends BaseDrawerActivity
 
     @Subscribe
     public void onBusStopFound(BusStop busStop) {
-        changeTitleAndSubtitle(String.format("Ponto próximo %s", busStop.getId()),
-                busStop.getAddress());
+        if (mLocationToAddressTask != null) {
+            Timber.d("Cancelling LocationToAddressTask");
+            mLocationToAddressTask.cancel(true);
+        }
+
+        changeTitleAndSubtitle(String.format(getString(R.string.title_bus_stop),
+                busStop.getId()), busStop.getAddress());
 
         final BusStopLinesFragment fragment = BusStopLinesFragment.newInstance(busStop);
 
         Timber.d("Sending fragment %s to be added", fragment.getClass().getSimpleName());
 
         replaceFragment(fragment, true);
+    }
+
+    @Subscribe
+    public void onLocationFound(Location location) {
+        mLocationToAddressTask = new LocationToAddressTask(
+                new AsyncTaskCallback<Address>() {
+                    @Override
+                    public void onBegin() {
+                        Timber.d("Starting execution of LocationToAddressTask");
+                    }
+
+                    @Override
+                    public void onSuccess(Address address) {
+                        Timber.d("LocationToAddressTask result with address %s",
+                                address.toString());
+
+                        if (getSupportFragmentManager()
+                                .findFragmentById(R.id.fragment_placeholder)
+                                instanceof NearbyBusStopsFragment) {
+                            Timber.d("Changing activity title and subtitle");
+                            changeTitleAndSubtitle(address.getThoroughfare(),
+                                    getString(R.string.subtitle_nearby_bus_stops));
+                        } else {
+                            Timber.d("NearbyBusStopsFragment not in container, title "
+                                    + "and subtitle discarded");
+                        }
+                    }
+
+                    @Override
+                    public void onResultNothing() {
+                        Timber.d("LocationToAddressTask result with nothing");
+                    }
+
+                    @Override
+                    public void onError(AsyncTaskException e) {
+                        Timber.e(e, "Error in LocationToAddressTask");
+                    }
+                }, this
+        );
+        mLocationToAddressTask.execute(location);
     }
 }

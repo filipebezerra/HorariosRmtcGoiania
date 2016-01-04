@@ -55,4 +55,9 @@
     <string name="bus_terminal_address_example">Terminal Neropolis,  - Neropolis</string>
     <string name="title_activity_bus_terminal">Terminais</string>
     <string name="action_settings">Settings</string>
+    <string name="subtitle_nearby_bus_stops">Pontos próximos à você</string>
+    <string name="title_bus_stop">Ponto próximo %s</string>
+    <string name="title_arrival_prediction">Próxima viagem</string>
+    <string name="title_bus_stop_lines">Ponto %s</string>
+    <string name="title_terminals">Terminais</string>
 </resources>

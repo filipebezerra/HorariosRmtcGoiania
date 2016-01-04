@@ -357,6 +357,8 @@ public class NearbyBusStopsFragment extends BaseFragment
     public void onLocationIsAvailable(@NonNull Location location) {
         Timber.i("Received location %f/%f", location.getLatitude(), location.getLongitude());
 
+        BusProvider.post(location);
+
         if (NetworkUtil.isDeviceConnectedToInternet(getContext())) {
             mNearbyBusStopsApiSubscriber = new ApiSubscriber<>(
                     mNearbyBusStopsResponseRxDelegate);
