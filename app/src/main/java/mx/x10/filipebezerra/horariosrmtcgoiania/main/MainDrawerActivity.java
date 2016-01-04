@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania.home;
+package mx.x10.filipebezerra.horariosrmtcgoiania.main;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -64,27 +64,27 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServices
 import static mx.x10.filipebezerra.horariosrmtcgoiania.playservices.PlayServicesHelper.STATE_RESOLVING_ERROR;
 
 /**
- * Home and main screen
+ * Main activity which contains the {@link android.support.v4.widget.DrawerLayout}.
  *
  * @author Filipe Bezerra
  * @version 0.1.0, 29/12/2015
  * @since 0.1.0
  */
-public class HomeActivity extends BaseDrawerActivity
+public class MainDrawerActivity extends BaseDrawerActivity
         implements
         NavigationView.OnNavigationItemSelectedListener,
         PlayServicesHelper.PlayServicesCallbacks,
         FragmentManager.OnBackStackChangedListener {
 
-    private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String LOG = MainDrawerActivity.class.getSimpleName();
 
     private static final String ACTION_VOICE_SEARCH
             = "com.google.android.gms.actions.SEARCH_ACTION";
-    private static final String LOG = HomeActivity.class.getSimpleName();
 
     private SearchView mSearchView;
 
     private MenuItem mSearchItem;
+
     private ApiSubscriber<BusStopLinesResponse> mBusStopLinesApiSubscriber;
 
     private ApiSubscriber<NearbyBusStopsResponse> mNearbyBusStopsApiSubscriber;
@@ -97,7 +97,7 @@ public class HomeActivity extends BaseDrawerActivity
 
     @Override
     protected int provideLayoutResource() {
-        return R.layout.activity_home;
+        return R.layout.activity_main_drawer;
     }
 
     @NonNull
@@ -109,7 +109,7 @@ public class HomeActivity extends BaseDrawerActivity
     @Override
     protected void onCreate(Bundle inState) {
         super.onCreate(inState);
-        Timber.tag(TAG);
+        Timber.tag(LOG);
 
         mPlayServicesHelper = new PlayServicesHelper(this, inState, this);
 
@@ -138,7 +138,7 @@ public class HomeActivity extends BaseDrawerActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         mSearchItem = menu.findItem(R.id.action_search);
         DrawableHelper.tint(this, R.color.white, mSearchItem.getIcon());
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
@@ -229,7 +229,7 @@ public class HomeActivity extends BaseDrawerActivity
 
                 final BusStopModel model = observable.data;
 
-                BusStopSearchSuggestionsHelper.saveSuggestion(HomeActivity.this,
+                BusStopSearchSuggestionsHelper.saveSuggestion(MainDrawerActivity.this,
                         model.id,
                         model.address);
 
@@ -255,7 +255,7 @@ public class HomeActivity extends BaseDrawerActivity
                         new Snackbar.Callback() {
                             @Override
                             public void onDismissed(Snackbar snackbar, int event) {
-                                KeyboardUtil.focusThenShowKeyboard(HomeActivity.this,
+                                KeyboardUtil.focusThenShowKeyboard(MainDrawerActivity.this,
                                         mSearchView);
                             }
                         });
@@ -484,7 +484,7 @@ public class HomeActivity extends BaseDrawerActivity
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 ActivityCompat.requestPermissions(
-                                        HomeActivity.this,
+                                        MainDrawerActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                         REQUEST_LOCATION);
                             }
@@ -536,7 +536,7 @@ public class HomeActivity extends BaseDrawerActivity
 
         @Override
         public void onDismiss(DialogInterface dialog) {
-            ((HomeActivity) getActivity()).onDialogDismissed();
+            ((MainDrawerActivity) getActivity()).onDialogDismissed();
         }
     }
 }

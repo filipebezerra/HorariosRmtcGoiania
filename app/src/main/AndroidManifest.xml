@@ -17,11 +17,11 @@
         >
         <meta-data
             android:name="android.app.default_searchable"
-            android:value=".home.HomeActivity"
+            android:value=".main.MainDrawerActivity"
             />
 
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".main.MainDrawerActivity"
             android:label="${applicationLabel}"
             android:launchMode="singleTop"
             android:theme="@style/HorariosRmtc.NoActionBar"
@@ -51,23 +51,24 @@
                 />
         </activity>
 
+        <activity
+            android:name=".busterminal.BusTerminalActivity"
+            android:label="@string/title_activity_bus_terminal"
+            android:parentActivityName=".main.MainDrawerActivity"
+            android:theme="@style/HorariosRmtc.NoActionBar"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main.MainDrawerActivity"
+                />
+        </activity>
+
         <provider
             android:name=".suggestion.BusStopSearchSuggestionsProvider"
             android:authorities="mx.x10.filipebezerra.horariosrmtcgoiania.suggestion.BusStopSearchSuggestionsProvider"
             android:exported="false"
             />
 
-        <activity
-            android:name=".busterminal.BusTerminalActivity"
-            android:label="@string/title_activity_bus_terminal"
-            android:parentActivityName=".home.HomeActivity"
-            android:theme="@style/HorariosRmtc.NoActionBar"
-            >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="mx.x10.filipebezerra.horariosrmtcgoiania.home.HomeActivity"
-                />
-        </activity>
     </application>
 
 </manifest>
