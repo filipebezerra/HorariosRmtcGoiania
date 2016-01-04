@@ -242,14 +242,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
                 Timber.d("Sending fragment %s to be added",
                         fragment.getClass().getSimpleName());
                 replaceFragment(fragment, true);
-
-                // TODO remove commented block
-                /*if (exists) {
-                    Timber.d("The fragment %s already exists in the container. Sending "
-                                    + "data via event", fragment.getClass().getSimpleName());
-
-                    BusProvider.post(new GenericEvent<>(busStop));
-                }*/
             } else {
                 FeedbackHelper.snackbar(getRootViewLayout(), observable.message, false,
                         new Snackbar.Callback() {
@@ -308,15 +300,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
                                     busStopFragment.getClass().getSimpleName());
                             replaceFragment(busStopFragment, true);
 
-                            // TODO remove commented block
-                            /*if (exists) {
-                                Timber.d("The fragment %s already exists in the container. "
-                                                + "Sending data via event",
-                                        busStopFragment.getClass().getSimpleName());
-
-                                BusProvider.post(new GenericEvent<>(busStop));
-                            }*/
-
                             break;
 
                         default:
@@ -330,15 +313,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
                             Timber.d("Sending fragment %s to be added",
                                     nearbyFragment.getClass().getSimpleName());
                             replaceFragment(nearbyFragment, true);
-
-                            // TODO remove commented block
-                            /*if (exists) {
-                                Timber.d("The fragment %s already exists in the container. "
-                                                + "Sending data via event",
-                                        nearbyFragment.getClass().getSimpleName());
-
-                                BusProvider.post(new GenericEvent<>(busStops));
-                            }*/
 
                             break;
                     }
@@ -409,12 +383,6 @@ public class MainDrawerActivity extends BaseDrawerActivity
         Timber.d("Sending fragment %s to be added", fragment.getClass().getSimpleName());
 
         replaceFragment(fragment, true);
-
-        // TODO remove commented block
-        /*if (exists) {
-            Timber.d("The fragment %s already exists in the container. Sending data via event",
-                    fragment.getClass().getSimpleName());
-        }*/
     }
 
     @SuppressWarnings("ResourceType")

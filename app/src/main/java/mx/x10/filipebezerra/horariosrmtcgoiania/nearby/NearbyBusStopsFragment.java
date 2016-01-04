@@ -127,22 +127,6 @@ public class NearbyBusStopsFragment extends BaseFragment
         BusProvider.unregister(this);
     }
 
-    // TODO remove commented block
-    /*
-    @Subscribe
-    public void onNearbyBusStopsFound(GenericEvent<List<BusStop>> event) {
-        Timber.d("onNearbyBusStopsFound onBusStopFound() event with message %s", event.message());
-        mBusStopList = event.message();
-
-        if (isVisible()) {
-            Timber.d("Fragment is visible, swapping data to %s", mBusStopList.toString());
-            mNearbyBusStopsAdapter.swapData(mBusStopList);
-        } else {
-            Timber.d("Fragment is not visible");
-        }
-    }
-    */
-
     private SubscriberDelegate<ArrivalPredictionResponse> mArrivalPredictionResponseDelegate
             = new SubscriberDelegate<ArrivalPredictionResponse>() {
         @Override
