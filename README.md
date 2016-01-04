@@ -9,7 +9,7 @@ Horários Rmtc Goiânia para Android
 <a href="https://appetize.io/app/q51uzwq7jgygrxjd0yqtf9uufr?device=nexus5&scale=75&orientation=portrait&osVersion=6.0&deviceColor=black&autoplay=true" target="_blank"><img src="./dev/live/Appetize-Nexus5.PNG" heigth="320" width="163"></a>
 
 # Planejamento
-O [rastreador de problemas][1] mostra uma lista de novos recursos e erros planejados para a próxima versão e para próximas versões.
+O [rastreador de problemas][1] mostra uma lista de novos recursos e erros planejados para a próxima versão e o backlog.
 
 # Conhecimento (Em construção)
 A [wiki][2] contém detalhes de como participar da evolução do código fonte deste aplicativo.
