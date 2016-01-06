@@ -24,7 +24,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.model.BusStopModel;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.response.BusStopLinesResponse;
 import mx.x10.filipebezerra.horariosrmtcgoiania.api.subscriber.ApiSubscriber;
-import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredictionFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.asynctask.AsyncTaskCallback;
 import mx.x10.filipebezerra.horariosrmtcgoiania.asynctask.AsyncTaskException;
@@ -34,7 +33,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStopLinesFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busterminal.BusTerminalFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.drawable.DrawableHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusStopWithArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.geocoder.LocationToAddressTask;
 import mx.x10.filipebezerra.horariosrmtcgoiania.keyboard.KeyboardUtil;
@@ -268,23 +267,16 @@ public class MainDrawerActivity extends BaseDrawerActivity
     }
 
     @Subscribe
-    public void onArrivalPredictionFound(GenericEvent<ArrivalPrediction> event) {
-        Timber.d("%s observer received the event with data %s", LOG,
-                event.message().toString());
-
-        final ArrivalPrediction arrivalPrediction = event.message();
+    public void onArrivalPredictionFound(BusStopWithArrivalPrediction event) {
+        Timber.d("%s observer received the event with data %s", LOG, event.toString());
 
         if (mLocationToAddressTask != null) {
             Timber.d("Cancelling LocationToAddressTask");
             mLocationToAddressTask.cancel(true);
         }
 
-        changeTitleAndSubtitle(String.format("%s - %s", arrivalPrediction.getLineNumber(),
-                arrivalPrediction.getDestination()), getString(
-                R.string.title_arrival_prediction));
-
-        final ArrivalPredictionFragment fragment
-                = ArrivalPredictionFragment.newInstance(arrivalPrediction);
+        final ArrivalPredictionFragment fragment = ArrivalPredictionFragment
+                .newInstance(event.getBusStop(), event.getArrivalPrediction());
 
         Timber.d("Sending fragment %s to be added", fragment.getClass().getSimpleName());
 

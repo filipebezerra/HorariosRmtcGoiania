@@ -5,12 +5,14 @@ import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
+import mx.x10.filipebezerra.horariosrmtcgoiania.busstop.BusStop;
 import timber.log.Timber;
 
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -34,14 +36,17 @@ public class ArrivalPredictionFragment extends BaseFragment {
 
     // User data handled by this fragment
     private static final String ARG_DATA = "ArrivalPrediction";
+    private static final String ARG_DATA_BUS_STOP = "BusStop";
 
     // State of user data handled by this fragment
     private static final String STATE_ARG_DATA = "State_" + ARG_DATA;
+    private static final String STATE_ARG_DATA_BUS_STOP = "State_" + ARG_DATA_BUS_STOP;
 
     // timetable quality from arrival prediction
     private static final String TIMETABLE_QUALITY = "Planilha de Horários";
 
     // Data representation handled by this fragment
+    private BusStop mBusStop;
     private ArrivalPrediction mArrivalPrediction;
 
     @Bind(R.id.root_layout)
@@ -82,7 +87,8 @@ public class ArrivalPredictionFragment extends BaseFragment {
         return R.layout.fragment_arrival_prediction;
     }
 
-    public static ArrivalPredictionFragment newInstance(@NonNull ArrivalPrediction data) {
+    public static ArrivalPredictionFragment newInstance(@NonNull BusStop busStop,
+            @NonNull ArrivalPrediction data) {
         Timber.d("Creating new instance of %s", LOG);
         ArrivalPredictionFragment fragment = new ArrivalPredictionFragment();
 
@@ -90,6 +96,7 @@ public class ArrivalPredictionFragment extends BaseFragment {
 
         Timber.d("Assigning data arguments with value %s", data.toString());
         args.putParcelable(ARG_DATA, data);
+        args.putParcelable(ARG_DATA_BUS_STOP, busStop);
         fragment.setArguments(args);
 
         return fragment;
@@ -108,6 +115,16 @@ public class ArrivalPredictionFragment extends BaseFragment {
             throw new IllegalArgumentException(
                     "The argument 'ARG_DATA' must be a android.os.Parcelable instance.");
         }
+
+        if ((getArguments() == null)
+                || !(getArguments().containsKey(ARG_DATA_BUS_STOP))) {
+            throw new IllegalStateException(
+                    "This fragment must contains the argument 'ARG_DATA_BUS_STOP'.");
+        } else if (!(getArguments().get(ARG_DATA_BUS_STOP) instanceof Parcelable)
+                || getArguments().getParcelable(ARG_DATA_BUS_STOP) == null) {
+            throw new IllegalArgumentException(
+                    "The argument 'ARG_DATA_BUS_STOP' must be a android.os.Parcelable instance.");
+        }
     }
 
     @Override
@@ -116,6 +133,7 @@ public class ArrivalPredictionFragment extends BaseFragment {
 
         if (inState != null) {
             mArrivalPrediction = inState.getParcelable(STATE_ARG_DATA);
+            mBusStop = inState.getParcelable(STATE_ARG_DATA_BUS_STOP);
         }
     }
 
@@ -125,7 +143,13 @@ public class ArrivalPredictionFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Timber.d("Creating view");
 
-        mArrivalPrediction = getArguments().getParcelable(ARG_DATA);
+        if (mArrivalPrediction == null) {
+            mArrivalPrediction = getArguments().getParcelable(ARG_DATA);
+        }
+
+        if (mBusStop == null) {
+            mBusStop = getArguments().getParcelable(ARG_DATA_BUS_STOP);
+        }
 
         Timber.d("Data retrieved with value %s", mArrivalPrediction.toString());
 
@@ -133,12 +157,19 @@ public class ArrivalPredictionFragment extends BaseFragment {
                 mArrivalPrediction.getDestination());
         setupNextTravelCard(mArrivalPrediction.getNext());
         setupFollowingTravelCard(mArrivalPrediction.getFollowing());
+
+        final String activityTitle = mBusStop.getId() + " - " +
+                (!TextUtils.isEmpty(mBusStop.getAddress()) ? mBusStop.getAddress().split(",")[0] : "");
+
+        adaptActivityView(activityTitle, getString(R.string.subtitle_arrival_prediction),
+                TOOLBAR_SCROLL_DISABLED);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(STATE_ARG_DATA, mArrivalPrediction);
+        outState.putParcelable(STATE_ARG_DATA_BUS_STOP, mBusStop);
     }
 
     private void setupLineInfoCard(String lineNumber, String destination) {

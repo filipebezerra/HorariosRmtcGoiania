@@ -13,7 +13,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.arrivalprediction.ArrivalPredict
 import mx.x10.filipebezerra.horariosrmtcgoiania.base.BaseFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.busline.BusLine;
 import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusProvider;
-import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.GenericEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.eventbus.BusStopWithArrivalPrediction;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.NetworkUtil;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.RetrofitController;
@@ -185,7 +185,8 @@ public class BusStopLinesFragment extends BaseFragment
                         Timber.d("Response was transformed into data, posting the result %s",
                                 arrivalPrediction.toString());
 
-                        BusProvider.post(new GenericEvent<>(arrivalPrediction));
+                        BusProvider.post(
+                                BusStopWithArrivalPrediction.create(mBusStop, arrivalPrediction));
                     }
                 } else {
                     Timber.d("Fragment hasn't valid status, showing feedback: %s",
