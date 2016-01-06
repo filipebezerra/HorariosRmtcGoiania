@@ -1,0 +1,37 @@
+# Guide
+# https://docs.travis-ci.com/user/languages/android
+# https://github.com/codepath/android_guides/wiki/Setting-up-Travis-CI
+language: android
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+# Use the Travis Container-Based Infrastructure
+sudo: false
+
+android:
+  components:
+    - platform-tools
+    - build-tools-23.0.2
+    - android-23
+    - extra-android-m2repository
+    - extra-google-m2repository
+
+# Improve Gradle caching documentation
+# https://github.com/travis-ci/docs-travis-ci-com/issues/358
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+# Retrolambda support
+# http://stackoverflow.com/a/31629953/4107440
+before_install:
+  - export JAVA7_HOME=/usr/lib/jvm/java-7-oracle
+  - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+  - export JAVA_HOME=$JAVA8_HOME
+
+script:
+   - ./gradlew clean build
