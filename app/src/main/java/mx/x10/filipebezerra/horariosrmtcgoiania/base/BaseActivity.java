@@ -134,6 +134,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Nullable
+    public Toolbar getToolbarActionBar() {
+        return mToolbarActionBar;
+    }
+
     @LayoutRes protected abstract int provideLayoutResource();
 
     @NonNull public abstract ViewGroup getRootViewLayout();
