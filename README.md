@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania.svg?branch=develop)](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania)
 [![Issue Stats](http://issuestats.com/github/filipebezerra/HorariosRmtcGoiania/badge/pr?style=flat)](http://issuestats.com/github/filipebezerra/HorariosRmtcGoiania)
 [![Issue Stats](http://issuestats.com/github/filipebezerra/HorariosRmtcGoiania/badge/issue?style=flat)](http://issuestats.com/github/filipebezerra/HorariosRmtcGoiania)
 Horários Rmtc Goiânia para Android
