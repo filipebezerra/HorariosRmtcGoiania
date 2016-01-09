@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 if (project.hasProperty("FbsRelease2.signing")
         && new File(project.property("FbsRelease2.signing") + ".gradle").exists()) {
@@ -23,12 +23,31 @@ android {
 
     buildTypes {
         debug {
+            debuggable true
+            minifyEnabled false
             applicationIdSuffix ".dev"
             manifestPlaceholders = [applicationLabel: "Horarios Dev"]
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            minifyEnabled true
+            proguardFile 'proguard-butterknife-7.pro'
+            proguardFile 'proguard-google-play-services.pro'
+            proguardFile 'proguard-gson.pro'
+            proguardFile 'proguard-parse.pro'
+            proguardFile 'proguard-retrolambda.pro'
+            proguardFile 'proguard-rx-java.pro'
+            proguardFile 'proguard-square-okhttp.pro'
+            proguardFile 'proguard-square-otto.pro'
+            proguardFile 'proguard-square-picasso.pro'
+            proguardFile 'proguard-square-retrofit.pro'
+            proguardFile 'proguard-support-design.pro'
+            proguardFile 'proguard-support-v7-appcompat.pro'
+            proguardFile 'proguard-support-v7-cardview.pro'
+            proguardFile 'proguard-timber.pro'
+
+            proguardFile 'proguard-rules.pro'
+            proguardFile getDefaultProguardFile('proguard-android.txt')
         }
     }
 
@@ -92,4 +111,18 @@ retrolambda {
     jdk System.getenv("JAVA_HOME")
     oldJdk System.getenv("JAVA7_HOME")
     javaVersion JavaVersion.VERSION_1_7
+}
+
+android.applicationVariants.all{ variant ->
+    variant.mergeAssets.doFirst {
+        File fonts = file("${projectDir}/build/intermediates/exploded-aar/com.github.johnkil.android-robototextview/robototextview/2.4.3/assets/fonts")
+        if (fonts.exists()) {
+            for (File file : fonts.listFiles()) {
+                if (!file.getName().contains("RobotoSlab-Light")&&!file.getName().contains("Roboto-Thin")) {
+                    println("delete " + file.getName() + " font")
+                    file.delete()
+                };
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.base;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ public abstract class BaseFragment extends Fragment {
 
     public BaseFragment() {}
 
+    @SuppressLint("Deprecated")
+    @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
