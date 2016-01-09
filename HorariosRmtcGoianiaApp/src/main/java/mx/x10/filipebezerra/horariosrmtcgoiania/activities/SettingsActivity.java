@@ -206,11 +206,11 @@ public class SettingsActivity extends ActionBarActivity {
         prefChangelogInfo.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MaterialDialog.Builder dialogBuilder = DialogHelper.build(activity,
-                        R.string.pref_title_changelog_info,
-                        R.string.empty_text,
-                        R.string.ok_button);
-                dialogBuilder.customView(R.layout.view_changelog, false).show();
+                new MaterialDialog.Builder(activity)
+                        .title(R.string.pref_title_changelog_info)
+                        .customView(R.layout.view_changelog, false)
+                        .positiveText(R.string.ok_button)
+                        .show();
                 return true;
             }
         });
