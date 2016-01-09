@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -59,7 +60,7 @@ public class FavoriteBusStopListFragment extends Fragment
         mRecyclerView.getItemAnimator().setMoveDuration(1000);
         mRecyclerView.getItemAnimator().setRemoveDuration(1000);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(
-                getResources().getDrawable(R.drawable.abc_list_divider_mtrl_alpha)));
+                ContextCompat.getDrawable(getActivity(), R.drawable.abc_list_divider_mtrl_alpha)));
 
         return view;
     }

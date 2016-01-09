@@ -167,7 +167,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 "is persisted with id: "+mPersistedFavoriteBusStop.getId()));
 
                 if (mPersistedFavoriteBusStop != null) {
-                    mFabBookmarkStopBus.setIconDrawable(getResources().getDrawable(
+                    mFabBookmarkStopBus.setIconDrawable(ContextCompat.getDrawable(getActivity(),
                             R.drawable.ic_favorite));
                 }
             }
@@ -240,7 +240,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                 SnackBarHelper.showSingleLine(getActivity(),
                         getString(R.string.info_stop_bus_removed_from_favorites),
                         mFabBookmarkStopBus);
-                mFabBookmarkStopBus.setIconDrawable(getResources().getDrawable(
+                mFabBookmarkStopBus.setIconDrawable(ContextCompat.getDrawable(getActivity(),
                         R.drawable.ic_unmark_favorite));
             }
         }
