@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import java.util.List;
 
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
@@ -38,9 +38,9 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.EmptyRecyclerView;
 public class FavoriteBusStopListFragment extends Fragment
         implements FavoriteBusStopsAdapter.OnItemClickListener {
 
-    @InjectView(R.id.favorite_list) protected EmptyRecyclerView mRecyclerView;
+    @Bind(R.id.favorite_list) protected EmptyRecyclerView mRecyclerView;
 
-    @InjectView(R.id.empty_view) protected TextView mEmptyView;
+    @Bind(R.id.empty_view) protected TextView mEmptyView;
 
     @NonNull private FavoriteBusStopsAdapter mFavoriteBusStopsAdapter;
 
@@ -48,7 +48,7 @@ public class FavoriteBusStopListFragment extends Fragment
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(mEmptyView);
@@ -76,7 +76,7 @@ public class FavoriteBusStopListFragment extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+        ButterKnife.unbind(this);
     }
 
     @Override

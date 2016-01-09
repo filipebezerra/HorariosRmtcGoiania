@@ -20,8 +20,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.activities.BaseActivity;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
@@ -49,9 +49,9 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
 
     private boolean mIsWebViewAvailable;
 
-    @InjectView(R.id.webView) protected WebView mWebView;
+    @Bind(R.id.webView) protected WebView mWebView;
 
-    @InjectView(R.id.swipe_refresh_layout) protected SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.swipe_refresh_layout) protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static final String ARG_PARAM_URL_PAGE = BaseWebViewFragment.class.getSimpleName()
             + ".ARG_PARAM_URL_PAGE";
@@ -217,7 +217,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     public void onDestroyView() {
         mIsWebViewAvailable = false;
         super.onDestroyView();
-        ButterKnife.reset(this);
+        ButterKnife.unbind(this);
     }
 
     /**
@@ -246,7 +246,7 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
             mWebView.destroy();
         }
 
-        ButterKnife.inject(this, fragmentView);
+        ButterKnife.bind(this, fragmentView);
 
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);

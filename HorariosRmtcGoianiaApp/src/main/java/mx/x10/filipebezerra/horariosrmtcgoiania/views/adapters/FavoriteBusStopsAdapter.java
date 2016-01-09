@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 
@@ -85,13 +85,13 @@ public class FavoriteBusStopsAdapter
     }
 
     public static final class ViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.favorite_item_stop_code) TextView mTextViewStopCode;
+        @Bind(R.id.favorite_item_stop_code) TextView mTextViewStopCode;
 
-        @InjectView(R.id.favorite_item_address) TextView mTextViewAddress;
+        @Bind(R.id.favorite_item_address) TextView mTextViewAddress;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

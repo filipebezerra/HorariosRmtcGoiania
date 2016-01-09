@@ -12,8 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
@@ -64,7 +64,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
 
     @NonNull private Bus mEventBus;
 
-    @InjectView(R.id.fab_bookmark_stop_bus) FloatingActionButton mFabBookmarkStopBus;
+    @Bind(R.id.fab_bookmark_stop_bus) FloatingActionButton mFabBookmarkStopBus;
 
     public static final String ARG_PARAM_BUS_STOP_CODE = BaseWebViewFragment.class.getSimpleName()
             + ".ARG_PARAM_BUS_STOP_CODE";
@@ -117,7 +117,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+        ButterKnife.unbind(this);
     }
 
     @Override

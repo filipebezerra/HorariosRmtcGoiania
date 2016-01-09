@@ -20,8 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import de.psdev.licensesdialog.LicenseResolver;
 import de.psdev.licensesdialog.LicensesDialogFragment;
@@ -186,14 +186,19 @@ public class SettingsActivity extends ActionBarActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 LicenseResolver.registerLicense(new ApacheSoftwareLicense20());
-                final LicensesDialogFragment fragment = LicensesDialogFragment.newInstance(
-                        R.raw.notices,                          // rawNoticesResourceId
-                        true,                                   // showFullLicenseText
-                        true,                                   // includeOwnLicense
-                        R.style.MD_Light,                       // themeResourceId
-                        R.color.licenses_dialog_divider_color,  // dividerColorId
-                        activity);
-                fragment.show(fragmentManager, null);
+                try {
+                    new LicensesDialogFragment
+                            .Builder(activity)
+                            .setNotices(R.raw.notices)
+                            .setShowFullLicenseText(true)
+                            .setIncludeOwnLicense(true)
+                            .setThemeResourceId(R.style.MD_Light)
+                            .setDividerColorRes(R.color.licenses_dialog_divider_color)
+                            .build()
+                            .show(fragmentManager, null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -221,13 +226,13 @@ public class SettingsActivity extends ActionBarActivity {
 
     public static class SettingsHeadersFragment extends Fragment {
         private HeaderAdapter mHeaderAdapter;
-        @InjectView(R.id.listViewSettingsHeaders) protected ListView listView;
+        @Bind(R.id.listViewSettingsHeaders) protected ListView listView;
 
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                 @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_settings_headers, container, false);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
             return view;
         }
 
@@ -256,7 +261,7 @@ public class SettingsActivity extends ActionBarActivity {
         @Override
         public void onDestroyView() {
             super.onDestroyView();
-            ButterKnife.reset(this);
+            ButterKnife.unbind(this);
         }
 
         private static class HeaderAdapter extends ArrayAdapter<Header> {

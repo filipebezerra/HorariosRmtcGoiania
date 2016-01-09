@@ -11,7 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -22,8 +22,8 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -113,10 +113,10 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         return mFabMenu;
     }
 
-    @InjectView(R.id.fab_menu) protected FloatingActionsMenu mFabMenu;
-    @InjectView(R.id.fab_search_stop_bus) protected FloatingActionButton mFabVoiceSearch;
-    @InjectView(R.id.fab_share_app) protected FloatingActionButton mFabShareApp;
-    @InjectView(R.id.fab_evaluate_app) protected FloatingActionButton mFabEvaluateApp;
+    @Bind(R.id.fab_menu) protected FloatingActionsMenu mFabMenu;
+    @Bind(R.id.fab_search_stop_bus) protected FloatingActionButton mFabVoiceSearch;
+    @Bind(R.id.fab_share_app) protected FloatingActionButton mFabShareApp;
+    @Bind(R.id.fab_evaluate_app) protected FloatingActionButton mFabEvaluateApp;
 
     private int mLastOrientationConfiguration;
 
@@ -182,7 +182,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 (android.view.ViewGroup) findViewById(
                         it.neokree.materialnavigationdrawer.R.id.content), true);
 
-            ButterKnife.inject(BaseActivity.this);
+            ButterKnife.bind(BaseActivity.this);
 
         initSpeechInputSearchAction();
         initShareAction();
@@ -252,19 +252,10 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
 
         addSection(favoriteBusStopSection
                 .setSectionColor(
-                        getColor(R.color.navdrawer_favorites_section_color),
-                        getColor(R.color.navdrawer_favorites_section_dark_color)));
-    }
-
-    /**
-     * Convenient method for return a color integer from the application's package's default color
-     * table.
-     *
-     * @param resId The desired resource identifier, must be a color identifier.
-     * @return Resource id for the color
-     */
-    public final int getColor(@ColorRes int resId) {
-        return getResources().getColor(resId);
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_favorites_section_color),
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_favorites_section_dark_color)));
     }
 
     /**
@@ -277,15 +268,19 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 R.drawable.ic_drawer_wap,
                 newWapPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_wap_section_color),
-                        getColor(R.color.navdrawer_wap_section_dark_color)));
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_wap_section_color),
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_wap_section_dark_color)));
         addSection(horarioViagemSection = newSection(
                 getString(R.string.navdrawer_section_rmtc_horario_viagem),
                 R.drawable.ic_drawer_horario_viagem,
                 newHorarioViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_horario_viagem_section_color),
-                        getColor(R.color.navdrawer_horario_viagem_section_dark_color)));
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_horario_viagem_section_color),
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_horario_viagem_section_dark_color)));
 
         addDivisor();
 
@@ -293,20 +288,26 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 R.drawable.ic_drawer_planeje_sua_viagem,
                 newPlanejeViagemPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_planeje_sua_viagem_section_color),
-                        getColor(R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_planeje_sua_viagem_section_color),
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_planeje_sua_viagem_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_ponto_a_ponto),
                 R.drawable.ic_drawer_ponto_a_ponto,
                 newPontoaPontoPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_ponto_a_ponto_section_color),
-                        getColor(R.color.navdrawer_ponto_a_ponto_section_dark_color)));
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_ponto_a_ponto_section_color),
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_ponto_a_ponto_section_dark_color)));
         addSection(newSection(getString(R.string.navdrawer_section_rmtc_sac),
                 R.drawable.ic_drawer_sac,
                 newSacPageFragment(BaseActivity.this))
                 .setSectionColor(
-                        getColor(R.color.navdrawer_sac_section_color),
-                        getColor(R.color.navdrawer_sac_section_dark_color)));
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_sac_section_color),
+                        ContextCompat.getColor(this,
+                                R.color.navdrawer_sac_section_dark_color)));
     }
 
     /**
