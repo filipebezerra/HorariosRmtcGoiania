@@ -1,6 +1,5 @@
 apply from: '../buildsystem/ci.gradle'
 apply from: '../buildsystem/dependencies.gradle'
-apply from: '../buildsystem/android.gradle'
 
 buildscript {
     repositories {
@@ -15,24 +14,16 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
-repositories {
-    mavenCentral()
-    maven { url 'https://maven.fabric.io/public' }
-    maven { url 'https://dl.bintray.com/drummer-aidan/maven' }
-}
-
 android {
-    def appConfiguration = getProject().extensions.getByName("ext")
-
-    compileSdkVersion appConfiguration.getAt("androidCompileSdkVersion")
-    buildToolsVersion appConfiguration.getAt("androidBuildToolsVersion")
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId appConfiguration.getAt("androidApplicationId")
-        minSdkVersion appConfiguration.getAt("androidMinSdkVersion")
-        targetSdkVersion appConfiguration.getAt("androidTargetSdkVersion")
-        versionCode appConfiguration.getAt("androidVersionCode")
-        versionName appConfiguration.getAt("androidVersionName")
+        applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
+        minSdkVersion 10
+        targetSdkVersion 23
+        versionCode 11
+        versionName '2.3'
     }
 
     compileOptions {
@@ -99,6 +90,12 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -120,7 +117,7 @@ dependencies {
     compile allDependencies.nineoldandroids
     compile allDependencies.otto
     compile allDependencies.changeloglib
-    compile allDependencies.materialDialogs
+    compile (allDependencies.materialDialogs){ transitive = true }
     compile allDependencies.greendao
     compile allDependencies.licensesdialog
     compile allDependencies.jsoup

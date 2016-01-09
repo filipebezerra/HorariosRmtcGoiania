@@ -5,40 +5,30 @@ allprojects {
 }
 
 ext {
-    // Android
-    androidBuildToolsVersion = '22.0.1'
-    androidMinSdkVersion = 10
-    androidTargetSdkVersion = 22
-    androidCompileSdkVersion = 22
-
-    // Libraries
-    androidAppCompatVersion = '22.2.1'
-    androidRecyclerViewVersion = '22.2.1'
-    androidSupportV4Version = '22.2.1'
-    androidSupportAnnotationsVersion = '22.2.1'
+    supportLibrariesVersion = '23.1.1'
 
     crashlyticsVersion = '2.4.0@aar'
-    butterKnifeVersion = '6.1.0'
-    timberVersion = '2.7.1'
+    butterKnifeVersion = '7.0.1'
+    timberVersion = '3.1.0'
     nineoldandroidsVersion = '2.4.0'
-    ottoVersion = '1.3.6'
-    changeloglibVersion = '1.5.2'
-    materialDialogsVersion = '0.7.6.0'
-    greendaoVersion = '1.3.7'
-    licensesdialogVersion = '1.7.0'
-    jsoupVersion = '1.8.1'
-    calligraphyVersion = '2.0.1'
+    ottoVersion = '1.3.8'
+    changeloglibVersion = '2.0.0'
+    materialDialogsVersion = '0.8.5.3@aar'
+    greendaoVersion = '2.0.0'
+    licensesdialogVersion = '1.8.0'
+    jsoupVersion = '1.8.3'
+    calligraphyVersion = '2.1.0'
 
     // Deprecated
     materialNavigationDrawerVersion = '1.3.3'
-    snackbarVersion = '2.10.5'
-    floatingactionbuttonVersion = '1.8.0'
+    snackbarVersion = '2.11.0'
+    floatingactionbuttonVersion = '1.10.1'
 
     allDependencies = [
-            appCompat:                  "com.android.support:appcompat-v7:${androidAppCompatVersion}",
-            recyclerView:               "com.android.support:recyclerview-v7:${androidRecyclerViewVersion}",
-            supportV4:                  "com.android.support:support-v4:${androidSupportV4Version}",
-            supportAnnotations:         "com.android.support:support-annotations:${androidSupportAnnotationsVersion}",
+            appCompat:                  "com.android.support:appcompat-v7:${supportLibrariesVersion}",
+            recyclerView:               "com.android.support:recyclerview-v7:${supportLibrariesVersion}",
+            supportV4:                  "com.android.support:support-v4:${supportLibrariesVersion}",
+            supportAnnotations:         "com.android.support:support-annotations:${supportLibrariesVersion}",
 
             //TODO: fix crashlytics dependency by extension
             //crashlytics:                "(com.crashlytics.sdk.android:crashlytics:${crashlyticsVersion}) { transitive = true; }",
@@ -46,8 +36,8 @@ ext {
             timber:                     "com.jakewharton.timber:timber:${timberVersion}",
             nineoldandroids:            "com.nineoldandroids:library:${nineoldandroidsVersion}",
             otto:                       "com.squareup:otto:${ottoVersion}",
-            changeloglib:               "com.github.gabrielemariotti.changeloglib:library:${changeloglibVersion}",
-            materialDialogs:            "com.afollestad:material-dialogs:${materialDialogsVersion}",
+            changeloglib:               "com.github.gabrielemariotti.changeloglib:changelog:${changeloglibVersion}",
+            materialDialogs:            "com.github.afollestad.material-dialogs:core:${materialDialogsVersion}",
             greendao:                   "de.greenrobot:greendao:${greendaoVersion}",
             licensesdialog:             "de.psdev.licensesdialog:licensesdialog:${licensesdialogVersion}",
             jsoup:                      "org.jsoup:jsoup:${jsoupVersion}",
