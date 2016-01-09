@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:showIn="@layout/fragment_arrival_prediction"
     >
@@ -17,6 +18,7 @@
         android:drawableLeft="@drawable/ic_place_24dp"
         android:drawableStart="@drawable/ic_place_24dp"
         android:drawablePadding="32dp"
+        app:typeface="roboto_slab_light"
         tools:text="@string/line_itinerary_example"
         />
 
@@ -29,6 +31,7 @@
         android:drawableLeft="@drawable/ic_bus_24dp"
         android:drawableStart="@drawable/ic_bus_24dp"
         android:drawablePadding="32dp"
+        app:typeface="roboto_thin"
         tools:text="@string/line_number_example"
         />
 
