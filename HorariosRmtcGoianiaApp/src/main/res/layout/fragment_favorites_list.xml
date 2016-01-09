@@ -1,10 +1,10 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/spacing_small"
-    tools:context=".ui.fragments.FavoriteBusStopListFragment">
+    tools:context=".ui.fragments.FavoriteBusStopListFragment"
+    >
 
     <mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.EmptyRecyclerView
         android:id="@+id/favorite_list"
@@ -13,20 +13,23 @@
         android:scrollbars="vertical"
         android:scrollbarStyle="outsideOverlay"
         android:clipToPadding="false"
-        android:elevation="4dp"/>
+        tools:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:drawableTop="@drawable/ic_no_favorites_found"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="#000"
         android:text="@string/empty_favorites"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
 
 </FrameLayout>
