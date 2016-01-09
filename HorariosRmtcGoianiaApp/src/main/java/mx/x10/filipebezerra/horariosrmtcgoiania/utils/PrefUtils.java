@@ -1,9 +1,9 @@
 package mx.x10.filipebezerra.horariosrmtcgoiania.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.content.SharedPreferencesCompat;
 
 /**
  * Utilities and constants related to app preferences..
@@ -48,11 +48,6 @@ public final class PrefUtils {
      */
     public static final String PREF_WELCOME_DONE = "pref_welcome_done";
 
-    /**
-     * Boolean indicating whether the user learned how the feature save favorites
-     */
-    public static final String PREF_FAVORITES_LEARNED = "pref_favorites_learned";
-
     public static final String PREF_MAIL_TO_DEVELOPER = "mail_to_developer";
 
     public static boolean isWelcomeDone(final Context context) {
@@ -60,13 +55,9 @@ public final class PrefUtils {
         return sp.getBoolean(PREF_WELCOME_DONE, false);
     }
 
-    @SuppressLint("NewApi")
     public static void markWelcomeDone(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        if (AndroidUtils.isGingerbreadOrHigher()) {
-            sp.edit().putBoolean(PREF_WELCOME_DONE, true).apply();
-        } else {
-            sp.edit().putBoolean(PREF_WELCOME_DONE, true).commit();
-        }
+        SharedPreferencesCompat.EditorCompat.getInstance()
+                .apply(sp.edit().putBoolean(PREF_WELCOME_DONE, true));
     }
 }
