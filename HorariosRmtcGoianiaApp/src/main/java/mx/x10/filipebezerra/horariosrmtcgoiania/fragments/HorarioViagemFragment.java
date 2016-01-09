@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +28,6 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.dao.FavoriteBusStopDao;
 import mx.x10.filipebezerra.horariosrmtcgoiania.network.parsers.BusStopHtmlParser;
-import mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationEvent;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationMessage;
@@ -194,10 +194,6 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                 mFavoriteBusStopDao.insert(newFavoriteBusStop);
                                 mPersistedFavoriteBusStop = newFavoriteBusStop;
 
-                                if (!PrefUtils.isFavoriteLearned(getActivity())) {
-                                    PrefUtils.markFavoriteLearned(getActivity());
-                                }
-
                                 mEventBus.post(new NotificationEvent(new NotificationMessage(
                                         NotificationMessage.NotificationType.INCREMENT)));
 
@@ -207,7 +203,7 @@ public class HorarioViagemFragment extends BaseWebViewFragment {
                                         getString(R.string.info_stop_bus_added_to_favorites),
                                         mFabBookmarkStopBus);
                                 mFabBookmarkStopBus.setIconDrawable(
-                                        getResources().getDrawable(
+                                        ContextCompat.getDrawable(getActivity(),
                                                 R.drawable.ic_favorite));
                             }
                         },

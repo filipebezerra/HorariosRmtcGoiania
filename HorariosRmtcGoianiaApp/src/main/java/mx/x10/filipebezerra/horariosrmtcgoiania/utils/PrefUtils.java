@@ -69,19 +69,4 @@ public final class PrefUtils {
             sp.edit().putBoolean(PREF_WELCOME_DONE, true).commit();
         }
     }
-
-    public static boolean isFavoriteLearned(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_FAVORITES_LEARNED, false);
-    }
-
-    @SuppressLint("NewApi")
-    public static void markFavoriteLearned(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        if (AndroidUtils.isGingerbreadOrHigher()) {
-            sp.edit().putBoolean(PREF_FAVORITES_LEARNED, true).apply();
-        } else {
-            sp.edit().putBoolean(PREF_FAVORITES_LEARNED, true).commit();
-        }
-    }
 }

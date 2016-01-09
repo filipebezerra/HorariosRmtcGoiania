@@ -244,9 +244,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 getString(R.string.navdrawer_section_favorite_bus_stops),
                 R.drawable.ic_drawer_pontos_favoritos, new FavoriteBusStopListFragment());
 
-        if (favoriteCount == 0 && !PrefUtils.isFavoriteLearned(BaseActivity.this)) {
-            favoriteBusStopSection.setNotificationsText("New!");
-        } else {
+        if (favoriteCount != 0) {
             favoriteBusStopSection.setNotifications(favoriteCount);
         }
 
