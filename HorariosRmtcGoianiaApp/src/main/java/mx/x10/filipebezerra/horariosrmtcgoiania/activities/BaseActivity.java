@@ -65,7 +65,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragment
  * behavior.
  *
  * @author Filipe Bezerra
- * @version 2.0, 08/03/2015
+ * @version 2.3, 09/01/2016
  * @since #
  */
 public abstract class BaseActivity extends MaterialNavigationDrawer {

@@ -9,7 +9,7 @@ import android.support.v4.content.SharedPreferencesCompat;
  * Utilities and constants related to app preferences..
  *
  * @author Filipe Bezerra
- * @version 2.1, 30/03/2015
+ * @version 2.3, 09/01/2016
  * @since 2.0
  */
 public final class PrefUtils {

@@ -49,7 +49,7 @@ import static mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils.PREF_TOUR
  * Preference screen for app preferences.
  *
  * @author Filipe Bezerra
- * @version 2.1, 30/03/2015
+ * @version 2.3, 09/01/2016
  * @since 2.0
  */
 public class SettingsActivity extends ActionBarActivity {

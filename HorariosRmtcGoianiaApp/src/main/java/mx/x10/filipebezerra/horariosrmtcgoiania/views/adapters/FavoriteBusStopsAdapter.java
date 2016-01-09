@@ -15,6 +15,12 @@ import butterknife.ButterKnife;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.model.FavoriteBusStop;
 
+/**
+ * Favorites adapter.
+ *
+ * @author Filipe Bezerra
+ * @version 2.3, 09/01/2016
+ */
 public class FavoriteBusStopsAdapter
         extends RecyclerView.Adapter<FavoriteBusStopsAdapter.ViewHolder>
         implements View.OnClickListener {

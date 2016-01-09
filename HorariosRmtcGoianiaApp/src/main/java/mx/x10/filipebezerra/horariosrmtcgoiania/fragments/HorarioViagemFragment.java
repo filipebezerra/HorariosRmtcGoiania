@@ -43,7 +43,7 @@ import timber.log.Timber;
  * {@link net.i2p.android.ext.floatingactionbutton.FloatingActionButton} based in Material design.
  *
  * @author Filipe Bezerra
- * @version 2.1, 25/03/2015
+ * @version 2.3, 09/01/2016
  * @since 1.6
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.BaseWebViewFragment
  */

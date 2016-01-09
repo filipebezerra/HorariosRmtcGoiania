@@ -24,6 +24,8 @@ import timber.log.Timber;
 /**
  * A customized {@link timber.log.Timber.DebugTree} that logs to Crashlytics and Google Analytics.
  * Always drops debug and verbose logs.
+ * @author Uwe Trottmann, Filipe Bezerra
+ * @version 2.3, 09/01/2016
  */
 public class AnalyticsTree extends Timber.DebugTree {
     private final Context context;

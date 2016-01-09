@@ -1,4 +1,4 @@
-package mx.x10.filipebezerra.horariosrmtcgoiania;
+package mx.x10.filipebezerra.horariosrmtcgoiania.application;
 
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
@@ -13,7 +13,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * Application class that loads some global configurations.
  *
  * @author Filipe Bezerra
- * @version 2.1, 20/03/2015
+ * @version 2.3, 09/01/2016
  * @since 1.4-m2
  */
 public class HorariosRmtcGoianiaApplication extends Application {

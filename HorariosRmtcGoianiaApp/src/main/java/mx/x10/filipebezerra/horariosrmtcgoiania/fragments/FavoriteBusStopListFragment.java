@@ -33,7 +33,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.views.widgets.EmptyRecyclerView;
  * user interaction and then loading the item selected.
  *
  * @author Filipe Bezerra
- * @version 2.1, 25/03/2015
+ * @version 2.3, 09/01/2016
  * @since 2.0
  */
 public class FavoriteBusStopListFragment extends Fragment

@@ -35,7 +35,7 @@ import timber.log.Timber;
  * The WebView is automically paused or resumed when the Fragment is paused or resumed.
  *
  * @author Filipe Bezerra
- * @version 2.1, 25/03/2015
+ * @version 2.3, 09/01/2016
  * @since 1.6
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory
  * @see mx.x10.filipebezerra.horariosrmtcgoiania.fragments.HorarioViagemFragment
