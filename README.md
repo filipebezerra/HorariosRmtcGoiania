@@ -6,7 +6,7 @@ Horários Rmtc Goiânia para Android
 
 > "Saiba dos horários de viagem da sua linha ou planeje sua viagem de forma rápida"
 
-# Live do desenvolvimento
+# Live do desenvolvimento (Desabilitado temporariamente)
 <a href="https://appetize.io/app/q51uzwq7jgygrxjd0yqtf9uufr?device=nexus5&scale=75&orientation=portrait&osVersion=6.0&deviceColor=black&autoplay=true" target="_blank"><img src="./dev/live/Appetize-Nexus5.PNG" heigth="320" width="163"></a>
 
 # Planejamento
