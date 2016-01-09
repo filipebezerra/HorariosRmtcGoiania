@@ -17,6 +17,7 @@ ext {
     greendaoVersion = '2.0.0'
     licensesdialogVersion = '1.8.0'
     jsoupVersion = '1.8.3'
+    robototextviewVersion = '2.4.3'
     calligraphyVersion = '2.1.0'
 
     // Deprecated
@@ -24,14 +25,13 @@ ext {
     snackbarVersion = '2.11.0'
     floatingactionbuttonVersion = '1.10.1'
 
-    allDependencies = [
+    libs = [
             appCompat:                  "com.android.support:appcompat-v7:${supportLibrariesVersion}",
             recyclerView:               "com.android.support:recyclerview-v7:${supportLibrariesVersion}",
             supportV4:                  "com.android.support:support-v4:${supportLibrariesVersion}",
             supportAnnotations:         "com.android.support:support-annotations:${supportLibrariesVersion}",
 
-            //TODO: fix crashlytics dependency by extension
-            //crashlytics:                "(com.crashlytics.sdk.android:crashlytics:${crashlyticsVersion}) { transitive = true; }",
+            crashlytics:                "com.crashlytics.sdk.android:crashlytics:${crashlyticsVersion}",
             butterKnife:                "com.jakewharton:butterknife:${butterKnifeVersion}",
             timber:                     "com.jakewharton.timber:timber:${timberVersion}",
             nineoldandroids:            "com.nineoldandroids:library:${nineoldandroidsVersion}",
@@ -41,7 +41,7 @@ ext {
             greendao:                   "de.greenrobot:greendao:${greendaoVersion}",
             licensesdialog:             "de.psdev.licensesdialog:licensesdialog:${licensesdialogVersion}",
             jsoup:                      "org.jsoup:jsoup:${jsoupVersion}",
-            calligraphy:                "uk.co.chrisjenx:calligraphy:${calligraphyVersion}",
+            robototextview:             "com.github.johnkil.android-robototextview:robototextview:${robototextviewVersion}",
 
             // Deprecated
             materialNavigationDrawer:   "it.neokree:MaterialNavigationDrawer:${materialNavigationDrawerVersion}",

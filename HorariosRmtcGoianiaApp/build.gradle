@@ -99,31 +99,38 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    def allDependencies = getProject().ext.allDependencies
+    compile libs.appCompat
+    compile libs.recyclerView
+    compile libs.supportV4
+    compile libs.supportAnnotations
+    
+    compile(libs.crashlytics) { transitive = true; }
+    compile libs.butterKnife
+    compile libs.timber
+    compile libs.nineoldandroids
+    compile libs.otto
+    compile libs.changeloglib
+    compile (libs.materialDialogs){ transitive = true }
+    compile libs.greendao
+    compile libs.licensesdialog
+    compile libs.jsoup
+    compile libs.robototextview
 
-    compile allDependencies.appCompat
-    compile allDependencies.recyclerView
-    compile allDependencies.supportV4
-    compile allDependencies.supportAnnotations
+    compile libs.materialNavigationDrawer
+    compile libs.snackbar
+    compile libs.floatingactionbutton
+}
 
-    def appConfiguration = getProject().extensions.getByName("ext")
-
-    compile("com.crashlytics.sdk.android:crashlytics:${appConfiguration.crashlyticsVersion}") {
-        transitive = true;
+android.applicationVariants.all{ variant ->
+    variant.mergeAssets.doFirst {
+        File fonts = file("${projectDir}/build/intermediates/exploded-aar/com.github.johnkil.android-robototextview/robototextview/${robototextviewVersion}/assets/fonts")
+        if (fonts.exists()) {
+            for (File file : fonts.listFiles()) {
+                if (!file.getName().contains("RobotoSlab-Light")&&!file.getName().contains("Roboto-Thin")) {
+                    println("delete " + file.getName() + " font")
+                    file.delete()
+                };
+            }
+        }
     }
-
-    compile allDependencies.butterKnife
-    compile allDependencies.timber
-    compile allDependencies.nineoldandroids
-    compile allDependencies.otto
-    compile allDependencies.changeloglib
-    compile (allDependencies.materialDialogs){ transitive = true }
-    compile allDependencies.greendao
-    compile allDependencies.licensesdialog
-    compile allDependencies.jsoup
-    compile allDependencies.calligraphy
-
-    compile allDependencies.materialNavigationDrawer
-    compile allDependencies.snackbar
-    compile allDependencies.floatingactionbutton
 }
