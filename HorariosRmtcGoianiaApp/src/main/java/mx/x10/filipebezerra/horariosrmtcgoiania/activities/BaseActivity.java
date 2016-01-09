@@ -50,7 +50,6 @@ import net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 import timber.log.Timber;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.buildFinalUrl;
 import static mx.x10.filipebezerra.horariosrmtcgoiania.fragments.WebViewFragmentFactory.buildHorarioViagemUrl;
@@ -369,14 +368,6 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
-    }
-
-    /**
-     * Inject custom font into {@link Context}.
-     */
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     /**

@@ -38,7 +38,6 @@
     </style>
 
     <style name="TextViewRoboto">
-        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
         <item name="android:textColor">@color/theme_color_primary</item>
         <item name="android:textStyle">bold</item>
     </style>

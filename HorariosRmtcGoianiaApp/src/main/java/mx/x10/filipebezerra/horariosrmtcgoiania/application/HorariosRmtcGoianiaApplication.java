@@ -4,10 +4,8 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import mx.x10.filipebezerra.horariosrmtcgoiania.BuildConfig;
-import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AnalyticsTree;
 import timber.log.Timber;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Application class that loads some global configurations.
@@ -20,7 +18,6 @@ public class HorariosRmtcGoianiaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initDefaultFont();
 
         // logging setup
         if (BuildConfig.DEBUG) {
@@ -33,17 +30,5 @@ public class HorariosRmtcGoianiaApplication extends Application {
                 Fabric.with(this, new Crashlytics());
             }
         }
-    }
-
-    /**
-     * Setups the default font of this application. Is executed on (@Link #onCreate).
-     * The default font is Roboto-Regular.
-     */
-    private void initDefaultFont() {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
     }
 }
