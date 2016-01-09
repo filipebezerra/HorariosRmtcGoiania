@@ -5,7 +5,7 @@ Horários Rmtc Goiânia para Android
 
 > "Saiba dos horários de viagem da sua linha ou planeje sua viagem de forma rápida"
 
-** Atenção, este aplicativo encontra-se em [desenvolvimento de melhoria][3] e qualquer erro deve ser reportado no [rastreador de problemas][2]. Obrigado!**
+__Atenção, este aplicativo encontra-se em [desenvolvimento de melhoria][3] e qualquer erro deve ser reportado no [rastreador de problemas][2]. Obrigado!__
 
 Saiba mais sobre o aplicativo
 -----------------------------
