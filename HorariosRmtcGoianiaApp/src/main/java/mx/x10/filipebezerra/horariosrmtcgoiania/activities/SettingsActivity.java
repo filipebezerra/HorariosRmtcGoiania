@@ -214,14 +214,6 @@ public class SettingsActivity extends ActionBarActivity {
                 return true;
             }
         });
-
-        prefTour.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                // TODO tour
-                return false;
-            }
-        });
     }
 
     public static class SettingsHeadersFragment extends Fragment {

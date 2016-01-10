@@ -41,7 +41,4 @@
     
     <string name="pref_title_changelog_info">Histórico de mudanças</string>
     <string name="pref_summary_changelog_info">Notas das atualizações realizadas.</string>
-    
-    <string name="pref_title_tour">Tour do produto</string>
-    <string name="pref_summary_tour">Conheça o aplicativo e seus principais recursos.</string>
 </resources>

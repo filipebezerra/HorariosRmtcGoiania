@@ -13,9 +13,4 @@
         android:key="pref_changelog_info"
         android:title="@string/pref_title_changelog_info"
         android:summary="@string/pref_summary_changelog_info"/>
-
-    <Preference
-        android:key="pref_tour"
-        android:title="@string/pref_title_tour"
-        android:summary="@string/pref_summary_tour"/>
 </PreferenceScreen>
