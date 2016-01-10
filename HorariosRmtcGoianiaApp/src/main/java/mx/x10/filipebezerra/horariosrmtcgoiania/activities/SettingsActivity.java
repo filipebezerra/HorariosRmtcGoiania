@@ -32,6 +32,9 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
 import mx.x10.filipebezerra.horariosrmtcgoiania.fragments.PreferenceCompatFragment;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationEvent;
+import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.NotificationMessage;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.DialogHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SearchRecentSuggestionsHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.SnackBarHelper;
@@ -143,11 +146,13 @@ public class SettingsActivity extends ActionBarActivity {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         DaoManager.getInstance(activity).getFavoriteBusStopDao().deleteAll();
+                        EventBusProvider.getInstance()
+                                .getEventBus()
+                                .post(new NotificationEvent(new NotificationMessage(
+                                        NotificationMessage.NotificationType.RESET)));
                         preference.setSummary(activity.getString(
                                 R.string.pref_summary_favorite_bus_stop_data_changed));
                         preference.setEnabled(false);
-
-                        // TODO notify favorite bus stop adapter to clear data
                     }
                 });
                 dialogBuilder.show();

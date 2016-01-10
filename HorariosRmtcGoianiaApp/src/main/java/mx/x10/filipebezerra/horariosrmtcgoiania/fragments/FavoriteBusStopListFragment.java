@@ -73,6 +73,18 @@ public class FavoriteBusStopListFragment extends Fragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        final long count = DaoManager.getInstance(getContext())
+                .getFavoriteBusStopDao().count();
+
+        if (count == 0) {
+            mFavoriteBusStopsAdapter.clear();
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);

@@ -27,16 +27,14 @@ public class FavoriteBusStopsAdapter
     private List<FavoriteBusStop> mFavoriteBusStopList;
     private OnItemClickListener mOnItemClickListener;
 
-    public FavoriteBusStopsAdapter() {
-    }
-
     public FavoriteBusStopsAdapter(@NonNull List<FavoriteBusStop> favoriteBusStopList) {
         mFavoriteBusStopList = favoriteBusStopList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_list_item,
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.favorite_list_item,
                 parent, false);
         itemView.setOnClickListener(this);
         return new ViewHolder(itemView);
@@ -75,6 +73,13 @@ public class FavoriteBusStopsAdapter
         if (index != -1) {
             mFavoriteBusStopList.remove(item);
             notifyItemRemoved(index);
+        }
+    }
+
+    public void clear() {
+        if (!mFavoriteBusStopList.isEmpty()) {
+            mFavoriteBusStopList.clear();
+            notifyDataSetChanged();
         }
     }
 

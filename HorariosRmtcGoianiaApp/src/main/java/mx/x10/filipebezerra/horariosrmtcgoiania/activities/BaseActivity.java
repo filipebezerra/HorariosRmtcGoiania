@@ -142,6 +142,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
             mLastOrientationConfiguration = Configuration.ORIENTATION_PORTRAIT;
         else
             mLastOrientationConfiguration = Configuration.ORIENTATION_LANDSCAPE;
+
+        EventBusProvider.getInstance().getEventBus().register(BaseActivity.this);
     }
 
     private void initSpeechInputSearchAction() {
@@ -206,7 +208,8 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mFabShareApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu)) return;
+                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
+                    return;
 
                 mFabMenu.collapse();
                 startActivity(Intent.createChooser(shareIntent,
@@ -237,11 +240,12 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
      */
     @SuppressWarnings("unchecked")
     private void addPrimarySections() {
-        final int favoriteCount = getFavoriteCount();
-
         favoriteBusStopSection = newSection(
                 getString(R.string.navdrawer_section_favorite_bus_stops),
                 R.drawable.ic_drawer_pontos_favoritos, new FavoriteBusStopListFragment());
+
+        final int favoriteCount = (int) DaoManager.getInstance(BaseActivity.this)
+                .getFavoriteBusStopDao().count();
 
         if (favoriteCount != 0) {
             favoriteBusStopSection.setNotifications(favoriteCount);
@@ -328,29 +332,23 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
                 new Intent(BaseActivity.this, SettingsActivity.class)));
     }
 
-    /**
-     * Returns the favorite count retrieve from sqlite.
-     *
-     * @return Favorite count.
-     */
-
-    private int getFavoriteCount() {
-        return (int) DaoManager.getInstance(BaseActivity.this).getFavoriteBusStopDao().count();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(mConnectionReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
-        EventBusProvider.getInstance().getEventBus().register(BaseActivity.this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mConnectionReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
         EventBusProvider.getInstance().getEventBus().unregister(BaseActivity.this);
+        super.onDestroy();
     }
 
     @Override
