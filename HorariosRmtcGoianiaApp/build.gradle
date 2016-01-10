@@ -69,9 +69,24 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
         release {
+            debuggable false
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            proguardFile 'proguard-butterknife-7.pro'
+            proguardFile 'proguard-crashlytics.pro'
+            proguardFile 'proguard-greendao.pro'
+            proguardFile 'proguard-jsoup.pro'
+            proguardFile 'proguard-square-otto.pro'
+            proguardFile 'proguard-support-v7-appcompat.pro'
+            proguardFile 'proguard-timber.pro'
+
+            proguardFile 'proguard-rules.pro'
+            proguardFile getDefaultProguardFile('proguard-android.txt')
 
             if (rootProject.file('keystore.properties').exists()) {
                 signingConfig signingConfigs.release
