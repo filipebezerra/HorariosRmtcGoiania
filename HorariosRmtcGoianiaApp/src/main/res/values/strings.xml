@@ -23,7 +23,7 @@
 
     <!-- FAB widget -->
     <string name="fab_search_stop_bus">Buscar ponto</string>
-    <string name="fab_share_app">Compatilhar aplicativo</string>
+    <string name="fab_share_app">Compartilhar aplicativo</string>
     <string name="fab_evaluate_app">Avaliar aplicativo</string>
     <string name="fab_bookmark_stop_bus">Marcar como favorito</string>
 
@@ -47,10 +47,12 @@
     <string name="developer_email">filipebzerra@gmail.com</string>
 
     <!-- misc -->
-    <string name="empty_favorites">
-        Você ainda não tem favoritos!!!\n\n
-        Pesquise por um ponto e ao visualizar o botão flutuante com um lindo coração, toque e veja
-        seus favoritos ganharem vida.
+    <string name="empty_favorites_title">
+        Você ainda não tem favoritos!
+    </string>
+    <string name="empty_favorites_subtitle">
+        Quando estiver visualizando as previsões do ponto pesquisado, você
+        poderá incluí-lo como favorito.
     </string>
 
     <string name="send_mail">Enviar email…</string>
