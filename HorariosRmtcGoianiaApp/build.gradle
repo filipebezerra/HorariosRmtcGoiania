@@ -92,8 +92,8 @@ android {
 
 repositories {
     mavenCentral()
-    maven { url 'https://maven.fabric.io/public' }
     maven { url "https://jitpack.io" }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 dependencies {
@@ -104,7 +104,6 @@ dependencies {
     compile libs.supportV4
     compile libs.supportAnnotations
 
-    compile(libs.crashlytics) { transitive = true; }
     compile libs.butterKnife
     compile libs.timber
     compile libs.nineoldandroids
@@ -118,4 +117,5 @@ dependencies {
     compile libs.materialNavigationDrawer
     compile libs.snackbar
     compile libs.floatingactionbutton
+    compile(libs.crashlytics) { transitive = true }
 }
