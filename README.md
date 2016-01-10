@@ -42,20 +42,16 @@ Com este aplicativo você pode:
 Live
 ------
 
-<a href="https://appetize.io/app/ggxbqafba7p8w6gu5m1dxtcthw?device=nexus5&scale=75&orientation=portrait&osVersion=5.1&autoplay=true" target="_blank"><img src="./art/live/Appetize-Nexus5.PNG" heigth="320" width="163"></a>
+<a href="https://appetize.io/app/ggxbqafba7p8w6gu5m1dxtcthw?device=nexus5&scale=75&orientation=portrait&osVersion=6.0&autoplay=true" target="_blank"><img src="./art/live/Appetize-Nexus5.PNG" heigth="320" width="163"></a>
 
 Versões/Mudanças
 ----------------
 
-* Versão 2.0
-  * Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia
-  * Consulta por voz pelo número do ponto, acessível por todo o app.
-  * Salve seus pontos favoritos pois eles poderão ser acessados facilmente para consulta rápida com apenas um toque.
-  * Sugestões de pesquisa baseado nas suas consultas anteriores
-  * Atualize os horários de viagem simplesmente deslizando o dedo para baixo quando estiver na Consulta por Endereço
-  * Remova seus dados das sugestões de pesquisa e favoritos na guia de configurações
-  * Indique seu aplicativo para seus amigos nas redes sociais
-  * Várias correções de erros reportados por usuários
+* Versão 2.3
+  * Correção da falha na inicialização do app em dispositivos com Android 6.0 ‘Marshmallow’.
+  * Várias pequenas melhorias na experiência do usuário e no design.
+ 
+Veja mais na página de [lançamentos][4].
 
 Screenshots
 ------------
@@ -97,3 +93,4 @@ Licença
 [1]: https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania
 [2]: https://github.com/filipebezerra/HorariosRmtcGoiania/issues
 [3]: https://github.com/filipebezerra/HorariosRmtcGoiania/tree/develop
+[4]: https://github.com/filipebezerra/HorariosRmtcGoiania/releases
