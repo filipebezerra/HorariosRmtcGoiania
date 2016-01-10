@@ -114,23 +114,8 @@ dependencies {
     compile libs.greendao
     compile libs.licensesdialog
     compile libs.jsoup
-    compile libs.robototextview
 
     compile libs.materialNavigationDrawer
     compile libs.snackbar
     compile libs.floatingactionbutton
-}
-
-android.applicationVariants.all{ variant ->
-    variant.mergeAssets.doFirst {
-        File fonts = file("${projectDir}/build/intermediates/exploded-aar/com.github.johnkil.android-robototextview/robototextview/${robototextviewVersion}/assets/fonts")
-        if (fonts.exists()) {
-            for (File file : fonts.listFiles()) {
-                if (!file.getName().contains("RobotoSlab-Light")&&!file.getName().contains("Roboto-Thin")) {
-                    println("delete " + file.getName() + " font")
-                    file.delete()
-                };
-            }
-        }
-    }
 }
