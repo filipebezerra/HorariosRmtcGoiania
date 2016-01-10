@@ -16,8 +16,8 @@
     <!-- About developer settings -->
     <string name="prefs_category_developer">Desenvolvedor</string>
 
-    <string name="pref_title_developer_name">Criador/Desenvolvedor</string>
-    <string name="pref_summary_developer_name">Filipe Bezerra de Sousa</string>
+    <string name="pref_title_developer_name">Criador e desenvolvedor</string>
+    <string name="pref_summary_developer_name">Conheça quem está mantendo este aplicativo funcionando</string>
 
     <string name="pref_title_project_site">Site do projeto</string>
     <string name="pref_summary_project_site">Ir para site do projeto</string>
