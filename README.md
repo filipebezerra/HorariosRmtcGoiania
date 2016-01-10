@@ -11,8 +11,8 @@ Saiba mais sobre o aplicativo
 -----------------------------
 
 Horários Rmtc Goiânia é um aplicativo totalmente gratuito desenvolvimento e mantido para a plataforma Android, 
-com total compatibilidade desde à versão 2.2 ([Froyo]) até a versão mais recente lançada pelo Google, o Android 5.0 
-([Lollipop]). 
+com total compatibilidade desde à versão 2.2 ([Froyo]) até a versão mais recente lançada pelo Google, o Android 6.0 
+([Marshmallow]). 
 
 Isto significa que todas as funcionalidades funcionam da mesma forma para todas as plataformas
 independente da versão do Android, assim como seu visual bonito, moderno e intuitivo é mantido ao máximo
@@ -89,7 +89,7 @@ Licença
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 [froyo]:http://www.android.com/history/
-[Lollipop]:http://www.android.com/versions/lollipop-5-0/
+[Marshmallow]:http://www.android.com/versions/marshmallow-6-0/
 [1]: https://play.google.com/store/apps/details?id=mx.x10.filipebezerra.horariosrmtcgoiania
 [2]: https://github.com/filipebezerra/HorariosRmtcGoiania/issues
 [3]: https://github.com/filipebezerra/HorariosRmtcGoiania/tree/develop
