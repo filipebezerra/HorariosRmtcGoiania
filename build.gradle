@@ -12,3 +12,12 @@ allprojects {
         jcenter()
     }
 }
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    travisBuild = System.getenv("TRAVIS") == "true"
+    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+}

@@ -1,25 +1,23 @@
 language: android
-jdk: oraclejdk7
-
-branches:
-  only:
-    - new-2.0
+jdk:
+  - oraclejdk7
+sudo: false
 
 android:
   components:
     - platform-tools
     - tools
-    - build-tools-22.0.1
-    - android-22
-    - extra-android-support
+    - build-tools-23.0.2
+    - android-23
     - extra-android-m2repository
-    - extra-google-m2repository
 
-licenses:
-  - android-sdk-license-.+
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
-before_script:
-    - gradle -v
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 script:
-  ./gradlew clean build --stacktrace
+   - ./gradlew clean build
