@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
+
+    <changelogversion versionName="2.3" changeDate="- 10 de Janeiro de 2016">
+        <changelogimprovement>
+            Várias pequenas melhorias visuais.
+        </changelogimprovement>
+        <changelogbug>
+            Correção da falha ao abrir o app em dispositivos com Android 6.0 ‘Marshmallow’.
+        </changelogbug>
+    </changelogversion>
+
     <changelogversion versionName="2.0" changeDate="- 12 de Março de 2015">
         <changelogimprovement>
-            Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia
+            Visual aprimorado baseado no Google Material Design com cores ousadas e melhor tipografia.
         </changelogimprovement>
         <changelogimprovement>
             Consulta por voz pelo número do ponto, acessível por todo o app.
@@ -12,20 +22,20 @@
             rápida com apenas um toque.
         </changelogimprovement>
         <changelogimprovement>
-            Sugestões de pesquisa baseado nas suas consultas anteriores
+            Sugestões de pesquisa baseado nas suas consultas anteriores.
         </changelogimprovement>
         <changelogimprovement>
             Atualize os horários de viagem simplesmente deslizando o dedo para baixo quando
-            estiver na Consulta por Endereço
+            estiver na Consulta por Endereço.
         </changelogimprovement>
         <changelogimprovement>
-            Remova seus dados das sugestões de pesquisa e favoritos na guia de configurações
+            Remova seus dados das sugestões de pesquisa e favoritos na guia de configurações.
         </changelogimprovement>
         <changelogimprovement>
-            Indique seu aplicativo para seus amigos nas redes sociais
+            Indique seu aplicativo para seus amigos nas redes sociais.
         </changelogimprovement>
         <changelogbug>
-            Várias correções de erros reportados por usuários
+            Várias correções de erros reportados por usuários.
         </changelogbug>
     </changelogversion>
 </changelog>
