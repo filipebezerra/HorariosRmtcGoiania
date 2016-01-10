@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania.svg?branch=new-2.0)](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania)
+[![Build Status](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania.svg?branch=master)](https://travis-ci.org/filipebezerra/HorariosRmtcGoiania)
 
 Horários Rmtc Goiânia para Android
 ===================
