@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:support="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/app_bar_padding_top"
     android:background="?attr/colorPrimary"
-    support:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     android:elevation="4dp"
-    android:contentInsetStart="@dimen/abc_control_inset_material"/>
+    android:contentInsetStart="@dimen/abc_control_inset_material"
+    tools:ignore="UnusedAttribute"
+    />
