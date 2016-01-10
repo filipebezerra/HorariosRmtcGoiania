@@ -7,12 +7,6 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>Calligraphy</name>
-        <url>https://github.com/chrisjenx/Calligraphy</url>
-        <copyright>Copyright 2013 Christopher Jenkins</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
         <name>ChangeLog</name>
         <url>https://github.com/gabrielemariotti/changeloglib</url>
         <copyright>Copyright 2013-2014 Gabriele Mariotti</copyright>
@@ -27,7 +21,7 @@
     <notice>
         <name>jsoup</name>
         <url>http://jsoup.org/</url>
-        <copyright>Copyright 2009 Jonathan Hedley</copyright>
+        <copyright>Copyright (c) 2009 Jonathan Hedley</copyright>
         <license>MIT License</license>
     </notice>
     <notice>
@@ -37,10 +31,10 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>Material Design Android Library</name>
-        <url>https://github.com/navasmdc/MaterialDesignLibrary</url>
-        <copyright>Copyright 2014 Ivan Navas</copyright>
-        <license>Apache Software License 2.0</license>
+        <name>Material Dialogs</name>
+        <url>https://github.com/afollestad/material-dialogs</url>
+        <copyright>Copyright (c) 2015 Aidan Michael Follestad</copyright>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>MaterialNavigationDrawer</name>
@@ -58,6 +52,18 @@
         <name>Otto</name>
         <url>http://square.github.io/otto/</url>
         <copyright>Copyright 2012 Square, Inc</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Snackbar</name>
+        <url>https://github.com/nispok/snackbar</url>
+        <copyright>Copyright (c) 2015 William Mora</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>Timber</name>
+        <url>https://github.com/JakeWharton/timber</url>
+        <copyright>Copyright 2013 Jake Wharton</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
 </notices>
