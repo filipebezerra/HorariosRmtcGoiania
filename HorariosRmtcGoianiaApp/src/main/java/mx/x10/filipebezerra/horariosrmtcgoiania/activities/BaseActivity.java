@@ -89,7 +89,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (AndroidUtils.checkAndNotifyNetworkState(context, mFabMenu)) {
+            if (AndroidUtils.checkAndNotifyNetworkState(getApplicationContext(), mFabMenu)) {
                 Timber.d(String.format(
                         getString(R.string.log_event_debug), "onReceive",
                         intent.getAction(), "no internet connectivity"));
@@ -156,7 +156,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mFabVoiceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
+                if (AndroidUtils.checkAndNotifyNetworkState(getApplicationContext(), mFabMenu))
                     return;
 
                 mFabMenu.collapse();
@@ -169,7 +169,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mFabEvaluateApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
+                if (AndroidUtils.checkAndNotifyNetworkState(getApplicationContext(), mFabMenu))
                     return;
 
                 mFabMenu.collapse();
@@ -208,7 +208,7 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
         mFabShareApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AndroidUtils.checkAndNotifyNetworkState(BaseActivity.this, mFabMenu))
+                if (AndroidUtils.checkAndNotifyNetworkState(getApplicationContext(), mFabMenu))
                     return;
 
                 mFabMenu.collapse();
