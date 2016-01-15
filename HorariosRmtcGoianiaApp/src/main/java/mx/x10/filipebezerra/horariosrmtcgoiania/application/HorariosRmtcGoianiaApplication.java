@@ -26,7 +26,9 @@ public class HorariosRmtcGoianiaApplication extends Application {
         } else {
             // crash and error reporting
             Timber.plant(new AnalyticsTree(this));
-            Fabric.with(this, new Crashlytics());
+            if (!Fabric.isInitialized()) {
+                Fabric.with(this, new Crashlytics());
+            }
         }
     }
 }
