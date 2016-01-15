@@ -27,8 +27,8 @@ android {
         applicationId "mx.x10.filipebezerra.horariosrmtcgoiania"
         minSdkVersion 10
         targetSdkVersion 23
-        versionCode 11
-        versionName '2.3'
+        versionCode 12
+        versionName '2.3.1'
     }
 
     compileOptions {
