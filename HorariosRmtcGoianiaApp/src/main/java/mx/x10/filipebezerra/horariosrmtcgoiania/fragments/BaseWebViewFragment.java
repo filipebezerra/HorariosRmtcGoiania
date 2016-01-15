@@ -349,19 +349,22 @@ public class BaseWebViewFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     protected boolean isInternetConnectionAvailable() {
-        FragmentActivity drawerActivity = getActivity();
-        if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity,
-                ((BaseActivity) drawerActivity).getFabMenu())) {
-            Timber.d(String.format(
-                    getString(R.string.log_event_debug), "isInternetConnectionAvailable",
-                    mWebView.getUrl(), "no internet connectivity available"));
-            mHasInternetConnection = false;
-            loadOfflinePage();
-            return false;
-        } else {
-            mHasInternetConnection = true;
-            return true;
+        if (isVisible()) {
+            FragmentActivity drawerActivity = getActivity();
+            if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity.getApplicationContext(),
+                    ((BaseActivity) drawerActivity).getFabMenu())) {
+                Timber.d(String.format(
+                        getString(R.string.log_event_debug), "isInternetConnectionAvailable",
+                        mWebView.getUrl(), "no internet connectivity available"));
+                mHasInternetConnection = false;
+                loadOfflinePage();
+                return false;
+            } else {
+                mHasInternetConnection = true;
+                return true;
+            }
         }
+        return true;
     }
 
     /**
