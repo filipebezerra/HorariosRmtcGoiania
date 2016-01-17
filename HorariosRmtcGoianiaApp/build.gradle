@@ -29,6 +29,7 @@ android {
         targetSdkVersion 23
         versionCode 12
         versionName '2.3.1'
+        manifestPlaceholders = [applicationLabel: "@string/app_name"]
     }
 
     compileOptions {
@@ -65,10 +66,18 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+            versionNameSuffix "-dev"
+            applicationIdSuffix ".dev"
+            signingConfig signingConfigs.debug
+            manifestPlaceholders = [applicationLabel: "Horarios Dev"]
+
+            resValue "string", "suggestions_provider", "mx.x10.filipebezerra.horariosrmtcgoiania.dev.providers.SuggestionsProvider"
         }
         release {
             debuggable false
             minifyEnabled true
+
+            resValue "string", "suggestions_provider", "mx.x10.filipebezerra.horariosrmtcgoiania.providers.SuggestionsProvider"
 
             proguardFile 'proguard-butterknife-7.pro'
             proguardFile 'proguard-crashlytics.pro'
