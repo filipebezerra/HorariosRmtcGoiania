@@ -41,6 +41,7 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.managers.DaoManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.RequestQueueManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.managers.SuggestionsProviderManager;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.AndroidUtils;
+import mx.x10.filipebezerra.horariosrmtcgoiania.utils.NetworkUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.utils.PrefUtils;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.events.EventBusProvider;
 import mx.x10.filipebezerra.horariosrmtcgoiania.views.helpers.ProgressDialogHelper;
@@ -455,11 +456,12 @@ public abstract class BaseActivity extends MaterialNavigationDrawer {
     private void onSearch(Intent intent) {
         final String query = intent.getStringExtra(SearchManager.QUERY);
 
-        if (!AndroidUtils.isWifiConnected(BaseActivity.this) &&
-                !AndroidUtils.isNetworkConnected(BaseActivity.this)) {
+        if (!NetworkUtils.isDeviceConnectedToInternet(this)) {
             if (mSearchView.requestFocus()) {
                 mSearchView.setQuery(query, false);
             }
+            SnackBarHelper.show(this,
+                    getString(R.string.no_internet_connectivity));
             return;
         }
 

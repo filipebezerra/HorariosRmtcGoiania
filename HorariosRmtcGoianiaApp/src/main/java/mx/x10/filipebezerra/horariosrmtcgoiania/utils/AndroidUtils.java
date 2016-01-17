@@ -24,8 +24,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -95,19 +93,6 @@ public class AndroidUtils {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
-    /**
-     * Whether there is any network connected.
-     */
-    public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager == null) {
-            return false;
-        }
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static boolean isRtlLayout() {
         if (AndroidUtils.isJellyBeanMR1OrHigher()) {
@@ -115,17 +100,6 @@ public class AndroidUtils {
             return direction == View.LAYOUT_DIRECTION_RTL;
         }
         return false;
-    }
-
-    /**
-     * Whether there is an active WiFi connection.
-     */
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiNetworkInfo = connectivityManager
-                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        return wifiNetworkInfo != null && wifiNetworkInfo.isConnected();
     }
 
     /**
@@ -270,8 +244,7 @@ public class AndroidUtils {
      */
     public static boolean checkAndNotifyNetworkState(@NonNull Context context,
             View... animateViews) {
-        if (!isWifiConnected(context) &&
-                !isNetworkConnected(context)) {
+        if (!NetworkUtils.isDeviceConnectedToInternet(context)) {
             SnackBarHelper.show(context,
                     context.getString(R.string.no_internet_connectivity), animateViews);
             return true;
