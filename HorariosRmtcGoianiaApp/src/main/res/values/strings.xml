@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App / Activities -->
-    <string name="app_name" translatable="false">HorariosRmtcGoiania</string>
-    <string name="full_app_name" translatable="false">Horários Rmtc Goiânia</string>
-    <string name="title_activity_main" translatable="false">Horários Rmtc Gyn</string>
+    <string name="app_name" translatable="false">Horários Rmtc Gyn</string>
     <string name="title_activity_settings">Configurações</string>
 
     <!-- Actions -->

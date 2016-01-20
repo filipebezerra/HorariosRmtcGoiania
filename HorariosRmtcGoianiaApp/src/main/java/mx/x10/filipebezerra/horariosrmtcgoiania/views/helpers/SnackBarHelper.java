@@ -26,11 +26,11 @@ public class SnackBarHelper {
     }
 
     public static void show(final Context context, final String message) {
-        show(context, message, false, null);
+        show(context, message, false, (View)null);
     }
 
     public static void showSingleLine(final Context context, final String message) {
-        show(context, message, true, null);
+        show(context, message, true, (View)null);
     }
 
     public static void showSingleLine(final Context context, final String message,

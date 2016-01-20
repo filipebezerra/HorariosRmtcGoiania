@@ -5,12 +5,11 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="${applicationLabel}"
         android:theme="@style/Theme.HorariosRmtcGoiania"
         android:name=".application.HorariosRmtcGoianiaApplication">
 
@@ -20,7 +19,7 @@
 
         <activity
             android:name=".activities.HomeActivity"
-            android:label="@string/title_activity_main"
+            android:label="${applicationLabel}"
             android:launchMode="singleTop"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|navigation"
             android:windowSoftInputMode="adjustResize">
@@ -49,7 +48,7 @@
 
         <provider
             android:name="mx.x10.filipebezerra.horariosrmtcgoiania.providers.SuggestionsProvider"
-            android:authorities="mx.x10.filipebezerra.horariosrmtcgoiania.providers.SuggestionsProvider"
+            android:authorities="@string/suggestions_provider"
             android:exported="false"/>
 
         <meta-data

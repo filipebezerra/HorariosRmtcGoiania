@@ -92,12 +92,15 @@ public class FavoriteBusStopListFragment extends Fragment
 
     @Override
     public void onItemClick(final FavoriteBusStop favoriteBusStop) {
-        FragmentActivity drawerActivity = getActivity();
-        if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity,
-                ((BaseActivity) drawerActivity).getFabMenu())) return;
+        if (isVisible()) {
+            FragmentActivity drawerActivity = getActivity();
+            if (AndroidUtils.checkAndNotifyNetworkState(drawerActivity.getApplicationContext(),
+                    ((BaseActivity) drawerActivity).getFabMenu()))
+                return;
 
-        EventBusProvider.getInstance().getEventBus().post(
-                new FavoriteItemSelectionEvent(favoriteBusStop));
+            EventBusProvider.getInstance().getEventBus().post(
+                    new FavoriteItemSelectionEvent(favoriteBusStop));
+        }
     }
 
     private List<FavoriteBusStop> getFavoritesData() {
