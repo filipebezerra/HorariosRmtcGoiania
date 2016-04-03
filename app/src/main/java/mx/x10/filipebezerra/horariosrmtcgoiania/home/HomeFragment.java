@@ -19,12 +19,12 @@ import mx.x10.filipebezerra.horariosrmtcgoiania.R;
  * @since 3.0.0
  */
 public class HomeFragment extends Fragment {
+    @Bind(R.id.empty_state) LinearLayout mEmptyStateView;
+    @Bind(R.id.data_container) LinearLayout mDataContainerView;
+
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
-
-    @Bind(R.id.empty_state) LinearLayout mEmptyStateView;
-    @Bind(R.id.data_container) LinearLayout mDataContainerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

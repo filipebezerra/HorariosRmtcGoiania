@@ -64,7 +64,7 @@
         <ImageView
             android:layout_width="144dp"
             android:layout_height="144dp"
-            app:srcCompat="@drawable/ic_people"
+            app:srcCompat="@drawable/ic_empty_last_searches"
             />
 
         <TextView
