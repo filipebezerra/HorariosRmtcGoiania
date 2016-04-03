@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="toolbar" type="id" />
-    <item name="fragmentContainer" type="id" />
+    <item name="fragment_container" type="id" />
+    <item name="empty_state" type="id" />
+    <item name="data_container" type="id" />
 </resources>

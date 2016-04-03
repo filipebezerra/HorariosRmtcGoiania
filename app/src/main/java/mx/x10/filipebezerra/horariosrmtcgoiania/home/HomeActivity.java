@@ -20,7 +20,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    @Bind(R.id.fragmentContainer) ViewPager mViewPager;
+    @Bind(R.id.fragment_container) ViewPager mViewPager;
 
     class SectionsPagerAdapter extends FragmentPagerAdapter {
         public SectionsPagerAdapter(FragmentManager fm) {

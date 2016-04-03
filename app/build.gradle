@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 23300
         versionName "3.0.0"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

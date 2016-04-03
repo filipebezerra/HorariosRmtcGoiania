@@ -17,28 +17,73 @@
         android:background="@android:color/white"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:gravity="center_vertical"
-        android:background="@android:color/white"
-        android:text="Últimos pesquisados"
-        />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@android:id/list"
+    <LinearLayout
+        android:id="@id/data_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="outsideOverlay"
+        android:orientation="vertical"
+        tools:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:text="Últimos pesquisados"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="outsideOverlay"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/item_arrival_prediction"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@id/empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:gravity="center"
+        tools:visibility="visible"
         android:background="@android:color/white"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/item_arrival_prediction"
-        />
+        >
+
+        <ImageView
+            android:layout_width="144dp"
+            android:layout_height="144dp"
+            app:srcCompat="@drawable/ic_people"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nada pesquisado até agora"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Suas últimas pesquisas de previsão de chegada serão apresentadas aqui"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:gravity="center"
+            />
+        
+    </LinearLayout>
 
 </LinearLayout>
