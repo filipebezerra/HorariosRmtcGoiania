@@ -3,6 +3,10 @@
     <string name="title_activity_home">Horários RMTC</string>
     <string name="action_search">Buscar</string>
     <string name="search_hint">Número do ponto</string>
-    <string name="search_label">Pontos de ônibus</string>
+    <string name="search_label">Ponto de ônibus</string>
     <string name="voice_prompt_text">Fale o número do ponto</string>
+    <string name="searching_bus_station">Buscando ponto de ônibus</string>
+    <string name="please_wait">Por favor aguarde…</string>
+    <string name="text_dialog_button_ok">OK</string>
+    <string name="error_searching_bus_station">Falha ao buscar ponto de ônibus</string>
 </resources>
