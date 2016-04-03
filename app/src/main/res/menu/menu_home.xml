@@ -4,7 +4,7 @@
     tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.home.HomeActivity"
     >
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/menu_search"
         android:title="@string/action_search"
         android:icon="@drawable/ic_search"
         app:showAsAction="always|collapseActionView"
