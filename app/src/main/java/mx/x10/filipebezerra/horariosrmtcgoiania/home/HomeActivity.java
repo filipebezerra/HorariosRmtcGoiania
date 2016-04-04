@@ -20,8 +20,8 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.MaterialDialog;
-import java.util.Locale;
 import mx.x10.filipebezerra.horariosrmtcgoiania.R;
+import mx.x10.filipebezerra.horariosrmtcgoiania.android.android.ActivityNavigator;
 import mx.x10.filipebezerra.horariosrmtcgoiania.feedback.FeedbackHelper;
 import mx.x10.filipebezerra.horariosrmtcgoiania.webservice.BusStationService;
 import mx.x10.filipebezerra.horariosrmtcgoiania.webservice.LinesResponse;
@@ -155,10 +155,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void handleSearchResponse(LinesResponse response) {
         if (Boolean.parseBoolean(response.status)) {
-            FeedbackHelper.snackbar(mCoordinatorLayout,
-                    String.format(Locale.getDefault(), "%d linhas disponíveis no ponto %s",
-                            response.busStation.lines.size(),
-                            response.busStation.busStationId), true);
+            ActivityNavigator.navigateToLinesAvailable(this, response.busStation);
         } else {
             FeedbackHelper.snackbar(mCoordinatorLayout, response.message, false);
         }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Horários RMTC</string>
     <string name="title_activity_home">Horários RMTC</string>
+    <string name="title_activity_lines_available">Linhas disponíveis</string>
     <string name="action_search">Buscar</string>
     <string name="search_hint">Número do ponto</string>
     <string name="search_label">Ponto de ônibus</string>
