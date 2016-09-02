@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="72dp"
+    android:padding="16dp"
+    >
+
+    <TextView
+        android:id="@+id/text_view_forecast_next_trip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/dark_gray_2"
+        tools:text="5 min"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/text_view_forecast_next_trip"
+        android:layout_toStartOf="@id/text_view_forecast_next_trip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        >
+
+        <TextView
+            android:id="@+id/text_view_bus_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/vector_ic_bus"
+            android:drawableStart="@drawable/vector_ic_bus"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="?attr/colorAccent"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="270 - PC Campus"
+            tools:drawableLeft="@drawable/ic_bus"
+            tools:drawableStart="@drawable/ic_bus"
+            />
+
+        <TextView
+            android:id="@+id/text_view_bus_station"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawableLeft="@drawable/vector_ic_place"
+            android:drawableStart="@drawable/vector_ic_place"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/very_dark_gray"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="3357 - Interna Do Campus, Area Da Ufg"
+            tools:drawableLeft="@drawable/ic_place"
+            tools:drawableStart="@drawable/ic_place"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

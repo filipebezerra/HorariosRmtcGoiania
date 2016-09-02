@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".android.application.HorariosRmtcApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,16 +17,15 @@
 
         <meta-data
             android:name="android.app.default_searchable"
-            android:value=".home.HomeActivity"
+            android:value=".presentation.main.HomeActivity"
             />
 
         <activity
-            android:name=".home.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:launchMode="singleTop"
+            android:name=".presentation.main.MainActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
             >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,15 +49,13 @@
         </activity>
 
         <activity
-            android:name=".linesavailable.LinesAvailableActivity"
-            android:label="@string/title_activity_lines_available"
-            android:parentActivityName=".home.HomeActivity"
+            android:name=".presentation.linhasonibus.LinhasOnibusActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".presentation.main.MainActivity"
             >
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="mx.x10.filipebezerra.horariosrmtcgoiania.home.HomeActivity"
+                android:value=".presentation.main.MainActivity"
                 />
         </activity>
     </application>

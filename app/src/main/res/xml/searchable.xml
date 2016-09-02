@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:hint="@string/search_hint"
     android:imeOptions="actionSearch"
-    android:inputType="number"
+    android:inputType="numberSigned"
     android:label="@string/search_label"
     android:voicePromptText="@string/voice_prompt_text"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"

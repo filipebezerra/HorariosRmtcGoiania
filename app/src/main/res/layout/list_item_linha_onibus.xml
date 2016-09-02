@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="72dp"
+    >
+
+    <TextView
+        android:id="@+id/text_view_numero_linha"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textColor="?attr/colorPrimary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:lines="1"
+        android:maxLength="4"
+        android:ellipsize="none"
+        android:background="@drawable/shape_rounded_corner"
+        tools:text="270"
+        />
+
+    <ImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/chevron"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_chevron_right"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/text_view_numero_linha"
+        android:layout_toEndOf="@id/text_view_numero_linha"
+        android:layout_toLeftOf="@id/chevron"
+        android:layout_toStartOf="@id/chevron"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/text_view_previsao_chegada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/vector_ic_arrival_forecast"
+            android:drawableStart="@drawable/vector_ic_arrival_forecast"
+            android:drawablePadding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/very_dark_gray"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:lines="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            tools:text="dentro de 12 min"
+            tools:drawableLeft="@drawable/ic_arrival_forecast"
+            tools:drawableStart="@drawable/ic_arrival_forecast"
+            />
+
+        <TextView
+            android:id="@+id/text_view_destino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/dark_gray"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:lines="1"
+            android:ellipsize="end"
+            tools:text="via 270 - PC Campus"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

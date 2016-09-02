@@ -1,13 +1,17 @@
 <resources>
     <string name="app_name">Horários RMTC</string>
-    <string name="title_activity_home">Horários RMTC</string>
-    <string name="title_activity_lines_available">Linhas disponíveis</string>
+
+    <!-- Main screen -->
     <string name="action_search">Buscar</string>
     <string name="search_hint">Número do ponto</string>
     <string name="search_label">Ponto de ônibus</string>
     <string name="voice_prompt_text">Fale o número do ponto</string>
-    <string name="searching_bus_station">Buscando ponto de ônibus</string>
-    <string name="please_wait">Por favor aguarde…</string>
-    <string name="text_dialog_button_ok">OK</string>
-    <string name="error_searching_bus_station">Falha ao buscar ponto de ônibus</string>
+
+    <!-- Home screen -->
+    <string name="list_header_ultimas_pesquisas">Últimos pesquisados</string>
+    <string name="button_pontos_proximos">Pontos Próximos</string>
+
+    <!-- Linhas Onibus screen -->
+    <string name="template_destino_linha_onibus">via %1$s</string>
+    <string name="list_header_linhas_onibus">Linhas de ônibus neste ponto</string>
 </resources>

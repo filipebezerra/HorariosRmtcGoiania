@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_linhas_onibus"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+
+    <TextView
+        style="@style/Widget.HorariosRmtc.ListHeader"
+        android:text="@string/list_header_linhas_onibus"
+        />
+
+    <View style="@style/Widget.HorariosRmtc.Divider" />
+
+    <android.support.v7.widget.RecyclerView
+        style="@style/Widget.HorariosRmtc.RecyclerView"
+        android:id="@+id/recycler_view_linhas_onibus"
+        tools:listitem="@layout/list_item_linha_onibus"
+        />
+
+</LinearLayout>

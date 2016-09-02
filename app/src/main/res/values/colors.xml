@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#cd4848</color>
-    <color name="colorPrimaryDark">#bf4343</color>
-    <color name="colorAccent">#cd4848</color>
-
-    <color name="dark_gray">#a3a3a3</color>
-    <color name="very_dark_gray">#616161</color>
+    <color name="color_primary">@color/moderate_red</color>
+    <color name="color_primary_dark">@color/moderate_red_2</color>
+    <color name="color_accent">@color/moderate_red</color>
+    <color name="color_default_window_background">@color/light_grayish_blue</color>
 </resources>

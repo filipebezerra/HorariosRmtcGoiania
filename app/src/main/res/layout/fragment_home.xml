@@ -1,89 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="mx.x10.filipebezerra.horariosrmtcgoiania.home.HomeFragment"
     >
 
     <Button
-        android:id="@+id/loadNearbyBusStops"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:text="@string/button_pontos_proximos"
         android:textColor="?attr/colorAccent"
-        android:text="Pontos Próximos"
-        android:background="@android:color/white"
+        android:background="@drawable/bg_button"
+        android:drawableLeft="@drawable/vector_ic_bus_stop"
+        android:drawableStart="@drawable/vector_ic_bus_stop"
+        tools:drawableLeft="@drawable/ic_bus_stop"
+        tools:drawableStart="@drawable/ic_bus_stop"
         />
 
-    <LinearLayout
-        android:id="@id/data_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:visibility="gone"
-        >
+    <TextView
+        style="@style/Widget.HorariosRmtc.ListHeader"
+        android:text="@string/list_header_ultimas_pesquisas"
+        />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:paddingLeft="16dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:gravity="center_vertical"
-            android:background="@android:color/white"
-            android:text="Últimos pesquisados"
-            />
+    <View style="@style/Widget.HorariosRmtc.Divider" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="2dp"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="outsideOverlay"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/item_arrival_prediction"
-            />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@id/empty_state"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:gravity="center"
-        tools:visibility="visible"
-        android:background="@android:color/white"
-        >
-
-        <ImageView
-            android:layout_width="144dp"
-            android:layout_height="144dp"
-            app:srcCompat="@drawable/ic_empty_last_searches"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nada pesquisado até agora"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:gravity="center"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Suas últimas pesquisas de previsão de chegada serão apresentadas aqui"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:gravity="center"
-            />
-        
-    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        style="@style/Widget.HorariosRmtc.RecyclerView"
+        android:id="@+id/recycler_view_ultimas_pesquisas"
+        tools:listitem="@layout/list_item_ultimas_pesquisas"
+        />
 
 </LinearLayout>
